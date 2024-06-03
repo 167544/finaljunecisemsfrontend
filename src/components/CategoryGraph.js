@@ -20,14 +20,18 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
     const counts = {};
     data.forEach((item) => {
       const country = item.Category;
-      counts[country] = counts[country] ? counts[country] + 1 : 1;
+      if (!country) {
+        console.warn('Undefined category in item:', item); // Added debug log
+      } else {
+        counts[country] = counts[country] ? counts[country] + 1 : 1;
+      }
     });
     return Object.entries(counts)
       .map(([country, count]) => ({ _id: country, count }))
       .sort((a, b) => b.count - a.count); // Sort by count in descending order
   };
 
-  const [countryCounts, setCountryCounts] = useState(getCountsByCountry());
+  const [countryCounts, setCountryCounts] = useState([]);
 
   useEffect(() => {
     setCountryCounts(getCountsByCountry());

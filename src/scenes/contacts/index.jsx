@@ -126,6 +126,12 @@ const Contacts = () => {
         flex: 1,
       },
       {
+        field: "Last Updated Date",
+        headerName: "Last Updated Date",
+        flex: 1,
+      },
+      
+      {
         field: "Update",
         headerName: "Update",
 
@@ -134,19 +140,20 @@ const Contacts = () => {
           <UpdateUserDetails
             id={params.row ? params.row["Employee ID"] : ""}
             haldleupdate={handleUpdate}
+            lastUpdatedDate = { params.row["Last Updated Date"]}
             style={{ margin: "10px" }}
           />
         ),
       },
       {
         field: "delete",
-        headerName: "delete",
+        headerName: "Training and Certifications",
         flex: 2,
         renderCell: (params) => (
           <Button onClick={() => handleDelete(params.row['Employee ID'])}
           disabled={true}
           > 
-          Delete 
+          T and C 
           </Button>
         ),
       }

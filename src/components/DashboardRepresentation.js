@@ -28,6 +28,11 @@ function DashboardRepresentation(props) {
     { field: 'Skill Level for Primary Skill', headerName: 'Skill Level for Primary Skill', flex: 2 },
     { field: 'Tools Known', headerName: 'Tools Known', flex: 1 },
     { field: 'VISA "YES" Country', headerName: 'VISA "YES" Country', flex: 1 },
+    { field: 'Certifications', headerName: 'Certifications', flex: 1 },
+    { field: 'Resume', headerName: 'Resume', flex: 1 },
+    { field: 'Last Updated Date', headerName: 'Last Updated Date', flex: 1 },
+    
+    
 
     {
       field: 'actions',

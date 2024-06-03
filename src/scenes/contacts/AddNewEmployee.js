@@ -123,7 +123,7 @@ function AddNewEmployee({ handleInsert }) {
               // .filter(optionValue => optionValue !== null)  // Remove null values
               // .sort((a, b) => a.localeCompare(b))  // Sort values in ascending order
               .map((optionValue) => {
-                console.log("av-col:",columnName,optionValue);  // Log columnName
+                // console.log("av-col:",columnName,optionValue);  // Log columnName
                 return (
           <option key={optionValue} value={optionValue}>
             {optionValue}
