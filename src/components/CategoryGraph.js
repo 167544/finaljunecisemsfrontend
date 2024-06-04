@@ -21,7 +21,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
     data.forEach((item) => {
       const country = item.Category;
       if (!country) {
-        console.warn('Undefined category in item:', item); // Added debug log
+        //console.warn('Undefined category in item:', item); // Added debug log
       } else {
         counts[country] = counts[country] ? counts[country] + 1 : 1;
       }

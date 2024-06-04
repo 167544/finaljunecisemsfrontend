@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { tokens } from '../theme';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import StatBox from '../components/StatBox';
-import EmailIcon from '@mui/icons-material/Email';
-import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import BandGraph from './BandGraph';
 import USTExp from './USTExp';
 import TableRepresentation from './TableRepresentation';
@@ -160,6 +156,9 @@ function DashboardData(props) {
 
     setPrimarySkillsKey(prevKey => prevKey + 1); // Update key to force reload PrimarySkills
     setCategoryKey(prevKey => prevKey + 1); // Update key to force reload Category
+
+    setSelectedBoxName('');
+
   };
 
   const boxes = [
