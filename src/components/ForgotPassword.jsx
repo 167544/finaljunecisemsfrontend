@@ -77,7 +77,7 @@ function ForgotPassword(props) {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100vw', color: 'white', backgroundColor: '#0A6E7C',padding:"12px",paddingLeft:"26px" }}>
                 <img src={logos} alt="logo" width={"50px"} height={"50px"} />
-                <h2 style={{color:"white",fontWeight:"bold"}}>CIS Employee Skill Portal</h2>
+                <h2 style={{color:"white",fontWeight:"bold"}}>CIS Management Information System </h2>
                 <img src={logos} alt="logo" width={"50px"} height={"50px"} style={{visibility: 'hidden'}}/>            
             </div>
 

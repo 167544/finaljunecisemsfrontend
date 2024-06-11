@@ -58,7 +58,7 @@ function UpdateUserDetails({ id, lastUpdatedDate, handleUpdate }) {
     'Skill Level for Primary Skill',
     'Secondary Skill',
     'Skill Category for Secondary Skill',
-    'Skill Level for Secondary Skill',
+    'Skill level for Secondary Skill',
     'Tools Known',
     'Certifications',
     'Resume',
@@ -70,7 +70,7 @@ function UpdateUserDetails({ id, lastUpdatedDate, handleUpdate }) {
     'Skill Category for Primary Skill',
     'Skill Level for Primary Skill',
     'Skill Category for Secondary Skill',
-    'Skill Level for Secondary Skill',
+    'Skill level for Secondary Skill',
     'Employee Status',
   ];
 
@@ -92,6 +92,7 @@ function UpdateUserDetails({ id, lastUpdatedDate, handleUpdate }) {
     'OBU Description',
     'Customer ID',
     'Customer Name',
+    'Project ID',
     'Project Description',
     'Program Description',
     'Program Manager',

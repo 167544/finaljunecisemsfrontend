@@ -179,7 +179,23 @@ function DashboardData(props) {
           )}
           <Category handleBoxClick={handleCategory} />
           <PrimarySkills handleBoxClick={handlePrimarySelect} />
-          <a style={{  height: '35px', cursor:'pointer'}} className="mt-4" variant="contained" color="primary" onClick={resetSelectComponent}>Reset</a>
+          {/* <a style={{  height: '35px', cursor:'pointer'}} className="mt-4" variant="contained" color="primary" onClick={resetSelectComponent}>Reset</a> */}
+          <button 
+  style={{ 
+    height: '35px', 
+    cursor: 'pointer', 
+    border: '2px solid #0A6E7C', // Adding border with primary color
+    backgroundColor: 'transparent', // Transparent background to highlight the border
+    color: '#0A6E7C' // Matching text color with border
+  }} 
+  className="mt-3" 
+  variant="contained" 
+  color="primary" 
+  onClick={resetSelectComponent}
+>
+  Reset
+</button>
+
           </>
         )}
          <div style={{ display: 'flex', marginLeft: 'auto ' }}>
@@ -239,7 +255,7 @@ function DashboardData(props) {
         {isUser ? null : (
           <>
 
-          <Button className="m-2" variant="contained" color="primary" onClick={() => handleBoxClick('selectedlist')}>Shortlist List</Button>
+          {/* <Button className="m-2" variant="contained" color="primary" onClick={() => handleBoxClick('selectedlist')}>Shortlist List</Button> */}
           {/* <Button className="m-2" variant="contained" color="primary" onClick={() => handleBoxClick('removedlist')}>Removed List</Button> */}
 
           {showRepresentation && <DashboardRepresentation data={selectedBoxName} />}

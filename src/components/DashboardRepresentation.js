@@ -34,17 +34,17 @@ function DashboardRepresentation(props) {
     
     
 
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      flex: 2,
-      renderCell: (params) => (
-        <div>
-          <button onClick={() => addedToShortlist(params.row['Employee ID'])} className='btn px-4 ms-3' style={{ backgroundColor: '#549aa3', color: 'white'}}>Add</button>
-          {/* <button onClick={() => RemoveFromList(params.row['Employee ID'])} className='btn m-1 ' style={{ backgroundColor: '#0A6E7C', color: 'white' }}>Remove </button> */}
-        </div>
-      ),
-    },
+    // {
+    //   // field: 'actions',
+    //   // headerName: 'Actions',
+    //   // flex: 2,
+    //   // renderCell: (params) => (
+    //   //   <div>
+    //   //     {/* <button onClick={() => addedToShortlist(params.row['Employee ID'])} className='btn px-4 ms-3' style={{ backgroundColor: '#549aa3', color: 'white'}}>Add</button> */}
+    //   //     {/* <button onClick={() => RemoveFromList(params.row['Employee ID'])} className='btn m-1 ' style={{ backgroundColor: '#0A6E7C', color: 'white' }}>Remove </button> */}
+    //   //   </div>
+    //   // ),
+    // },
   ]);
 
 

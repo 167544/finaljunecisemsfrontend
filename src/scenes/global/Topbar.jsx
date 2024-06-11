@@ -1,23 +1,16 @@
 // Topbar.jsx
-import React, { useEffect, useState } from "react";
-import { Box, IconButton, useTheme } from "@mui/material";
-import { tokens } from "../../theme";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import React  from "react";
+import { Box, IconButton } from "@mui/material";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import ManagerSelect from "./ManagerSelect";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import ManagerSelect from "./ManagerSelect";
+//import axios from "axios";
+//import { useNavigate } from "react-router-dom";
 import logos from '../../Assets/logo.jpg';
 
 const Topbar = (props) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const navigate = useNavigate();
+ // const theme = useTheme();
+  //const colors = tokens(theme.palette.mode);
+  //const navigate = useNavigate();
   const handleLogout = () => {
     const confirmed = window.confirm("Are you sure you want to log out?");
     if (confirmed) {
@@ -30,7 +23,7 @@ const Topbar = (props) => {
   return (
     <Box display="flex" justifyContent="space-between" p={2} ml={0.2} sx={{background:"#0A6E7C"}}>
       <img src={logos} alt="logo" width={"50px"} height={"50px"} />
-      <h2 style={{color:"white",fontWeight:"bold"}}>CIS Employee Skill Portal</h2>
+      <h2 style={{color:"white",fontWeight:"bold"}}>CIS Management Information System</h2>
       {/* SEARCH BAR */}
       {/* <Box
         display="flex"

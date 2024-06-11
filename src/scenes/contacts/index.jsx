@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import setdata from "../../actions";
 import AddNewEmployee from "./AddNewEmployee";
+import { format } from "date-fns";
+
 
 const Contacts = () => {
   const data = useSelector((state) => state.Empdata);
@@ -129,7 +131,11 @@ const Contacts = () => {
         field: "Last Updated Date",
         headerName: "Last Updated Date",
         flex: 1,
+        renderCell: (params) => (
+          <div>{format(new Date(params.value), "dd/MM/yyyy")}</div>
+        ),
       },
+      
       
       {
         field: "Update",
