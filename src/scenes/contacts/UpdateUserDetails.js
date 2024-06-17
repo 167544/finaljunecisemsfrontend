@@ -139,11 +139,11 @@ function UpdateUserDetails({ id, lastUpdatedDate, handleUpdate }) {
       const response = await axios.get(`http://localhost:3004/fetchEmpByID/${employeeId}`);
       if (response.status === 200) {
         const fetchedData = response.data[0];
-        // Convert numeric date values to proper date format (YYYY-MM-DD)
+        //Convert numeric date values to proper date format (YYYY-MM-DD)
         fetchedData['Project Start Date'] = convertToDateString(fetchedData['Project Start Date']);
         fetchedData['Project End Date'] = convertToDateString(fetchedData['Project End Date']);
-        
-        // Set Hire Date to be the same as Project Start Date if necessary
+
+        //Set Hire Date to be the same as Project Start Date if necessary
         if (!fetchedData['Hire Date']) {
           fetchedData['Hire Date'] = fetchedData['Project Start Date']; // Or use 'Project End Date' if preferred
         } else {
@@ -163,7 +163,8 @@ function UpdateUserDetails({ id, lastUpdatedDate, handleUpdate }) {
   const convertToDateString = (numericDate) => {
     if (!numericDate) return '';
     const date = new Date((numericDate - 25569) * 86400 * 1000); // Convert numeric date to JavaScript Date
-    return date.toISOString().split('T')[0]; // Convert Date to YYYY-MM-DD format
+    return !isNaN(date.getTime()) ? date.toISOString().split('T')[0] : '' // Convert Date to YYYY-MM-DD format
+
   };
 
   const handleChange = (e) => {
@@ -279,7 +280,7 @@ function UpdateUserDetails({ id, lastUpdatedDate, handleUpdate }) {
                                   })
                             }
                           </Input>
-                        ) : (employeeStatusDateColumns.includes(columnName) || ['Hire Date', 'Project Start Date', 'Project End Date'].includes(columnName) ) ? (
+                        ) : (employeeStatusDateColumns.includes(columnName) || ['Hire Date', 'Project Start Date', 'Project End Date'].includes(columnName)) ? (
                           <Input
                             type="date"
                             name={columnName}

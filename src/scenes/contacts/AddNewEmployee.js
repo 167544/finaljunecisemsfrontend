@@ -9,7 +9,6 @@ function AddNewEmployee({ handleInsert }) {
   const [formData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false); // No need to set loading initially
   const empData = useSelector((state) => state.Empdata);
-  console.log("av-emp-data2",empData);
   const dispatch = useDispatch();
 
   const toggle = () => setModal(!modal);
