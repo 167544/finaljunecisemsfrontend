@@ -16,7 +16,7 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-
+import { BadgeOutlined, GroupsOutlined } from "@mui/icons-material";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -44,47 +44,37 @@ const Sidebar = () => {
   const [isNotUser, setIsNotUser] = useState(false);
 
   useEffect(() => {
-    let userRole = localStorage.getItem('UserRole');
-    if(userRole === "User"){
-      setIsNotUser(true)
+    let userRole = localStorage.getItem("UserRole");
+    if (userRole === "User") {
+      setIsNotUser(true);
     }
-  }, [])
+  }, []);
 
   return (
     <Box
       sx={{
         "& .pro-sidebar-inner": {
-          backgroundColor:"#0A6E7C",
-          
+          backgroundColor: "#0A6E7C",
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
-          color:"white"
+          color: "white",
         },
         "& .pro-inner-item": {
           padding: "5px 35px 5px 20px !important",
-          color:"white"
+          color: "white",
         },
-        "& .pro-inner-item:hover": {
-          
-        },
-        "& .pro-menu-item.active": {
-          
-        },
+        "& .pro-inner-item:hover": {},
+        "& .pro-menu-item.active": {},
       }}
     >
-
-
-      
-      <ProSidebar collapsed={isCollapsed} >
+      <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
-         
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
               margin: "10px 0 20px 0",
-             
             }}
           >
             {!isCollapsed && (
@@ -95,37 +85,50 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color="white">
-                  Employee 
+                  Employee
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuOutlinedIcon style ={{color:"white"}}/>
+                  <MenuOutlinedIcon style={{ color: "white" }} />
                 </IconButton>
               </Box>
             )}
           </MenuItem>
 
-         
-
-          <Box paddingLeft={isCollapsed ? undefined : "10%" } >
+          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
               to="/"
               icon={<HomeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-              
             />
             {isNotUser ? null : (
-          <>
+              <>
+                <Item
+                  title="Manage Team"
+                  to="/dashboard/contacts"
+                  icon={<PeopleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </>
+            )}
+
             <Item
-              title="Manage Team"
-              to="/dashboard/contacts"
-              icon={<PeopleOutlinedIcon />}
+              title="Talent Pool"
+              to="#"
+              icon={<BadgeOutlined />}
               selected={selected}
               setSelected={setSelected}
             />
-        </>
-        )}
+
+            <Item
+              title="Customers"
+              to="#"
+              icon={<GroupsOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
           </Box>
         </Menu>
       </ProSidebar>

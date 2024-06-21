@@ -43,6 +43,7 @@ function LoginPage(props) {
             } else {
                 // Login failed, handle error
                 const data = await response.json();
+                console.log("Hello at error")
                 alert(data.message);
             }
         } catch (error) {
@@ -52,7 +53,7 @@ function LoginPage(props) {
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection:"column" ,justifyContent: 'space-between', alignItems: 'center', height: '100vh', width: '100vw', color: 'white', backgroundColor: '#0A6E7C',}}>
+        <div style={{ display: 'flex', flexDirection:"column" ,justifyContent: 'space-between', alignItems: 'center', height: '100vh', width: '100vw', color: 'white', backgroundImage: 'url("https://images.unsplash.com/photo-1668964640519-fcbce3f0449d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")', backgroundSize:'cover', backgroundRepeat:'no-repeat', backgroundPosition:'center'}}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100vw', color: 'white', backgroundColor: '#0A6E7C',padding:"12px",
         paddingLeft:"26px" }}>
             <img src={logos} alt="logo" width={"50px"} height={"50px"} />
