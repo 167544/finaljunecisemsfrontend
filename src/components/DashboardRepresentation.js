@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import setdata from '../actions';
 import setSelectedData from '../actions/setSetlecteddata';
 import PrimarySkills from '../scenes/global/PrimarySkills';
+import { color } from 'd3';
 
 
 function DashboardRepresentation(props) {
@@ -167,14 +168,14 @@ function DashboardRepresentation(props) {
 
   const getRowId = (row) => row._id;
 
+
   return (
     <div>
-      <div style={{ height: 500, width: "100%", padding: "10px" }}>
-        {/* <button onClick={handleRefresh} className='btn btn-primary'>Refresh</button> */}
-
-
+      <div style={{ height: 500, width: "100%", padding: "10px"}} >
+        {/* <button onClick={handleRefresh} className='btn btn-primary'>Refresh</button> */}      
 
         <DataGrid
+          className="text-light"
           rows={rows}
           columns={columns}
           components={{
@@ -183,7 +184,7 @@ function DashboardRepresentation(props) {
           }}
           componentsProps={{
             toolbar: {
-              style: { backgroundColor: "#0A6E7C" }
+              style: { backgroundColor: "#ffffff"}
             }
           }}
           getRowId={getRowId}

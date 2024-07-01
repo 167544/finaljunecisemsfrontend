@@ -68,7 +68,7 @@ function UploadExcel({ onUploadSuccess }) {
   };
 
   return (
-    <div style={{ maxWidth: '250px', display: "inline-block" }}  >
+    <div style={{ maxWidth: '250px', display: "inline-block" }} className='text-light' >
       {/* <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', padding: "5px", margin: "5px", color: "#0A6E7C", fontFamily: "san-serif" }}>Upload data</h1> */}
 
       <div className='d-flex'>

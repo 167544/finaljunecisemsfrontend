@@ -14,9 +14,12 @@ const BandGraph = ({ isDataUploaded }) => {
 
     const graphbox = {
         borderRadius:'10px',
+        backgroundColor: '#0A2342',
+        fontFamily: 'Inter, serif',
         height:'330px',
         padding:"1rem",
-        boxShadow:"1px 5px 5px  "
+        boxShadow:"1px 5px 5px  ",
+               
     }
 
     const fetchBand = () => {
@@ -79,6 +82,7 @@ const BandGraph = ({ isDataUploaded }) => {
             .attr('height', height + margin.top + margin.bottom)
             .append('g')
             .attr('transform', `translate(${margin.left},${margin.top})`);
+        
 
         // Create bars
         svg.selectAll('.bar')
@@ -89,10 +93,11 @@ const BandGraph = ({ isDataUploaded }) => {
             .attr('y', d => y(d.band))
             .attr('width', d => x(d.count))
             .attr('height', y.bandwidth())
-            .attr('fill', '#0A6E7C')
+            .attr('fill', '#ffffff')
             .attr('stroke', 'white') // Add white border to each bar
             .attr('stroke-width', 0.1) // Thinner bar lines
-            .style('cursor', 'pointer') // CodyByJ: Set cursor to pointer for bars
+            .style('cursor', 'pointer') // CodyByJ: Set cursor to pointer for bars 
+            .style('filter', 'drop-shadow(0 0 5px #0ff)') // Add neon glow effect
             .on('click', (event, d) => {
                 setSelectedBand(d.band); // CodeByJ: Set the selected band
             });
@@ -106,8 +111,9 @@ const BandGraph = ({ isDataUploaded }) => {
             .attr('x', d => x(d.count) + 5)
             .attr('y', d => y(d.band) + y.bandwidth() / 2)
             .text(d => d.count)
-            .attr('fill', 'black') // Set count labels to black
-            .style('cursor', 'pointer') // CodyByJ: Set cursor to pointer for bars
+            .attr('fill', 'white') // Set count labels to black
+            .style('cursor', 'pointer') // CodyByJ: Set cursor to pointer for bars    
+            .style('font-size', '14px') // Set the font size to 14px        
             .on('click', (event, d) => {
                 setSelectedBand(d.band); // CodeByJ: Set the selected band
             });
@@ -117,13 +123,15 @@ const BandGraph = ({ isDataUploaded }) => {
             .attr('class', 'y-axis')
             .call(d3.axisLeft(y).tickSizeOuter(0)) // Tick size outer to remove end ticks
             .selectAll('text')
-            .attr('fill', 'black'); // Set y-axis label color to black
+            .attr('fill', 'white') // Set y-axis label color to white
+            .attr('dx', '0.35em') 
+            .style('font-size', '14px'); // Set the font size to 14px 
 
     }, [data, isDataUploaded]);
 
     return (
        <div style={graphbox}>
-        <h1 style={{fontSize:"1rem",textAlign:"center",fontWeight:"bold",color:"#0A6E7C"}}>Band Graph</h1>
+        <h1 style={{fontSize:"1.2rem",textAlign:"center",color:"#ffffff"}}>Band Graph</h1>
          <svg ref={svgRef}></svg>
        </div>
     );

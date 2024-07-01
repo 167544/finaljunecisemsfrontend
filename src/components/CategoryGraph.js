@@ -13,7 +13,9 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
     height: '330px',
     width: '50%',
     padding: '1rem',
-    boxShadow: '1px 5px 5px ',
+    backgroundColor: '#0A2342',
+    fontFamily: 'Inter, serif',
+    boxShadow:"1px 5px 5px  "
   };
 
   const getCountsByCountry = () => {
@@ -47,7 +49,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
 
   return (
     <div className="m-2" style={graphbox}>
-      <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#0A6E7C' }}>
+      <h1 style={{ fontSize: '1.2rem', textAlign: 'center', color: '#ffffff' }}>
         Category Graph
         
       </h1>
@@ -60,7 +62,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
               <th>Count</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className='text-light'>
             {countryCounts.map((country, index) => (
               <tr key={index} onClick={() => handleRowClick(country._id)} style= {{ cursor: 'pointer'}}> {/* CodyByJ: Add click handler to rows */}
                 <td>{country._id}</td>

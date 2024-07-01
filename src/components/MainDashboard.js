@@ -19,6 +19,7 @@ import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
 import store from "./store";
 import { Provider, useSelector } from "react-redux";
+import Talentpool from "../scenes/talentpool";
 
 
 function MainDashboard(props) {
@@ -38,6 +39,7 @@ function MainDashboard(props) {
                 <Route path="/" element={<Dashboard />} />
                 
                 <Route path="/dashboard/contacts" element={<Contacts />} />
+                
                 <Route path="/dashboard/invoices" element={<Invoices />} />
                 <Route path="/dashboard/form" element={<Form />} />
                 <Route path="/dashboard/bar" element={<Bar />} />

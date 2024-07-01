@@ -13,15 +13,15 @@ const ResourceType = (props) => {
   const legendRef = useRef(); // Reference for the legend div
 
   const graphbox = {
-   
     borderRadius: '10px',
     height: '330px',
     boxShadow: "1px 5px 5px",
-    border: '1px solid white',
+    backgroundColor: '#0A2342',
+    fontFamily: 'Inter, serif',
     position: 'relative',
     display: 'flex', // Add display flex to align items side by side
     justifyContent: 'space-around', // Add space between items
-  }
+  };
 
   useEffect(() => {
     clearGraph();
@@ -67,6 +67,7 @@ const ResourceType = (props) => {
     const radius = Math.min(width, height) / 2;
 
     const color = d3.scaleOrdinal()
+      // .range(["#7fc97f", "#beaed4", "#fdc086", "#ffff99", "#386cb0", "#f0027f", "#bf5b17", "#666666"]); 
       .range(["#4daf4a", "#377eb8", "#ff7f00", "#984ea3", "#e41a1c", "#ff6f61", "#a3de83", "#79abd8", "#ffa500"]);
 
     const arc = d3.arc()
@@ -103,8 +104,9 @@ const ResourceType = (props) => {
       .range(["#4daf4a", "#377eb8", "#ff7f00", "#984ea3", "#e41a1c", "#ff6f61", "#a3de83", "#79abd8", "#ffa500"]);
 
     const legend = d3.select(legendRef.current)
-      .style("background-color", "rgba(255, 255, 255, 0.8)")
+      .style("background-color", "#0A2342")
       .style("padding", "10px")
+      .style("color", "white")
       .style("border-radius", "5px");
 
     resourceCounts.forEach((resource, index) => {
@@ -129,7 +131,7 @@ const ResourceType = (props) => {
   return (
     <div className='' style={graphbox}>
       <div>
-        <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#0A6E7C' }}>{columnName}</h1>
+        <h1 style={{ fontSize: '1.2rem', textAlign: 'center', color: '#ffffff', paddingTop:"1.2rem" }}>{columnName}</h1>
         <div style={{ textAlign: 'center' }}>
           <svg ref={svgRef}></svg>
         </div>

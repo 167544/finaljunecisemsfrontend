@@ -36,7 +36,7 @@ const SecondarySkills = (props) => {
   }
 
   return (
-    <div className="text-white" style={{ width: "200px",margin:"10px" }}>
+    <div className="text-white" style={{ width: "200px",margin:"5px" }}>
       <Select
         options={managers.map((name) => ({
           value: name,

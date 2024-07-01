@@ -1,32 +1,23 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-import { tokens } from "../../theme";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-import { BadgeOutlined, GroupsOutlined } from "@mui/icons-material";
+import {
+  HomeOutlined as HomeOutlinedIcon,
+  PeopleOutlined as PeopleOutlinedIcon,
+  BadgeOutlined,
+  GroupsOutlined,
+  LocalAtmOutlined,
+  MenuOutlined as MenuOutlinedIcon,
+} from "@mui/icons-material";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+
   return (
     <MenuItem
       active={selected === title}
-      style={{
-        color: colors.grey[100],
-      }}
       onClick={() => setSelected(title)}
       icon={icon}
     >
@@ -38,23 +29,16 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = () => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-  const [isNotUser, setIsNotUser] = useState(false);
-
-  useEffect(() => {
-    let userRole = localStorage.getItem("UserRole");
-    if (userRole === "User") {
-      setIsNotUser(true);
-    }
-  }, []);
 
   return (
     <Box
       sx={{
+        minHeight: "100vh",
+        backgroundColor: "#0A2342", // Updated background color here
         "& .pro-sidebar-inner": {
-          backgroundColor: "#0A6E7C",
+          backgroundColor: "#191C24",
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -64,8 +48,6 @@ const Sidebar = () => {
           padding: "5px 35px 5px 20px !important",
           color: "white",
         },
-        "& .pro-inner-item:hover": {},
-        "& .pro-menu-item.active": {},
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
@@ -102,30 +84,31 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {isNotUser ? null : (
-              <>
-                <Item
-                  title="Manage Team"
-                  to="/dashboard/contacts"
-                  icon={<PeopleOutlinedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-              </>
-            )}
-
+            <Item
+              title="Manage Team"
+              to="/dashboard/contacts"
+              icon={<PeopleOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <Item
               title="Talent Pool"
-              to="#"
+              to="/dashboard/talentpool"
               icon={<BadgeOutlined />}
               selected={selected}
               setSelected={setSelected}
             />
-
             <Item
-              title="Customers"
-              to="#"
+              title="Accounts"
+              to="/dashboard/customers"
               icon={<GroupsOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Finance"
+              to="/dashboard/finance"
+              icon={<LocalAtmOutlined />}
               selected={selected}
               setSelected={setSelected}
             />

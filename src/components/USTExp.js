@@ -5,6 +5,7 @@ import axios from 'axios';
 //import { useSelector } from 'react-redux';
 import { useSelector, useDispatch } from 'react-redux';
 import setSelectedData from '../actions/setSetlecteddata';
+import { Padding } from '@mui/icons-material';
 
 function USTExp({ isDataUploaded }) {
     let Empdata = useSelector((state) => state.selectedData)
@@ -20,16 +21,15 @@ function USTExp({ isDataUploaded }) {
     const graphbox = {
         borderRadius:'10px',
         height:'330px',
-      
-        boxShadow:"1px 5px 5px  "
+        padding: '1.2rem',
+        backgroundColor: '#0A2342',      
+        boxShadow:"1px 5px 5px  ",
+        fontFamily: 'Inter, serif'
     }
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-
-
-
                 let lessThan1YearCount = 0;
                 let lessThan2YearsCount = 0;
                 let between2And6YearsCount = 0;
@@ -114,7 +114,7 @@ function USTExp({ isDataUploaded }) {
 
     return (
         <div  style={graphbox}>
-            <h1 style={{ fontSize: "1rem", textAlign: "center", fontWeight: "bold", color: "#0A6E7C" }}>UST Experience</h1>
+            <h1 style={{ fontSize:"1.2rem", textAlign:"center", color: "#ffffff" }}>UST Experience</h1>
 
             <div className='d-flex justify-content-center ' style={{alignItems:'center'}}>
 
