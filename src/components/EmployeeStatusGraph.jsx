@@ -14,10 +14,12 @@ const EmployeeStatusGraph = (props) => {
 
   const graphbox = {
     borderRadius:'10px',
-    height:'340px',
+    height:'330px',
     width:"70%",
-    padding:"1rem",
-    boxShadow:"1px 5px 5px  "
+    padding:"1.2rem",
+    boxShadow:"1px 5px 5px  ",
+    backgroundColor: '#0A2342',
+    fontFamily: 'Inter, serif'
 }
 
   const getCountsByStatus = () => {
@@ -75,6 +77,7 @@ const EmployeeStatusGraph = (props) => {
       .call(d3.axisBottom(x))
       .selectAll('text') //CodeByJ
       .style('cursor', 'pointer') // CodyByJ: Set cursor to pointer for labels
+      .style('fill', '#ffffff')
       .on('click', (event, d) => handleBarClick(d)); // CodyByJ: Add click handler to labels
   
     g.append('g')
@@ -89,7 +92,8 @@ const EmployeeStatusGraph = (props) => {
       .attr('y', d => y(d.count))
       .attr('width', x.bandwidth())
       .attr('height', d => height - y(d.count))
-      .style('fill', '#0A6E7D')
+      .style('fill', '#ffffff')
+      .style('filter', 'drop-shadow(0 0 5px #0ff)')
       .style('cursor', 'pointer') // CodyByJ: Set cursor to pointer for bars
       .on('click', (event, d) => handleBarClick(d._id)); // CodyByJ: Add click handler to bars
   
@@ -100,15 +104,14 @@ const EmployeeStatusGraph = (props) => {
       .attr('x', d => x(d._id) + x.bandwidth() / 2)
       .attr('y', d => y(d.count) - 5)
       .attr('text-anchor', 'middle')
-      .style('fill', 'black') // Set text color to black
-      .style('font-weight', 'bold') // Set font weight to bold
+      .style('fill', '#ffffff') // Set text color to white
       .text(d => d.count);
   
     // X Axis Label
     svg.append('text')
       .attr('transform', `translate(${width / 2 + margin.left},${height + margin.top + margin.bottom * 0.7})`)
       .style('text-anchor', 'middle')
-      .style('fill', 'white') // Set text color to white
+      .style('fill', '#ffffff') // Set text color to white
       .text(columnName);
   
     // Y Axis Label
@@ -118,7 +121,7 @@ const EmployeeStatusGraph = (props) => {
       .attr('x', 0 - (height / 2) - margin.top)
       .attr('dy', '1em')
       .style('text-anchor', 'middle')
-      .style('fill', 'white') // Set text color to white
+      .style('fill', '#ffffff') // Set text color to white
       .text('Count');
   
     svg.selectAll('.axis-y .tick line').remove();
@@ -128,7 +131,7 @@ const EmployeeStatusGraph = (props) => {
 
   return (
     <div className='m-2' style={graphbox}>
-      <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#0A6E7C' }}>{columnName}</h1>
+      <h1 style={{ fontSize: '1.2rem', textAlign: 'center', color: '#ffffff' }}>{columnName}</h1>
       <div style={{ textAlign: 'center' }}>
         <svg ref={svgRef} width="500" height="300"></svg>
       </div>

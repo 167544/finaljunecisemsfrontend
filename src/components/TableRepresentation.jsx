@@ -15,7 +15,9 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
     height: '340px',
     width: '80%',
     padding: '1rem',
-    boxShadow: '1px 5px 5px ',
+    backgroundColor: '#0A2342',
+    fontFamily: 'Inter, serif',
+    boxShadow:"1px 5px 5px  "
   };
 
   let country_codes = {
@@ -128,8 +130,8 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
 
 
   return (
-    <div className="m-2" style={graphbox}>
-      <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#0A6E7C' }}>
+    <div className="m-2 text-light" style={graphbox}>
+      <h1 style={{ fontSize: '1.2rem', textAlign: 'center', color: '#ffffff' }}>
         {columnname}
       </h1>
 

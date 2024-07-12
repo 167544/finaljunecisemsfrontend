@@ -112,7 +112,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
               <th>Count</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className='text-light'>
             {countryCounts.map((country, index) => (
               <tr key={index} onClick={() => handleRowClick(country._id)} style={{ cursor: 'pointer' }}>
                 <td>{country._id}</td>

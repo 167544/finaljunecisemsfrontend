@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import setSelectedData from '../actions/setSetlecteddata';
+import { Padding } from '@mui/icons-material';
 
 function USTExp({ isDataUploaded }) {
     let Empdata = useSelector((state) => state.selectedData);

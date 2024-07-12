@@ -51,7 +51,7 @@ const ManagerSelect = (props) => {
 
 
   return (
-    <div className="text-white" style={{ margin: "10px" }}>
+    <div className="text-white" style={{ margin: "5px" }}>
       <Select
         options={managers.map((name) => ({
           value: name,
@@ -68,7 +68,7 @@ const ManagerSelect = (props) => {
             color: "white",
             border: state.isFocused ? "2px solid gray" : "2px solid white",
             borderRadius: "8px",
-            backgroundColor: "#0A6E7C",
+            backgroundColor: "#0A2342",
             color: "white"
           }),
           placeholder: (provided) => ({

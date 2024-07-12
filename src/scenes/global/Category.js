@@ -36,7 +36,7 @@ const Category = (props) => {
     }
   }
   return (
-    <div className="text-white " style={{ width: "200px", margin: "10px" }}>
+    <div className="text-white " style={{ width: "200px", margin: "5px" }}>
       {loading ? ( 
         <p>Loading...</p>
       ) : (
@@ -56,7 +56,7 @@ const Category = (props) => {
               color: "white",
               border: state.isFocused ? "2px solid gray" : "2px solid white",
               borderRadius: "8px",
-              backgroundColor: "#0A6E7C"
+              backgroundColor: "#0A2342"
          
             }),
             placeholder: (provided) => ({

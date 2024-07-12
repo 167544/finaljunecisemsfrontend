@@ -121,16 +121,18 @@ function DashboardRepresentation(props) {
 
   const getRowId = (row) => row._id;
 
+
   return (
     <div>
       <div style={{ height: 500, width: "100%", padding: "10px" }}>
         <DataGrid
+          className="text-light"
           rows={rows}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
           componentsProps={{
             toolbar: {
-              style: { backgroundColor: "#0A6E7C" }
+              style: { backgroundColor: "#ffffff"}
             }
           }}
           getRowId={getRowId}

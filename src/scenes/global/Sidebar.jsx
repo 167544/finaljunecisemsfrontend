@@ -50,14 +50,6 @@ const Sidebar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const [selected, setSelected] = useState("Dashboard");
-  const [isNotUser, setIsNotUser] = useState(false);
-
-  useEffect(() => {
-    let userRole = localStorage.getItem("UserRole");
-    if (userRole === "User") {
-      setIsNotUser(true);
-    }
-  }, []);
 
   useEffect(() => {
     setIsCollapsed(isMobile);
@@ -167,6 +159,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
               onClick={openPowerBI}
+            />
+            <Item
+              title="Finance"
+              to="/dashboard/finance"
+              icon={<LocalAtmOutlined />}
+              selected={selected}
+              setSelected={setSelected}
             />
           </Box>
         </Menu>

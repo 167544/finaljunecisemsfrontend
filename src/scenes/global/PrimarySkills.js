@@ -60,7 +60,7 @@ const PrimarySkills = (props) => {
     
   }
   return (
-    <div className="text-white " style={{ width: "200px", margin: "10px" }}>
+    <div className="text-white " style={{ width: "200px", margin: "5px" }}>
       {loading ? ( // Show loading indicator while data is being fetched
         <p>Loading...</p>
       ) : (

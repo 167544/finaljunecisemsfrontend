@@ -79,6 +79,7 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
             .attr('height', height + margin.top + margin.bottom)
             .append('g')
             .attr('transform', `translate(${margin.left},${margin.top})`);
+        
 
         svg.selectAll('.bar')
             .data(sortedData)
