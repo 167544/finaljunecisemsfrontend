@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
-import StatBox from '../components/StatBox';
-import axios from 'axios';
-//import { useSelector } from 'react-redux';
+import { Box, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import setSelectedData from '../actions/setSetlecteddata';
 
 function USTExp({ isDataUploaded }) {
-    let Empdata = useSelector((state) => state.selectedData)
+    let Empdata = useSelector((state) => state.selectedData);
     const [data, setData] = useState(null);
-    const dispatch = useDispatch(); //CodeByJ
+    const dispatch = useDispatch();
     const [lessThan1Year, setLessThan1Year] = useState(0);
     const [lessThan2Years, setLessThan2Years] = useState(0);
     const [between2And6Years, setBetween2And6Years] = useState(0);
@@ -18,18 +15,16 @@ function USTExp({ isDataUploaded }) {
     const [unknown, setUnknown] = useState(0);
 
     const graphbox = {
-        borderRadius:'10px',
-        height:'330px',
-      
-        boxShadow:"1px 5px 5px  "
-    }
+        borderRadius: '10px',
+        height: '330px',
+        padding: '1rem',
+        boxShadow: '1px 5px 5px',
+        backgroundColor: '#0A2342'
+    };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-
-
-
                 let lessThan1YearCount = 0;
                 let lessThan2YearsCount = 0;
                 let between2And6YearsCount = 0;
@@ -39,8 +34,7 @@ function USTExp({ isDataUploaded }) {
 
                 Empdata.forEach(employee => {
                     const ustExperience = employee['UST Experience'];
-                    // console.log(ustExperience)
-                    
+
                     if (parseInt(ustExperience) < 1) {
                         lessThan1YearCount++;
                     } else if (parseInt(ustExperience) < 2) {
@@ -49,14 +43,13 @@ function USTExp({ isDataUploaded }) {
                         between2And6YearsCount++;
                     } else if (parseInt(ustExperience) > 6 && parseInt(ustExperience) <= 10) {
                         between6And10YearsCount++;
-                    } else if (parseInt(ustExperience) > 10 && parseInt(ustExperience) <= 15 ) {
+                    } else if (parseInt(ustExperience) > 10 && parseInt(ustExperience) <= 15) {
                         moreThan10YearsCount++;
                     } else {
                         unknownCount++;
                     }
                 });
 
-                // Update state variables with the counts
                 setLessThan1Year(lessThan1YearCount);
                 setLessThan2Years(lessThan2YearsCount);
                 setBetween2And6Years(between2And6YearsCount);
@@ -71,97 +64,100 @@ function USTExp({ isDataUploaded }) {
         fetchData();
     }, [Empdata]);
 
-    //CodeByJ - Handle section click
     const handleSectionClick = (section) => {
         let filteredData;
-            if (section === '< 1 Year') {
-                filteredData = Empdata.filter((employee) => {
-                    const empExperience = employee['UST Experience'];
-                    return empExperience >= 0 && empExperience < 1;
-                });
-            } else if (section === '< 2 Years') {
-                filteredData = Empdata.filter((employee) => {
-                    const empExperience = employee['UST Experience'];
-                    return empExperience >= 1 && empExperience < 2;
-                });
-            } else if (section === '2 - 6 Years') {
-                filteredData = Empdata.filter((employee) => {
-                    const empExperience = employee['UST Experience'];
-                    return empExperience >= 2 && empExperience <= 6;
-                });
-            } else if (section === '6 - 10 Years') {
-                filteredData = Empdata.filter((employee) => {
-                    const empExperience = employee['UST Experience'];
-                    return empExperience > 6 && empExperience <= 10;
-                });
-            } else if (section === '10 - 15 Years') {
-                filteredData = Empdata.filter((employee) => {
-                    const empExperience = employee['UST Experience'];
-                    return empExperience > 10 && empExperience <= 15;
-                });
-            } else {
-                filteredData = Empdata.filter((employee) => {
-                    const empExperience = employee['UST Experience'];
-                    return empExperience > 15;
-                });
-            }
+        if (section === '< 1 Year') {
+            filteredData = Empdata.filter((employee) => {
+                const empExperience = employee['UST Experience'];
+                return empExperience >= 0 && empExperience < 1;
+            });
+        } else if (section === '< 2 Years') {
+            filteredData = Empdata.filter((employee) => {
+                const empExperience = employee['UST Experience'];
+                return empExperience >= 1 && empExperience < 2;
+            });
+        } else if (section === '2 - 6 Years') {
+            filteredData = Empdata.filter((employee) => {
+                const empExperience = employee['UST Experience'];
+                return empExperience >= 2 && empExperience <= 6;
+            });
+        } else if (section === '6 - 10 Years') {
+            filteredData = Empdata.filter((employee) => {
+                const empExperience = employee['UST Experience'];
+                return empExperience > 6 && empExperience <= 10;
+            });
+        } else if (section === '10 - 15 Years') {
+            filteredData = Empdata.filter((employee) => {
+                const empExperience = employee['UST Experience'];
+                return empExperience > 10 && empExperience <= 15;
+            });
+        } else {
+            filteredData = Empdata.filter((employee) => {
+                const empExperience = employee['UST Experience'];
+                return empExperience > 15;
+            });
+        }
 
-            dispatch(setSelectedData(filteredData)); // CodeByJ - Dispatch the action to update the selected data
-       
+        dispatch(setSelectedData(filteredData));
     };
 
-
-
     return (
-        <div  style={graphbox}>
-            <h1 style={{ fontSize: "1rem", textAlign: "center", fontWeight: "bold", color: "#0A6E7C" }}>UST Experience</h1>
-
-            <div className='d-flex justify-content-center ' style={{alignItems:'center'}}>
-
+        <div style={graphbox}>
+            <h1 style={{ fontSize: "1rem", textAlign: "center", fontWeight: "bold", color: "#00E5FF" }}>UST Experience</h1>
+            <div className='d-flex justify-content-center' style={{ alignItems: 'center' }}>
                 <div>
                     <Box
                         gridColumn="span 2"
                         width={180}
-                        style={{ margin: "10px", cursor: "pointer"  }} //CodeByJ
+                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
                         display="flex"
+                        flexDirection="column"
                         alignItems="center"
                         justifyContent="center"
-                        onclick={() => handleSectionClick('< 1 Year')} //CodeByJ
+                        onClick={() => handleSectionClick('< 1 Year')}
                     >
-                        <StatBox
-                            title={lessThan1Year}
-                            subtitle="< 1 Year"
-                        />
+                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                            {lessThan1Year}
+                        </Typography>
+                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                            &lt; 1 Year
+                        </Typography>
                     </Box>
 
                     <Box
                         gridColumn="span 2"
                         width={180}
-                        style={{ margin: "10px", cursor: "pointer"  }} //CodeByJ
+                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
                         display="flex"
+                        flexDirection="column"
                         alignItems="center"
                         justifyContent="center"
-                        onclick={() => handleSectionClick('< 2 Year')} //CodeByJ
+                        onClick={() => handleSectionClick('< 2 Years')}
                     >
-                        <StatBox
-                            title={lessThan2Years}
-                            subtitle="< 2 Years"
-                        />
+                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                            {lessThan2Years}
+                        </Typography>
+                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                            &lt; 2 Years
+                        </Typography>
                     </Box>
 
                     <Box
                         gridColumn="span 2"
                         width={180}
-                        style={{ margin: "10px", cursor: "pointer"  }} //CodeByJ
+                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
                         display="flex"
+                        flexDirection="column"
                         alignItems="center"
                         justifyContent="center"
-                        onclick={() => handleSectionClick('2 - 6 Years')} //CodeByJ
+                        onClick={() => handleSectionClick('2 - 6 Years')}
                     >
-                        <StatBox
-                            title={between2And6Years}
-                            subtitle="2 - 6 Years"
-                        />
+                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                            {between2And6Years}
+                        </Typography>
+                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                            2 - 6 Years
+                        </Typography>
                     </Box>
                 </div>
 
@@ -169,46 +165,55 @@ function USTExp({ isDataUploaded }) {
                     <Box
                         gridColumn="span 2"
                         width={180}
-                        style={{ margin: "10px", cursor: "pointer"  }} //CodeByJ
+                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
                         display="flex"
+                        flexDirection="column"
                         alignItems="center"
                         justifyContent="center"
-                        onclick={() => handleSectionClick('6 - 10 Years')} //CodeByJ
+                        onClick={() => handleSectionClick('6 - 10 Years')}
                     >
-                        <StatBox
-                            title={between6And10Years}
-                            subtitle="6 - 10 Years"
-                        />
+                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                            {between6And10Years}
+                        </Typography>
+                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                            6 - 10 Years
+                        </Typography>
                     </Box>
 
                     <Box
                         gridColumn="span 2"
                         width={180}
-                        style={{ margin: "10px", cursor: "pointer"  }} //CodeByJ
+                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
                         display="flex"
+                        flexDirection="column"
                         alignItems="center"
                         justifyContent="center"
-                        onclick={() => handleSectionClick('10 - 15 Years')} //CodeByJ
+                        onClick={() => handleSectionClick('10 - 15 Years')}
                     >
-                        <StatBox
-                            title={moreThan10Years}
-                            subtitle="10 - 15 Years"
-                        />
+                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                            {moreThan10Years}
+                        </Typography>
+                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                            10 - 15 Years
+                        </Typography>
                     </Box>
 
                     <Box
                         gridColumn="span 2"
                         width={180}
-                        style={{ margin: "10px", cursor: "pointer"  }} //CodeByJ
+                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
                         display="flex"
+                        flexDirection="column"
                         alignItems="center"
                         justifyContent="center"
-                        onclick={() => handleSectionClick('15+ Years')} //CodeByJ 
+                        onClick={() => handleSectionClick('15+ Years')}
                     >
-                        <StatBox
-                            title={unknown}
-                            subtitle="15+ Years"
-                        />
+                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                            {unknown}
+                        </Typography>
+                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                            15+ Years
+                        </Typography>
                     </Box>
                 </div>
             </div>

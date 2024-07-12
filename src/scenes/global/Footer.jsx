@@ -1,47 +1,26 @@
-// Topbar.jsx
-import React, { useEffect, useState } from "react";
-import { Box, IconButton, useTheme } from "@mui/material";
-import { tokens } from "../../theme";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import ManagerSelect from "./ManagerSelect";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import logos from '../../Assets/logo.jpg';
+import React from "react";
+import { Box, Typography } from "@mui/material";
 
-const FooterBar = (props) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const navigate = useNavigate();
-
- 
+function Footer() {
   return (
-    <Box display="flex" justifyContent="center" p={2} ml={0.2} sx={{background:"#0A6E7C", color:"white"}}>
-   CSI Employee Management Portal | All Rights Reserved
-      {/* SEARCH BAR */}
-      {/* <Box
-        display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
-      >
-        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
-        <IconButton type="button" sx={{ p: 1 }}>
-          <SearchIcon />
-        </IconButton>
-      </Box> */}
+    <Box
+      component="footer"
+      sx={{
+        py: 0.05,
+        px: 0.1,
+        mt: 'auto',
+        backgroundColor: 'transparent', // Remove background color
+        textAlign: 'center',
+        color: 'black', // Adjust text color for better visibility on transparent background
+      }}
+    >
+      <Typography variant="body1">CIS Management Information System © 2024</Typography>
 
-      {/* Select for manager names
-      <ManagerSelect  /> */}
-
-      {/* ICONS */}
-     
+      <Typography variant="body2" sx={{ mt: 1 }}>
+        Version 1.0.0
+      </Typography>
     </Box>
   );
-};
+}
 
-export default FooterBar;
+export default Footer;

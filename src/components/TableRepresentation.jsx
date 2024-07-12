@@ -3,14 +3,17 @@ import './TableRepresentation.css';
 import { useSelector, useDispatch } from 'react-redux';
 import setSelectedData from '../actions/setSetlecteddata'
 
-const TableRepresentation = ({ columnname }) => {
+const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoadedFromDynamicEmp}) => {
   const data = useSelector((state) => state.selectedData);
   const dispatch = useDispatch(); // Define dispatch here
   
+  console.log("Male", maleEmployees)
+  console.log("Female", femaleEmployees)
+
   const graphbox = {
     borderRadius: '10px',
     height: '340px',
-    width: '50%',
+    width: '80%',
     padding: '1rem',
     boxShadow: '1px 5px 5px ',
   };
@@ -49,7 +52,31 @@ const TableRepresentation = ({ columnname }) => {
     return Object.entries(counts).map(([country, count]) => ({ _id: country, count }));
   };
 
+  //CodeByJ Male and female count find
+
+  const getMaleCountsByCountry = () => {
+    const counts = {};
+    maleEmployees?.forEach((item) => {
+      const country = item.Country;
+      counts[country] = counts[country] ? counts[country] + 1 : 1;
+    });
+    return counts;
+  };
+
+  const getFemaleCountsByCountry = () => {
+    const counts = {};
+    femaleEmployees?.forEach((item) => {
+      const country = item.Country;
+      counts[country] = counts[country] ? counts[country] + 1 : 1;
+    });
+    return counts;
+  };
+
   const [countryCounts, setCountryCounts] = useState(getCountsByCountry());
+  //CodeByJ
+  const [maleCounts, setMaleCounts] = useState(getMaleCountsByCountry());
+  const [femaleCounts, setFemaleCounts] = useState(getFemaleCountsByCountry());
+
   const [sortOrder, setSortOrder] = useState({
     Country: 'asc',
     Continent: 'asc',
@@ -58,7 +85,9 @@ const TableRepresentation = ({ columnname }) => {
 
   useEffect(() => {
     setCountryCounts(getCountsByCountry());
-  }, [data]);
+    setMaleCounts(getMaleCountsByCountry());
+    setFemaleCounts(getFemaleCountsByCountry());
+  }, [data, maleEmployees, femaleEmployees]);
 
   const handleSort = (columnName) => {
     const newSortOrder = {
@@ -104,7 +133,7 @@ const TableRepresentation = ({ columnname }) => {
         {columnname}
       </h1>
 
-      <div className="table-container">
+      <div className="table-container text-light">
         <table className="custom-table">
           <thead>
             <tr>
@@ -117,6 +146,12 @@ const TableRepresentation = ({ columnname }) => {
               <th onClick={() => handleSort('Count')}>
                 Count {getSortIcon('Count')}
               </th>
+              {isLoadedFromDynamicEmp && (
+                <>
+                  <th>Male Count</th>
+                  <th>Female Count</th>
+                </>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -125,10 +160,18 @@ const TableRepresentation = ({ columnname }) => {
                 <td>{country._id}</td>
                 <td>{country_codes[country._id]}</td>
                 <td>{country.count}</td>
+                {isLoadedFromDynamicEmp && (
+                  <>
+                    <td>{maleCounts[country._id] || 0}</td> {/* Display male employee count for this country */}
+                    <td>{femaleCounts[country._id] || 0}</td> {/* Display female employee count for this country */}
+                  </>
+                )}
               </tr>
+              
             ))}
           </tbody>
         </table>
+        
       </div>
     </div>
   );

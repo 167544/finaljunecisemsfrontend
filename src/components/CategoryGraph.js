@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import './TableRepresentation.css';
 import { useSelector, useDispatch } from 'react-redux';
 import setSelectedData from '../actions/setSetlecteddata';
-import { style } from 'd3';
 
 const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
   const data = useSelector((state) => state.selectedData);
-  const dispatch = useDispatch(); // CodeByJ - Hook to dispatch actions
+  const dispatch = useDispatch();
 
   const graphbox = {
     borderRadius: '10px',
@@ -14,6 +12,9 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
     width: '50%',
     padding: '1rem',
     boxShadow: '1px 5px 5px ',
+    backgroundColor: '#0A2342',
+    display: 'inline-block',
+    verticalAlign: 'top'
   };
 
   const getCountsByCountry = () => {
@@ -21,7 +22,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
     data.forEach((item) => {
       const country = item.Category;
       if (!country) {
-        //console.warn('Undefined category in item:', item); // Added debug log
+        //console.warn('Undefined category in item:', item);
       } else {
         counts[country] = counts[country] ? counts[country] + 1 : 1;
       }
@@ -37,21 +38,72 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
     setCountryCounts(getCountsByCountry());
   }, [data]);
 
-  const handleRowClick = (category) => { // CodyByJ: Click handler to filter data by category
+  const handleRowClick = (category) => {
     const filteredData = data.filter(item => item.Category === category);
-    dispatch(setSelectedData(filteredData)); // CodeByJ - Dispatch the action to update the selected data
-    // console.log('Filtered Data by Category:', filteredData);
-    // console.log('Total No:', filteredData.length);
+    dispatch(setSelectedData(filteredData));
   };
-
 
   return (
     <div className="m-2" style={graphbox}>
-      <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#0A6E7C' }}>
-        Category Graph
+      <style>{`
+        .table-container {
+          overflow-y: auto;
+          max-height: 250px;
+        }
         
-      </h1>
+        .table-container::-webkit-scrollbar {
+          width: 12px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+          background: #0A2342;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+          background-color: #00E5FF;
+          border-radius: 20px;
+          border: 3px solid #0A2342;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb:hover {
+          background-color: #39FF14;
+        }
+        
+        .custom-table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        
+        .custom-table th,
+        .custom-table td {
+          padding: 8px 12px;
+          text-align: left;
+        }
+        
+        .custom-table th {
+          background-color: #102E4A;
+          color: #00E5FF;
+        }
+        
+        .custom-table td {
+          color: white;
+        }
 
+        .custom-table tr:nth-child(even) {
+          background-color: #0A2342;
+        }
+        
+        .custom-table tr:hover {
+          background-color: #102E4A;
+        }
+        
+        .custom-table tr:hover td {
+          color: #00E5FF;
+        }
+      `}</style>
+      <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#00E5FF' }}>
+        Category Graph
+      </h1>
       <div className="table-container">
         <table className="custom-table">
           <thead>
@@ -62,7 +114,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
           </thead>
           <tbody>
             {countryCounts.map((country, index) => (
-              <tr key={index} onClick={() => handleRowClick(country._id)} style= {{ cursor: 'pointer'}}> {/* CodyByJ: Add click handler to rows */}
+              <tr key={index} onClick={() => handleRowClick(country._id)} style={{ cursor: 'pointer' }}>
                 <td>{country._id}</td>
                 <td>{country.count}</td>
               </tr>

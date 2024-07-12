@@ -34,6 +34,7 @@ const ScrollableCell = ({ value }) => {
           "&::-webkit-scrollbar-track": {
             backgroundColor: "#f1f1f1", // Color of the scrollbar track
           },
+          color: "white", // Set the font color to white
         }}
       >
         {value}
@@ -92,7 +93,7 @@ const Contacts = () => {
         headerName: "Resource with Valid VISA",
         flex: 1,
         renderCell: (params) => (
-          <div style={{ color: "black" }}>{params.value}</div>
+          <div style={{ color: "white" }}>{params.value}</div> // Set font color to white
         ),
       },
       { field: "Customer Name", headerName: "Customer Name", headerAlign: "left", align: "left" },
@@ -117,7 +118,7 @@ const Contacts = () => {
         field: "Last Updated Date",
         headerName: "Last Updated Date",
         flex: 1,
-        renderCell: (params) => <div>{format(new Date(params.value), "dd/MM/yyyy")}</div>,
+        renderCell: (params) => <div style={{ color: "white" }}>{format(new Date(params.value), "dd/MM/yyyy")}</div>, // Set font color to white
       },
       {
         field: "Update",
@@ -170,60 +171,62 @@ const Contacts = () => {
   return (
     <Box m="20px">
       <Box
-  m="40px 0 0 0"
-  height="75vh"
-  sx={{
-    "& .MuiDataGrid-root": {
-      border: "none",
-    },
-    "& .MuiDataGrid-cell": {
-      borderBottom: "none",
-    },
-    "& .MuiDataGrid-columnHeaders": {
-      backgroundColor: "#0A6E7C",
-      borderBottom: "none",
-      color: "white",
-      height: "auto", // Adjust height based on content
-      "& .MuiDataGrid-columnHeaderTitle": {
-        whiteSpace: "normal", // Ensure text wraps
-        lineHeight: "normal", // Adjust line height for better wrapping
-      },
-    },
-    "& .MuiDataGrid-footerContainer": {
-      borderTop: "none",
-      backgroundColor: "#0A6E7C",
-      color: "white",
-      borderRadius: "0 0 5px 5px",
-    },
-    "& .MuiCheckbox-root": {
-      color: `#0A6E7C  !important`,
-    },
-    "& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar": {
-      color: "white !important",
-    },
-    "& .css-1hgjne-MuiButtonBase-root-MuiIconButton-root.Mui-disabled": {
-      color: "grey !important",
-    },
-    "& .MuiDataGrid-cell .MuiDataGrid-cell--textLeft": {
-      color: "white !important",
-    },
-    "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-      color: `#0A6E7C !important`,
-    },
-    "& .css-zz4ezo .MuiDataGrid-footerContainer": {
-      borderRadius: "5px",
-    },
-  }}
->
-  <AddNewEmployee />
-  <DataGrid
-    rows={manageTeam}
-    columns={columns}
-    components={{ Toolbar: GridToolbar }}
-    onCellClick={handleCellClick}
-  />
-</Box>
-
+        m="40px 0 0 0"
+        height="75vh"
+        sx={{
+          paddingBottom: "20px", // Add padding to the bottom
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none",
+            color: "white", // Set font color to white
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "#0A6E7C",
+            borderBottom: "none",
+            color: "white", // Set font color to white
+            height: "auto", // Adjust height based on content
+            "& .MuiDataGrid-columnHeaderTitle": {
+              whiteSpace: "normal", // Ensure text wraps
+              lineHeight: "normal", // Adjust line height for better wrapping
+            },
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: "#0A6E7C",
+            color: "white", // Set font color to white
+            borderRadius: "0 0 5px 5px",
+            marginTop: "20px", // Add margin to the top
+          },
+          "& .MuiCheckbox-root": {
+            color: `#0A6E7C  !important`,
+          },
+          "& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar": {
+            color: "white !important",
+          },
+          "& .css-1hgjne-MuiButtonBase-root-MuiIconButton-root.Mui-disabled": {
+            color: "grey !important",
+          },
+          "& .MuiDataGrid-cell .MuiDataGrid-cell--textLeft": {
+            color: "white !important",
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `#0A6E7C !important`,
+          },
+          "& .css-zz4ezo .MuiDataGrid-footerContainer": {
+            borderRadius: "5px",
+          },
+        }}
+      >
+        <AddNewEmployee />
+        <DataGrid
+          rows={manageTeam}
+          columns={columns}
+          components={{ Toolbar: GridToolbar }}
+          onCellClick={handleCellClick}
+        />
+      </Box>
 
       <Modal
         open={openModal}

@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux'; // Assuming you're using Redux for state management
+import { useSelector, useDispatch } from 'react-redux';
 import * as d3 from 'd3';
 import './TableRepresentation.css';
 import setSelectedData from '../actions/setSetlecteddata';
 
 const ResourceType = (props) => {
-  const data = useSelector((state) => state.selectedData); // Assuming you're using Redux to get data
+  const data = useSelector((state) => state.selectedData);
   const dispatch = useDispatch();
   const [resourceCounts, setResourceCounts] = useState([]);
-  const columnName = props.columnname; // Your column name
+  const columnName = props.columnname;
   const svgRef = useRef();
-  const legendRef = useRef(); // Reference for the legend div
+  const legendRef = useRef();
 
   const graphbox = {
-   
     borderRadius: '10px',
     height: '330px',
-    boxShadow: "1px 5px 5px",
-    border: '1px solid white',
-    position: 'relative',
-    display: 'flex', // Add display flex to align items side by side
-    justifyContent: 'space-around', // Add space between items
-  }
+    padding: '1rem',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)', // Border shadow effect
+    backgroundColor: '#0A2342',
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  };
 
   useEffect(() => {
     clearGraph();
@@ -36,12 +36,10 @@ const ResourceType = (props) => {
     }
   }, [resourceCounts]);
 
-  //CodeByJ - handleclick
   const handleClick = (resourceType) => {
     const filteredData = data.filter(item => item['Resource Type'] === resourceType);
-    dispatch(setSelectedData(filteredData)); // CodeByJ - Dispatch the action to update the selected data
+    dispatch(setSelectedData(filteredData));
   };
-
 
   const getCountsByResource = () => {
     const counts = {};
@@ -52,22 +50,29 @@ const ResourceType = (props) => {
     return Object.entries(counts).map(([resource, count]) => ({ _id: resource, count }));
   };
 
-
   const clearGraph = () => {
     const svg = d3.select(svgRef.current);
-    // Remove all child elements from the SVG
     svg.selectAll("*").remove();
-    // Remove the legend div
     d3.select(legendRef.current).selectAll("*").remove();
   };
 
   const createPieChart = () => {
-    const width = 200; // Set pie chart width
-    const height = 250; // Set pie chart height
+    const width = 200;
+    const height = 250;
     const radius = Math.min(width, height) / 2;
 
     const color = d3.scaleOrdinal()
-      .range(["#4daf4a", "#377eb8", "#ff7f00", "#984ea3", "#e41a1c", "#ff6f61", "#a3de83", "#79abd8", "#ffa500"]);
+      .range([
+        "#39FF14",
+        "#00FFFF",
+        "#FF00FF",
+        "#FFD700",
+        "#FF4500",
+        "#7CFC00",
+        "#00BFFF",
+        "#8A2BE2",
+        "#FF1493"
+      ]);
 
     const arc = d3.arc()
       .innerRadius(0)
@@ -87,41 +92,62 @@ const ResourceType = (props) => {
       .data(pie(resourceCounts))
       .enter().append("g")
       .attr("class", "arc")
-      .style("cursor", "pointer") // CodyByJ: Add cursor pointer style
-      .on("click", (event, d) => handleClick(d.data._id)); // CodyByJ: Add click handler;
+      .style("cursor", "pointer")
+      .on("click", (event, d) => handleClick(d.data._id));
 
     g.append("path")
       .attr("d", arc)
-      .style("fill", (d) => color(d.data._id));
+      .style("fill", (d) => color(d.data._id))
+      .attr('stroke', '#00E5FF') // Border color
+      .attr('stroke-width', 1) // Border width
+      .style('filter', 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5))'); // Border shadow effect
 
-    // Hide legends on pie chart
+    g.append("text")
+      .attr("transform", (d) => `translate(${arc.centroid(d)})`)
+      .attr("dy", "0.35em")
+      .attr("fill", "#FFFFFF")
+      .style("font-size", "10px")
+      .style("text-anchor", "middle")
+      .text((d) => d.data.count);
+
     d3.select(legendRef.current).selectAll("*").remove();
   };
 
   const createLegend = () => {
     const color = d3.scaleOrdinal()
-      .range(["#4daf4a", "#377eb8", "#ff7f00", "#984ea3", "#e41a1c", "#ff6f61", "#a3de83", "#79abd8", "#ffa500"]);
+      .range([
+        "#39FF14",
+        "#00FFFF",
+        "#FF00FF",
+        "#FFD700",
+        "#FF4500",
+        "#7CFC00",
+        "#00BFFF",
+        "#8A2BE2",
+        "#FF1493"
+      ]);
 
     const legend = d3.select(legendRef.current)
-      .style("background-color", "rgba(255, 255, 255, 0.8)")
       .style("padding", "10px")
-      .style("border-radius", "5px");
+      .style("border-radius", "5px")
+      .style("background-color", "#0A2342");
 
-    resourceCounts.forEach((resource, index) => {
+    resourceCounts.forEach((resource) => {
       const legendItem = legend.append("div")
         .style("display", "flex")
         .style("align-items", "center")
         .style("margin-bottom", "5px")
         .style("cursor", "pointer")
-        .on("click", () => handleClick(resource._id)); // CodyByJ: Add click handler;
+        .on("click", () => handleClick(resource._id));
 
       legendItem.append("div")
-        .style("width", "10px") // Decrease the width of legend color box
-        .style("height", "10px") // Decrease the height of legend color box
+        .style("width", "10px")
+        .style("height", "10px")
         .style("background-color", color(resource._id))
         .style("margin-right", "5px");
 
       legendItem.append("div")
+        .style("color", "#00E5FF")
         .text(`${resource._id}: ${resource.count}`);
     });
   };
@@ -129,12 +155,12 @@ const ResourceType = (props) => {
   return (
     <div className='' style={graphbox}>
       <div>
-        <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#0A6E7C' }}>{columnName}</h1>
+        <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#00E5FF' }}>{columnName}</h1>
         <div style={{ textAlign: 'center' }}>
           <svg ref={svgRef}></svg>
         </div>
       </div>
-      <div ref={legendRef}></div> {/* Add a div for the legend */}
+      <div ref={legendRef}></div>
     </div>
   );
 };

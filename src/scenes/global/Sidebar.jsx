@@ -1,34 +1,38 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-import { tokens } from "../../theme";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
-import { BadgeOutlined, GroupsOutlined } from "@mui/icons-material";
+import {
+  HomeOutlined as HomeOutlinedIcon,
+  PeopleOutlined as PeopleOutlinedIcon,
+  BadgeOutlined as BadgeOutlinedIcon,
+  GroupsOutlined as GroupsOutlinedIcon,
+  LocalAtmOutlined as LocalAtmOutlinedIcon,
+  MenuOutlined as MenuOutlinedIcon,
+} from "@mui/icons-material";
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colors = {
+    grey: {
+      100: "#f5f5f5",
+    },
+  };
+
   return (
     <MenuItem
       active={selected === title}
       style={{
         color: colors.grey[100],
       }}
-      onClick={() => setSelected(title)}
-      icon={icon}
+      onClick={() => {
+        setSelected(title);
+        if (onClick) {
+          onClick();
+        }
+      }}
+      icon={<Box>{icon}</Box>}
     >
       <Typography>{title}</Typography>
       <Link to={to} />
@@ -38,8 +42,13 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = () => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const colors = {
+    grey: {
+      100: "#f5f5f5",
+    },
+  };
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const [selected, setSelected] = useState("Dashboard");
   const [isNotUser, setIsNotUser] = useState(false);
 
@@ -50,11 +59,25 @@ const Sidebar = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setIsCollapsed(isMobile);
+  }, [isMobile]);
+
+  const openPowerBI = () => {
+    window.open(
+      "https://app.powerbi.com/groups/ad189f19-f0f0-4658-b243-e17584a83f39/reports/95ab2eba-6696-465f-95c3-55e7981469cc/ReportSection2d89fa6d7ab7b8a6c586?experience=power-bi",
+      "_blank"
+    );
+  };
+
   return (
     <Box
       sx={{
+        position: "relative",
+        minHeight: "100vh",
+        backgroundColor: "#0A2342",
         "& .pro-sidebar-inner": {
-          backgroundColor: "#0A6E7C",
+          backgroundColor: "#191C24",
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -64,8 +87,6 @@ const Sidebar = () => {
           padding: "5px 35px 5px 20px !important",
           color: "white",
         },
-        "& .pro-inner-item:hover": {},
-        "& .pro-menu-item.active": {},
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
@@ -84,7 +105,7 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color="white">
+                <Typography variant="h3" style={{ color: "white" }}>
                   Employee
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -102,32 +123,50 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {isNotUser ? null : (
-              <>
-                <Item
-                  title="Manage Team"
-                  to="/dashboard/contacts"
-                  icon={<PeopleOutlinedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-              </>
+            {!isNotUser && (
+              <Item
+                title="Manage Team"
+                to="/dashboard/contacts"
+                icon={<PeopleOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
             )}
-
             <Item
               title="Talent Pool"
-              to="#"
-              icon={<BadgeOutlined />}
+              to="/dashboard/talentpool"
+              icon={<BadgeOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-
             <Item
-              title="Customers"
-              to="#"
-              icon={<GroupsOutlined />}
+              title="Accounts"
+              to="/dashboard/customers"
+              icon={<GroupsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+            />
+            <Item
+              title="Dynamic Metrics"
+              to="/dashboard/dynamic"
+              icon={<GroupsOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="CIS Sourcing"
+              to="/dashboard/cissourcing"
+              icon={<GroupsOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Finance"
+              to="#"
+              icon={<LocalAtmOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+              onClick={openPowerBI}
             />
           </Box>
         </Menu>

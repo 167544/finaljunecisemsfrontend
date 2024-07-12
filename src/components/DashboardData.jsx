@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import "../Assets/css/dashboardHover.css";
+
 import { tokens } from "../theme";
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -17,8 +19,10 @@ import setdata from "../actions";
 import setSelectedData from "../actions/setSetlecteddata";
 import Category from "../scenes/global/Category";
 import { useSelector } from "react-redux";
-import { act } from "react-dom/test-utils";
 import CategoryGraph from "./CategoryGraph";
+
+// Import Material-UI Icons
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 function DashboardData(props) {
   const [isUser, setIsUser] = useState(false);
@@ -39,8 +43,9 @@ function DashboardData(props) {
   const [employeeData, setEmployeeData] = useState(0);
   const [customerCount, setCustomerCount] = useState(0);
   const [activeEmployeeCount, setActiveEmployeeCount] = useState(0);
-  const [resourceWithValidVisaCount, setResourceWithValidVisaCount] =
-    useState(0);
+  const [resourceWithValidVisaCount, setResourceWithValidVisaCount] = useState(
+    0
+  );
   const [resourseExitEmployeesCount, setResourceExitEmployeesCount] =
     useState(0); //CodeByJ - state to find exit count
   const [newlyAddedEmployeesCount, setNewlyAddedEmployeesCount] = useState(0); //CodeByJ - state to find newly added employees
@@ -186,23 +191,24 @@ function DashboardData(props) {
   };
 
   const boxes = [
-    { title: "Total Employees", value: employeeData.length, color: "#006E74" },
-    { title: "Total Customers", value: customerCount, color: "#0097AC" },
+    { title: "Total Employees", value: employeeData.length, color: "#0A2342" },
+    // , image: "https://cdn.pixabay.com/photo/2014/04/03/00/40/people-309068_1280.png" },
+    { title: "Total Customers", value: customerCount, color: "#0A2342" },
     {
       title: "Active Employee Count",
       value: activeEmployeeCount,
-      color: "#01B27C",
+      color: "#0A2342",
     },
     {
       title: "Resources with Valid Visa",
       value: resourceWithValidVisaCount,
-      color: "#003C51",
+      color: "#0A2342",
     },
-    { title: "Exit", value: resourseExitEmployeesCount, color: "#005B31" },
+    { title: "Exit", value: resourseExitEmployeesCount, color: "#0A2342" },
     {
       title: "Newly Joined Employees",
       value: newlyAddedEmployeesCount,
-      color: "#0C4D15",
+      color: "#0A2342",
     },
   ];
 
@@ -210,61 +216,64 @@ function DashboardData(props) {
     <>
       <span
         style={{ display: "inline-block", marginBottom: "1rem", width: "100%" }}
+        className="container-fluid"
       >
-        <div className="container-fluid d-flex" style={{ width: "100%" }}>
-          {isUser ? null : (
-            <>
-              {!(isManagerSelectDisabled || isSuperAdmin) ? null : (
-                <ManagerSelect
-                  key={managerKey}
-                  handleBoxClick={handleManagerSelect}
-                />
-              )}
-              <Category handleBoxClick={handleCategory} />
-              <PrimarySkills handleBoxClick={handlePrimarySelect} />
-              {/* <a style={{  height: '35px', cursor:'pointer'}} className="mt-4" variant="contained" color="primary" onClick={resetSelectComponent}>Reset</a> */}
-              <button
-                style={{
-                  height: "35px",
-                  cursor: "pointer",
-                  border: "2px solid #0A6E7C", // Adding border with primary color
-                  backgroundColor: "transparent", // Transparent background to highlight the border
-                  color: "#0A6E7C", // Matching text color with border
-                }}
-                className="mt-3"
-                variant="contained"
-                color="primary"
-                onClick={resetSelectComponent}
-              >
-                Reset
-              </button>
-            </>
-          )}
-          <div
-            className="d-flex"
-            style={{ display: "flex", marginLeft: "auto " }}
-          >
+        <div style={{ width: "100%" }}>
+          <div className="container-fluid d-flex">
+            {isUser ? null : (
+              <>
+                {!(isManagerSelectDisabled || isSuperAdmin) ? null : (
+                  <ManagerSelect
+                    key={managerKey}
+                    handleBoxClick={handleManagerSelect}
+                  />
+                )}
+                <Category handleBoxClick={handleCategory} />
+                <PrimarySkills handleBoxClick={handlePrimarySelect} />
+                {/* <a style={{  height: '35px', cursor:'pointer'}} className="mt-4" variant="contained" color="primary" onClick={resetSelectComponent}>Reset</a> */}
+                <button
+                  style={{
+                    height: "35px",
+                    width: "70px",
+                    margin: "5px",
+                    cursor: "pointer",
+                    border: "2px solid #ffffff", // Adding border with primary color
+                    backgroundColor: "transparent", // Transparent background to highlight the border
+                    color: "#ffffff", // Matching text color with border
+                  }}
+                  variant="contained"
+                  color="primary"
+                  onClick={resetSelectComponent}
+                >
+                  Reset
+                </button>
+              </>
+            )}
             <div
-              className="me-4"
-              style={{
-                height: "110px",
-                boxShadow: "4px 7px 22px -7px",
-                fontFamily: "sans-serif",
-                fontSize: "2rem",
-                color: "#003C51",
-              }}
+              className="d-flex"
+              style={{ display: "flex", marginLeft: "auto " }}
             >
-              <h1
+              <div
+                className="me-1"
                 style={{
-                  fontSize: "0.9rem",
-                  textAlign: "center",
-                  padding: "0.5rem",
-                  fontWeight: "bold",
+                  minHeight: "50px",
+                  fontFamily: "Inter, serif",
+                  color: "#ffffff",
+                  textShadow:
+                    "0 0 5px #1e90ff, 0 0 10px #1e90ff, 0 0 15px #1e90ff",
                 }}
               >
-                Total Employee Count
-              </h1>
-              <p style={{ textAlign: "center" }}>{TotalemployeeData}</p>
+                <h1
+                  style={{
+                    fontSize: "1.5rem",
+                    textAlign: "center",
+                    padding: "0.5rem",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Total Employee Count: {TotalemployeeData}
+                </h1>
+              </div>
             </div>
           </div>
         </div>
@@ -277,7 +286,7 @@ function DashboardData(props) {
             style={{
               display: "flex",
               justifyContent: "start",
-              gap: "1rem",
+              gap: "2rem",
               flexWrap: "wrap",
             }}
           >
@@ -285,110 +294,53 @@ function DashboardData(props) {
               className="mb-5 flex-wrap"
               style={{
                 display: "flex",
-                backgroundColor: "white",
-                borderRadius: "5px",
-                boxShadow: "4px 7px 22px -7px",
+                backgroundColor: "transparent",
               }}
             >
               {boxes.map((box, index) => (
-                <div
-                  key={index}
-                  style={{
-                    width: "200px",
-                    padding: "0.5rem",
-                    borderRadius: "4px",
-                    backgroundColor: `${box.color}`,
-                    textAlign: "center",
-                    cursor: "pointer",
-                    margin: "1rem",
-                  }}
-                  onClick={() => handleBoxClick(box.title)}
-                >
-                  <h4
-                    style={{
-                      fontSize: "1rem",
-                      fontWeight: "bold",
-                      fontFamily: "serif",
-                      color: "white",
-                    }}
-                  >
-                    {box.title}
-                  </h4>
-                  <p style={{ color: "white", fontSize: "2rem" }}>
-                    {box.value}
-                  </p>
+  <div
+    key={index}
+    className="box-hover"
+    style={{
+      width: "200px",
+      padding: "0.5rem",
+      borderRadius: "15px",
+      backgroundColor: `${box.color}`,
+      textAlign: "center",
+      cursor: "pointer",
+      margin: "0.5rem", // Adjusted margin for spacing between boxes
+      boxShadow: "1px 5px 5px",
+    }}
+    onClick={() => handleBoxClick(box.title)}
+  >
+    <h4
+      style={{
+        fontSize: "1rem",
+        fontWeight: "bold",
+        fontFamily: "Inter, serif",
+        color: "white",
+      }}
+    >
+      {box.title}
+    </h4>
+    <p style={{ color: "white", fontSize: "2rem" }}>
+      {box.value}
+    </p>
 
-                  {/* CodeByJ - adding radion buttons if 'exit' */}
-                  {box.title === "Exit" ? (
-                    <div>
-                      <div>
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          id="option1"
-                          name="exitOptions"
-                          value="option1"
-                        />
-                        <label
-                          className="form-check-label text-white mx-2"
-                          htmlFor="option1"
-                        >
-                          &lt; 6 Months
-                        </label>
-                        <br />
-                      </div>
-
-                      <div>
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          id="option2"
-                          name="exitOptions"
-                          value="option2"
-                        />
-                        <label
-                          className="form-check-label text-white mx-2"
-                          htmlFor="option2"
-                        >
-                          6 Months - 1 Year
-                        </label>
-                        <br />
-                      </div>
-
-                      <div>
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          id="option3"
-                          name="exitOptions"
-                          value="option3"
-                        />
-                        <label
-                          className="form-check-label text-white mx-2"
-                          htmlFor="option3"
-                        >
-                          1 Year - 2 Year
-                        </label>
-                        <br />
-                      </div>
-
-                      <div>
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          id="option4"
-                          name="exitOptions"
-                          value="option4"
-                        />
-                        <label
-                          className="form-check-label text-white mx-2"
-                          htmlFor="option4"
-                        >
-                          2+ Years
-                        </label>
-                      </div>
-                    </div>
-                  ) : null}
+    {/* CodeByJ - adding date labels if 'Exit' */}
+    {box.title === "Exit" ? (
+      <div className="text-light d-flex justify-content-around mt-1">
+        <div>
+          <CalendarTodayIcon />
+          <p style={{ color: "white", fontSize: "0.8rem" }}>From</p>
+        </div>
+        <div>
+          <CalendarTodayIcon />
+          <p style={{ color: "white", fontSize: "0.8rem" }}>To</p>
+        </div>
+      </div>
+    ) : null}
+  
                 </div>
               ))}
             </div>
@@ -398,17 +350,29 @@ function DashboardData(props) {
             style={{ marginTop: "1rem" }}
           >
             <div
-              style={{ width: "30%", textAlign: "center", marginRight: "1rem" }}
+              style={{
+                width: "30%",
+                textAlign: "center",
+                marginRight: "1rem",
+              }}
             >
               <BandGraph isDataUploaded={props.isDataUploaded} />
             </div>
             <div
-              style={{ width: "40%", textAlign: "center", marginRight: "1rem" }}
+              style={{
+                width: "40%",
+                textAlign: "center",
+                marginRight: "1rem",
+              }}
             >
               <USTExp isDataUploaded={props.isDataUploaded} />
             </div>
             <div
-              style={{ width: "30%", textAlign: "center", marginRight: "1rem" }}
+              style={{
+                width: "30%",
+                textAlign: "center",
+                marginRight: "1rem",
+              }}
             >
               <ResourceType
                 columnname="Resource Type"
@@ -449,8 +413,8 @@ function DashboardData(props) {
               {/* <Button className="m-2" variant="contained" color="primary" onClick={() => handleBoxClick('removedlist')}>Removed List</Button> */}
 
               {showRepresentation && (
-                <DashboardRepresentation 
-                  data={selectedBoxName} 
+                <DashboardRepresentation
+                  data={selectedBoxName}
                   style={{ width: "40%" }}
                 />
               )}

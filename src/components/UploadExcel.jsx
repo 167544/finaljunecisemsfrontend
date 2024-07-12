@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as XLSX from 'xlsx';
-import setdata from '../actions';
+import setdata from './../actions/index';
 import axios from 'axios';
 import './UploadExcel.css'
 import setSelectedData from '../actions/setSetlecteddata';

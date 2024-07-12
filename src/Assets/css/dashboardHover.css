@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.box-hover {
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+}
+.box-hover:hover {
+    transform: scale(1.05);
+}
