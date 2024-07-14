@@ -16,10 +16,11 @@ import { CssBaseline, ThemeProvider, useMediaQuery, Box, Typography } from "@mui
 import { ColorModeContext, useMode } from "./theme";
 import store from "./store";
 import { Provider, useSelector } from "react-redux";
-import Footer from "./scenes/global/Footer"; // Import Footer
+import Footer from "./scenes/global/Footer";
 import Talentpool from "./scenes/talentpool";
 import DynamicEmp from "./components/DynamicEmp";
 import CisSourcing from "./components/CisSourcing";
+import FinanceExternal from "../src/components/FinanceExternal";
 
 function MainDashboard(props) {
   const [theme, colorMode] = useMode();
@@ -27,7 +28,6 @@ function MainDashboard(props) {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const data = useSelector((state) => state);
 
-  // Collapse sidebar on mobile view
   useEffect(() => {
     setIsSidebar(!isMobile);
   }, [isMobile]);
@@ -65,6 +65,7 @@ function MainDashboard(props) {
                 <Route path="/dashboard/faq" element={<FAQ />} />
                 <Route path="/dashboard/calendar" element={<Calendar />} />
                 <Route path="/dashboard/geography" element={<Geography />} />
+                <Route path="/dashboard/finance" element={<FinanceExternal />} />
               </Routes>
             </Box>
             <Footer />
