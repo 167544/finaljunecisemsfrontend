@@ -90,10 +90,9 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
             .attr('width', d => x(d.total))
             .attr('height', y.bandwidth())
             .attr('fill', '#0A2342')
-            .attr('stroke', '#00E5FF') // Neon border
+            .attr('stroke', '#00E5FF') // Border color
             .attr('stroke-width', 0.5) // Thinner bar lines
             .style('cursor', 'pointer')
-            .style('filter', 'drop-shadow(0 0 10px #00E5FF)') // Neon glow
             .on('click', (event, d) => {
                 setSelectedBand(d.band);
             });
@@ -107,10 +106,9 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
             .text(d => isLoadedFromDynamicEmp 
                 ? `${d.total} (Male: ${d.male}, Female: ${d.female})` 
                 : d.total)
-            .attr('fill', '#FFFFFF') // Neon text color
+            .attr('fill', '#FFFFFF') // Text color
             .style('font-weight', 'bold') // Bold text
             .style('cursor', 'pointer')
-            .style('filter', 'drop-shadow(0 0 5px #00E5FF)')
             .on('click', (event, d) => {
                 setSelectedBand(d.band);
             });
@@ -119,9 +117,8 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
             .attr('class', 'y-axis')
             .call(d3.axisLeft(y).tickSizeOuter(0))
             .selectAll('text')
-            .attr('fill', '#FFFFFF') // Neon axis labels
-            .style('font-weight', 'bold') // Bold axis labels
-            .style('filter', 'drop-shadow(0 0 5px #00E5FF)');
+            .attr('fill', '#FFFFFF') // Axis labels color
+            .style('font-weight', 'bold'); // Bold axis labels
 
     }, [data, isDataUploaded]);
 

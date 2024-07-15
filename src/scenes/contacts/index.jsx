@@ -176,31 +176,32 @@ const Contacts = () => {
         sx={{
           paddingBottom: "20px", // Add padding to the bottom
           "& .MuiDataGrid-root": {
-            border: "none",
+            border: "2px solid #0A2342", // Add border to the DataGrid
           },
           "& .MuiDataGrid-cell": {
-            borderBottom: "none",
+            borderBottom: "1px solid #0A2342", // Add border to the cells
             color: "white", // Set font color to white
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#0A6E7C",
-            borderBottom: "none",
+            backgroundColor: "#0A2342",
+            borderBottom: "1px solid #0A2342", // Add border to the bottom of the header
             color: "white", // Set font color to white
-            height: "auto", // Adjust height based on content
+            height: "70px", // Increase header height
+            padding: "20px", // Increase padding for larger header
             "& .MuiDataGrid-columnHeaderTitle": {
               whiteSpace: "normal", // Ensure text wraps
               lineHeight: "normal", // Adjust line height for better wrapping
             },
           },
           "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: "#0A6E7C",
+            borderTop: "1px solid #0A2342", // Add border to the top of the footer
+            backgroundColor: "#0A2342",
             color: "white", // Set font color to white
             borderRadius: "0 0 5px 5px",
             marginTop: "20px", // Add margin to the top
           },
           "& .MuiCheckbox-root": {
-            color: `#0A6E7C  !important`,
+            color: `#0A2342  !important`,
           },
           "& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar": {
             color: "white !important",
@@ -212,10 +213,17 @@ const Contacts = () => {
             color: "white !important",
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `#0A6E7C !important`,
+            color: `white !important`,
           },
           "& .css-zz4ezo .MuiDataGrid-footerContainer": {
             borderRadius: "5px",
+          },
+          "& .MuiDataGrid-toolbarContainer button": {
+            color: "white !important", // Set toolbar button text color to white
+          },
+          "& .MuiDataGrid-toolbarContainer": {
+            backgroundColor: "#0A2342", // Set toolbar background color
+            color: "white !important", // Set toolbar text color to white
           },
         }}
       >

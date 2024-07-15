@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import './TableRepresentation.css';
 import { useSelector, useDispatch } from 'react-redux';
-import setSelectedData from '../actions/setSetlecteddata'
+import setSelectedData from '../actions/setSetlecteddata';
 
-const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoadedFromDynamicEmp}) => {
+const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoadedFromDynamicEmp }) => {
   const data = useSelector((state) => state.selectedData);
   const dispatch = useDispatch(); // Define dispatch here
-  
-  console.log("Male", maleEmployees)
-  console.log("Female", femaleEmployees)
+
+  console.log("Male", maleEmployees);
+  console.log("Female", femaleEmployees);
 
   const graphbox = {
     borderRadius: '10px',
@@ -17,10 +16,48 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
     padding: '1rem',
     backgroundColor: '#0A2342',
     fontFamily: 'Inter, serif',
-    boxShadow:"1px 5px 5px  "
+    boxShadow: "1px 5px 5px rgba(0, 0, 0, 0.2)", // Soft shadow to avoid neon effect
+    color: 'white',
+    margin: '0 auto', // Center the box
   };
 
-  let country_codes = {
+  const tableContainer = {
+    overflowX: 'auto',
+    overflowY: 'auto',
+    maxHeight: '250px', // Adjust as needed to show the scrollbar
+  };
+
+  const customTable = {
+    width: '100%',
+    borderCollapse: 'collapse',
+    margin: '10px 0',
+    fontSize: '1rem',
+    textAlign: 'left',
+  };
+
+  const thStyle = {
+    border: '1px solid #ddd',
+    padding: '8px',
+    backgroundColor: '#0A2342',
+    color: 'white',
+    cursor: 'pointer',
+  };
+
+  const tdStyle = {
+    border: '1px solid #ddd',
+    padding: '8px',
+  };
+
+  const trStyle = {
+    backgroundColor: '#0A2342',
+    color: 'white',
+  };
+
+  const trHoverStyle = {
+    backgroundColor: '#005f73',
+  };
+
+  const country_codes = {
     ARM: 'Europe',
     AUS: 'Asia',
     CAN: 'North America',
@@ -42,7 +79,7 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
     POL: 'Europe',
     PRT: 'Europe',
     ROU: 'Europe',
-    USA:'America'
+    USA: 'America'
   };
 
   const getCountsByCountry = () => {
@@ -53,8 +90,6 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
     });
     return Object.entries(counts).map(([country, count]) => ({ _id: country, count }));
   };
-
-  //CodeByJ Male and female count find
 
   const getMaleCountsByCountry = () => {
     const counts = {};
@@ -75,7 +110,6 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
   };
 
   const [countryCounts, setCountryCounts] = useState(getCountsByCountry());
-  //CodeByJ
   const [maleCounts, setMaleCounts] = useState(getMaleCountsByCountry());
   const [femaleCounts, setFemaleCounts] = useState(getFemaleCountsByCountry());
 
@@ -120,60 +154,54 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
     }
   };
 
-  // CodyByJ: Click handler to filter data by country
   const handleCountryClick = (countryCode) => {
     const filteredData = data.filter(item => item.Country === countryCode);
-    dispatch(setSelectedData(filteredData)); // CodeByJ - Dispatch the action to update the selected data
-    // console.log('Filtered Data By Country:', filteredData);
-    // console.log('Total No:', filteredData.length);
+    dispatch(setSelectedData(filteredData));
   };
 
-
   return (
-    <div className="m-2 text-light" style={graphbox}>
+    <div className="m-2" style={graphbox}>
       <h1 style={{ fontSize: '1.2rem', textAlign: 'center', color: '#ffffff' }}>
         {columnname}
       </h1>
 
-      <div className="table-container text-light">
-        <table className="custom-table">
+      <div style={tableContainer}>
+        <table style={customTable}>
           <thead>
             <tr>
-              <th onClick={() => handleSort('Country')}>
+              <th style={thStyle} onClick={() => handleSort('Country')}>
                 Country {getSortIcon('Country')}
               </th>
-              <th onClick={() => handleSort('Continent')}>
+              <th style={thStyle} onClick={() => handleSort('Continent')}>
                 Continent {getSortIcon('Continent')}
               </th>
-              <th onClick={() => handleSort('Count')}>
+              <th style={thStyle} onClick={() => handleSort('Count')}>
                 Count {getSortIcon('Count')}
               </th>
               {isLoadedFromDynamicEmp && (
                 <>
-                  <th>Male Count</th>
-                  <th>Female Count</th>
+                  <th style={thStyle}>Male Count</th>
+                  <th style={thStyle}>Female Count</th>
                 </>
               )}
             </tr>
           </thead>
           <tbody>
             {countryCounts.map((country, index) => (
-              <tr key={index} onClick={() => handleCountryClick(country._id)} style={{ cursor: 'pointer' }}> {/* CodyByJ: Add click handler */}
-                <td>{country._id}</td>
-                <td>{country_codes[country._id]}</td>
-                <td>{country.count}</td>
+              <tr key={index} onClick={() => handleCountryClick(country._id)} style={{ ...trStyle, cursor: 'pointer' }}>
+                <td style={tdStyle}>{country._id}</td>
+                <td style={tdStyle}>{country_codes[country._id]}</td>
+                <td style={tdStyle}>{country.count}</td>
                 {isLoadedFromDynamicEmp && (
                   <>
-                    <td>{maleCounts[country._id] || 0}</td> {/* Display male employee count for this country */}
-                    <td>{femaleCounts[country._id] || 0}</td> {/* Display female employee count for this country */}
+                    <td style={tdStyle}>{maleCounts[country._id] || 0}</td>
+                    <td style={tdStyle}>{femaleCounts[country._id] || 0}</td>
                   </>
                 )}
               </tr>
-              
             ))}
           </tbody>
         </table>
-        
       </div>
     </div>
   );

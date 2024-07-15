@@ -51,7 +51,7 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("Dashboard");
 
   // Define the isNotUser variable here based on your logic
-  const isNotUser = true; // Set this based on your actual logic
+  const isNotUser = false; // Set this based on your actual logic
 
   useEffect(() => {
     setIsCollapsed(isMobile);
@@ -141,22 +141,16 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+            
             <Item
-              title="CIS Sourcing"
-              to="/dashboard/cissourcing"
-              icon={<GroupsOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Finance"
+              title="Accounts"
               to="#"
               icon={<GroupsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Dynamic Metrics"
+              title="Diversity Metrics"
               to="/dashboard/dynamic"
               icon={<GroupsOutlinedIcon />}
               selected={selected}

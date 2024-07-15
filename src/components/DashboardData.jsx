@@ -259,8 +259,6 @@ function DashboardData(props) {
                   minHeight: "50px",
                   fontFamily: "Inter, serif",
                   color: "#ffffff",
-                  textShadow:
-                    "0 0 5px #1e90ff, 0 0 10px #1e90ff, 0 0 15px #1e90ff",
                 }}
               >
                 <h1
@@ -298,49 +296,48 @@ function DashboardData(props) {
               }}
             >
               {boxes.map((box, index) => (
-  <div
-    key={index}
-    className="box-hover"
-    style={{
-      width: "200px",
-      padding: "0.5rem",
-      borderRadius: "15px",
-      backgroundColor: `${box.color}`,
-      textAlign: "center",
-      cursor: "pointer",
-      margin: "0.5rem", // Adjusted margin for spacing between boxes
-      boxShadow: "1px 5px 5px",
-    }}
-    onClick={() => handleBoxClick(box.title)}
-  >
-    <h4
-      style={{
-        fontSize: "1rem",
-        fontWeight: "bold",
-        fontFamily: "Inter, serif",
-        color: "white",
-      }}
-    >
-      {box.title}
-    </h4>
-    <p style={{ color: "white", fontSize: "2rem" }}>
-      {box.value}
-    </p>
+                <div
+                  key={index}
+                  className="box-hover"
+                  style={{
+                    width: "200px",
+                    padding: "0.5rem",
+                    borderRadius: "15px",
+                    backgroundColor: `${box.color}`,
+                    textAlign: "center",
+                    cursor: "pointer",
+                    margin: "0.5rem", // Adjusted margin for spacing between boxes
+                    boxShadow: "1px 5px 5px",
+                  }}
+                  onClick={() => handleBoxClick(box.title)}
+                >
+                  <h4
+                    style={{
+                      fontSize: "1rem",
+                      fontWeight: "bold",
+                      fontFamily: "Inter, serif",
+                      color: "white",
+                    }}
+                  >
+                    {box.title}
+                  </h4>
+                  <p style={{ color: "white", fontSize: "2rem" }}>
+                    {box.value}
+                  </p>
 
-    {/* CodeByJ - adding date labels if 'Exit' */}
-    {box.title === "Exit" ? (
-      <div className="text-light d-flex justify-content-around mt-1">
-        <div>
-          <CalendarTodayIcon />
-          <p style={{ color: "white", fontSize: "0.8rem" }}>From</p>
-        </div>
-        <div>
-          <CalendarTodayIcon />
-          <p style={{ color: "white", fontSize: "0.8rem" }}>To</p>
-        </div>
-      </div>
-    ) : null}
-  
+                  {/* CodeByJ - adding date labels if 'Exit' */}
+                  {box.title === "Exit" ? (
+                    <div className="text-light d-flex justify-content-around mt-1">
+                      <div>
+                        <CalendarTodayIcon />
+                        <p style={{ color: "white", fontSize: "0.8rem" }}>From</p>
+                      </div>
+                      <div>
+                        <CalendarTodayIcon />
+                        <p style={{ color: "white", fontSize: "0.8rem" }}>To</p>
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               ))}
             </div>

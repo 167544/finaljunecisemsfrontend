@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from "react";
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -95,11 +95,11 @@ function DashboardRepresentation(props) {
     if (props.data.slice(-7) === "manager") {
       fetchEmpOnManager();
     } else if (props.data.slice(-6) === "skills") {
-      fetchEmpOnPrimaryskills();
+        fetchEmpOnPrimaryskills();
     } else if (props.data.slice(-8) === "category") {
-      fetchEmpOnCategory();
+        fetchEmpOnCategory();
     } else {
-      fetchData();
+        fetchData();
     }
   }, [props.data, data1, EmployeeDatar]);
 
@@ -121,7 +121,6 @@ function DashboardRepresentation(props) {
 
   const getRowId = (row) => row._id;
 
-
   return (
     <div>
       <div style={{ height: 500, width: "100%", padding: "10px" }}>
@@ -132,20 +131,51 @@ function DashboardRepresentation(props) {
           components={{ Toolbar: GridToolbar }}
           componentsProps={{
             toolbar: {
-              style: { backgroundColor: "#ffffff"}
+              style: { backgroundColor: "#0A2342", color: 'white' }, // Set toolbar background and text color
+              button: {
+                color: 'white', // Set toolbar button text color
+              },
+              menuItem: {
+                color: 'white', // Set toolbar menu item text color
+              }
             }
           }}
           getRowId={getRowId}
           apiRef={dataGridRef}
           onCellClick={handleCellClick}
           sx={{
+            '& .MuiDataGrid-root': {
+              backgroundColor: '#0A2342', // Set table background color
+              borderColor: '#0A2342', // Set table border color
+            },
             '& .MuiDataGrid-cell': {
               color: 'white',
+              borderColor: '#0A2342', // Set cell border color
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              backgroundColor: '#0A2342', // Set header background color
             },
             '& .MuiDataGrid-columnHeaderTitle': {
               color: 'white',
             },
             '& .MuiDataGrid-toolbar': {
+              color: 'white',
+            },
+            '& .MuiTablePagination-root': {
+              color: 'white',
+              backgroundColor: '#0A2342', // Set pagination background color
+            },
+            '& .MuiTablePagination-toolbar': {
+              color: 'white',
+            },
+            '& .MuiInputBase-root': {
+              color: 'white',
+            },
+            '& .MuiTablePagination-actions': {
+              color: 'white',
+            },
+            '& .MuiDataGrid-footerContainer': {
+              backgroundColor: '#0A2342', // Set footer background color
               color: 'white',
             },
           }}
