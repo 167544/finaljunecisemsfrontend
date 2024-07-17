@@ -6,8 +6,8 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
   const data = useSelector((state) => state.selectedData);
   const dispatch = useDispatch(); // Define dispatch here
 
-  console.log("Male", maleEmployees);
-  console.log("Female", femaleEmployees);
+  console.log("M", maleEmployees);
+  console.log("F", femaleEmployees);
 
   const graphbox = {
     borderRadius: '10px',

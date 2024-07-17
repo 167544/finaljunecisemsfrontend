@@ -29,6 +29,7 @@ function DashboardRepresentation(props) {
     { field: 'Certifications', headerName: 'Certifications', flex: 1 },
     { field: 'Resume', headerName: 'Resume', flex: 1 },
     { field: 'Last Updated Date', headerName: 'Last Updated Date', flex: 1 },
+    { field: '1st Manager', headerName: '1st Manager', flex: 1 },
   ]);
 
   const addedToShortlist = async (id) => {

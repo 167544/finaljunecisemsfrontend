@@ -22,13 +22,13 @@ const DynamicEmp = () => {
 
       // Calculate male and female employee counts
       const maleEmployees = response.data.filter(
-        (item) => item["Gender"] === "Male"
+        (item) => item["Gender"] === "M"
       );
       setMaleEmployees(maleEmployees);
       setMaleEmployeeCount(maleEmployees.length);
 
       const femaleEmployees = response.data.filter(
-        (item) => item["Gender"] === "Female"
+        (item) => item["Gender"] === "F"
       );
       setFemaleEmployees(femaleEmployees);
       setFemaleEmployeeCount(femaleEmployees.length);

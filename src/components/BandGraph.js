@@ -26,8 +26,8 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
                 const band = employee.Band;
                 counts[band] = counts[band] || { total: 0, male: 0, female: 0 };
                 counts[band].total += 1;
-                if (employee.Gender === 'Male') counts[band].male += 1;
-                if (employee.Gender === 'Female') counts[band].female += 1;
+                if (employee.Gender === 'M') counts[band].male += 1;
+                if (employee.Gender === 'F') counts[band].female += 1;
                 return counts;
             }, {});
 

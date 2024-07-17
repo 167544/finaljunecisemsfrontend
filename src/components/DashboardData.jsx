@@ -52,6 +52,12 @@ function DashboardData(props) {
   const [showRepresentation, setShowRepresentation] = useState(true);
   const [selectedBoxName, setSelectedBoxName] = useState("");
   const [TotalemployeeData, setTotalEmployeeData] = useState(0);
+  const [startDate, setStartDate] = useState(null);//vj
+  const [endDate, setEndDate] = useState(null);//vj
+
+  // New state to store the 5-digit numeric codes
+  const [fromDateCode, setFromDateCode] = useState('');
+  const [toDateCode, setToDateCode] = useState('')
 
   useEffect(() => {
     let userRole = localStorage.getItem("UserRole");
@@ -190,6 +196,54 @@ function DashboardData(props) {
     setSelectedBoxName("");
   };
 
+  //New function to handle 'from' date change
+  const handleFromDateChange = (e) => {
+    const newFromDate = e.target.value;
+    setStartDate(newFromDate); // Update startDate with the selected date
+    const numericDate = convertToNumericDate(newFromDate); // Convert to 5-digit code
+    setFromDateCode(numericDate); // Update state with 5-digit code
+  };
+
+  // New function to handle 'to' date change
+  const handleToDateChange = (e) => {
+    const newToDate = e.target.value;
+    setEndDate(newToDate); // Update endDate with the selected date
+    const numericDate = convertToNumericDate(newToDate); // Convert to 5-digit code
+    setToDateCode(numericDate); // Update state with 5-digit code
+  };
+
+  const handleFetchByDates = () => {
+    if (fromDateCode && toDateCode) { // Check if both dates are selected
+        fetchDataByDates();
+    } else {
+        alert("Please select both 'From' and 'To' dates."); // Optional: Show an alert if dates are missing
+    }
+};
+
+const fetchDataByDates = async () => {
+  if (!fromDateCode || !toDateCode) return; // Check if both dates are set
+
+  // console.log(fromDateCode+" to "+toDateCode)
+  try {
+      const response = await axios.get("http://localhost:3004/fetchbydate", {
+          params: { fromDate: fromDateCode, toDate: toDateCode }
+      });
+      console.log(response)
+      dispatch(setdata(response.data));
+      dispatch(setSelectedData(response.data));
+      setEmployeeData(response.data); 
+    } catch (error) {
+      console.error("Error fetching data:", error);
+  }
+};
+
+const convertToNumericDate = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const numericDate = Math.floor((date.getTime() / 1000 / 86400) + 25569);
+  return numericDate;
+};
+
   const boxes = [
     { title: "Total Employees", value: employeeData.length, color: "#0A2342" },
     // , image: "https://cdn.pixabay.com/photo/2014/04/03/00/40/people-309068_1280.png" },
@@ -326,7 +380,7 @@ function DashboardData(props) {
                   </p>
 
                   {/* CodeByJ - adding date labels if 'Exit' */}
-                  {box.title === "Exit" ? (
+                  {/* {box.title === "Exit" ? (
                     <div className="text-light d-flex justify-content-around mt-1">
                       <div>
                         <CalendarTodayIcon />
@@ -337,7 +391,48 @@ function DashboardData(props) {
                         <p style={{ color: "white", fontSize: "0.8rem" }}>To</p>
                       </div>
                     </div>
-                  ) : null}
+                  ) : null} */}
+
+{box.title === "Exit" ? (
+  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
+  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+    <span style={{ color: "white", fontSize: "0.8rem" }}>From:</span>
+    <input
+      type="date"
+      name="fromDate"
+      onChange={handleFromDateChange} // Attach handler
+      style={{ border: "none", backgroundColor: "transparent", color: "white", fontSize: "0.8rem", padding: "0.2rem" }}
+    />
+  </div>
+<div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+    <span style={{ color: "white", fontSize: "0.8rem" }}>To:</span>
+    <input
+      type="date"
+      name="toDate"
+      onChange={handleToDateChange} // Attach handler
+      style={{ border: "none", backgroundColor: "transparent", color: "white", fontSize: "0.8rem", padding: "0.2rem" }}
+    />
+    
+  </div>
+  <div>
+{/* New button added here */}
+  <button
+          onClick={handleFetchByDates}
+          style={{
+              backgroundColor: "#0A6E7C",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+          }}
+      >
+          Go
+      </button>
+  </div>
+  
+</div>
+) : null}
+
                 </div>
               ))}
             </div>
