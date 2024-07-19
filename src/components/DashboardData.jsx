@@ -246,7 +246,6 @@ const convertToNumericDate = (dateString) => {
 
   const boxes = [
     { title: "Total Employees", value: employeeData.length, color: "#0A2342" },
-    // , image: "https://cdn.pixabay.com/photo/2014/04/03/00/40/people-309068_1280.png" },
     { title: "Total Customers", value: customerCount, color: "#0A2342" },
     {
       title: "Active Employee Count",
@@ -284,7 +283,6 @@ const convertToNumericDate = (dateString) => {
                 )}
                 <Category handleBoxClick={handleCategory} />
                 <PrimarySkills handleBoxClick={handlePrimarySelect} />
-                {/* <a style={{  height: '35px', cursor:'pointer'}} className="mt-4" variant="contained" color="primary" onClick={resetSelectComponent}>Reset</a> */}
                 <button
                   style={{
                     height: "35px",
@@ -338,7 +336,7 @@ const convertToNumericDate = (dateString) => {
             style={{
               display: "flex",
               justifyContent: "start",
-              gap: "2rem",
+              gap: "1rem", // Add gap here for equal spacing between boxes
               flexWrap: "wrap",
             }}
           >
@@ -352,7 +350,7 @@ const convertToNumericDate = (dateString) => {
               {boxes.map((box, index) => (
                 <div
                   key={index}
-                  className="box-hover"
+                  className={`box-hover ${box.title !== "Exit" ? "box-gap" : ""}`} // Apply gap class selectively
                   style={{
                     width: "200px",
                     padding: "0.5rem",
@@ -362,6 +360,9 @@ const convertToNumericDate = (dateString) => {
                     cursor: "pointer",
                     margin: "0.5rem", // Adjusted margin for spacing between boxes
                     boxShadow: "1px 5px 5px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center", // Center content vertically
                   }}
                   onClick={() => handleBoxClick(box.title)}
                 >
@@ -379,73 +380,89 @@ const convertToNumericDate = (dateString) => {
                     {box.value}
                   </p>
 
-                  {/* CodeByJ - adding date labels if 'Exit' */}
-                  {/* {box.title === "Exit" ? (
-                    <div className="text-light d-flex justify-content-around mt-1">
-                      <div>
-                        <CalendarTodayIcon />
-                        <p style={{ color: "white", fontSize: "0.8rem" }}>From</p>
+                  {box.title === "Exit" ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                        }}
+                      >
+                        <span style={{ color: "white", fontSize: "0.8rem" }}>
+                          From:
+                        </span>
+                        <input
+                          type="date"
+                          name="fromDate"
+                          onChange={handleFromDateChange} // Attach handler
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            color: "white",
+                            fontSize: "0.8rem",
+                            padding: "0.2rem",
+                          }}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                        }}
+                      >
+                        <span style={{ color: "white", fontSize: "0.8rem" }}>
+                          To:
+                        </span>
+                        <input
+                          type="date"
+                          name="toDate"
+                          onChange={handleToDateChange} // Attach handler
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            color: "white",
+                            fontSize: "0.8rem",
+                            padding: "0.2rem",
+                          }}
+                        />
                       </div>
                       <div>
-                        <CalendarTodayIcon />
-                        <p style={{ color: "white", fontSize: "0.8rem" }}>To</p>
+                        <button
+                          onClick={handleFetchByDates}
+                          style={{
+                            backgroundColor: "#0A6E7C",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Go
+                        </button>
                       </div>
                     </div>
-                  ) : null} */}
-
-{box.title === "Exit" ? (
-  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
-  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-    <span style={{ color: "white", fontSize: "0.8rem" }}>From:</span>
-    <input
-      type="date"
-      name="fromDate"
-      onChange={handleFromDateChange} // Attach handler
-      style={{ border: "none", backgroundColor: "transparent", color: "white", fontSize: "0.8rem", padding: "0.2rem" }}
-    />
-  </div>
-<div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-    <span style={{ color: "white", fontSize: "0.8rem" }}>To:</span>
-    <input
-      type="date"
-      name="toDate"
-      onChange={handleToDateChange} // Attach handler
-      style={{ border: "none", backgroundColor: "transparent", color: "white", fontSize: "0.8rem", padding: "0.2rem" }}
-    />
-    
-  </div>
-  <div>
-{/* New button added here */}
-  <button
-          onClick={handleFetchByDates}
-          style={{
-              backgroundColor: "#0A6E7C",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-          }}
-      >
-          Go
-      </button>
-  </div>
-  
-</div>
-) : null}
-
+                  ) : null}
                 </div>
               ))}
             </div>
           </div>
           <div
             className="d-flex justify-content-center"
-            style={{ marginTop: "1rem" }}
+            style={{ marginTop: "1rem", gap: "1rem" }} // Add gap here for equal spacing between boxes
           >
             <div
               style={{
                 width: "30%",
                 textAlign: "center",
-                marginRight: "1rem",
               }}
             >
               <BandGraph isDataUploaded={props.isDataUploaded} />
@@ -454,7 +471,6 @@ const convertToNumericDate = (dateString) => {
               style={{
                 width: "40%",
                 textAlign: "center",
-                marginRight: "1rem",
               }}
             >
               <USTExp isDataUploaded={props.isDataUploaded} />
@@ -463,7 +479,6 @@ const convertToNumericDate = (dateString) => {
               style={{
                 width: "30%",
                 textAlign: "center",
-                marginRight: "1rem",
               }}
             >
               <ResourceType
@@ -474,7 +489,7 @@ const convertToNumericDate = (dateString) => {
           </div>
           <div
             className="d-flex justify-content-center"
-            style={{ marginTop: "3rem" }}
+            style={{ marginTop: "3rem", gap: "1rem" }} // Add gap here for equal spacing between boxes
           >
             <TableRepresentation
               columnname="Country"
@@ -492,18 +507,10 @@ const convertToNumericDate = (dateString) => {
               isDataUploaded={props.isDataUploaded}
               style={{ width: "30%", height: "340px" }}
             />
-            {/* <AllocationPerGraph columnname="Allocation Percentage" isDataUploaded={props.isDataUploaded} /> */}
           </div>
-
-          {/* <div className="d-flex justify-content-around" style={{ marginTop: '2rem' }}>
-                     
-          </div> */}
 
           {isUser ? null : (
             <>
-              {/* <Button className="m-2" variant="contained" color="primary" onClick={() => handleBoxClick('selectedlist')}>Shortlist List</Button> */}
-              {/* <Button className="m-2" variant="contained" color="primary" onClick={() => handleBoxClick('removedlist')}>Removed List</Button> */}
-
               {showRepresentation && (
                 <DashboardRepresentation
                   data={selectedBoxName}

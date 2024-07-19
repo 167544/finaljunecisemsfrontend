@@ -48,9 +48,9 @@ function MainDashboard(props) {
           <Box flex={1} display="flex" flexDirection="column">
             <Topbar setIsSidebar={setIsSidebar} handleUserLogout={props.handleUserLogout} />
             <Box flex={1} overflow="auto" padding={2}>
-              <Typography variant="h6" style={{ color: "#FFFFFF" }}>
+              {/* <Typography variant="h6" style={{ color: "#FFFFFF" }}>
                 Welcome to the Dashboard
-              </Typography>
+              </Typography> */}
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/dashboard/contacts" element={<Contacts />} />

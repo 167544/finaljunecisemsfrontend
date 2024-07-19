@@ -8,13 +8,25 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
 
   const graphbox = {
     borderRadius: '10px',
-    height: '330px',
-    width: '50%',
-    padding: '1rem',
-    boxShadow: '1px 5px 5px ',
+    height: '400px', // Same height as EmployeeStatusGraph
+    width: '500px', // Same width as EmployeeStatusGraph
+    padding: '2rem', // Same padding as EmployeeStatusGraph
+    boxShadow: '1px 5px 5px',
     backgroundColor: '#0A2342',
-    display: 'inline-block',
-    verticalAlign: 'top'
+    fontFamily: 'Inter, serif',
+    margin: '0 auto', // Center the box
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative'
+  };
+
+  const headingStyle = {
+    fontSize: '1.5rem',
+    color: '#ffffff',
+    textAlign: 'center',
+    marginBottom: '1rem' // Adjusted to stay within the box
   };
 
   const getCountsByCountry = () => {
@@ -22,7 +34,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
     data.forEach((item) => {
       const country = item.Category;
       if (!country) {
-        //console.warn('Undefined category in item:', item);
+        // console.warn('Undefined category in item:', item);
       } else {
         counts[country] = counts[country] ? counts[country] + 1 : 1;
       }
@@ -101,9 +113,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
           color: #00E5FF;
         }
       `}</style>
-      <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#00E5FF' }}>
-        Category Graph
-      </h1>
+      <h1 style={headingStyle}>Category Graph</h1>
       <div className="table-container">
         <table className="custom-table">
           <thead>

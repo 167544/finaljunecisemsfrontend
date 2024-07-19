@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { useSelector, useDispatch } from 'react-redux';
 import setSelectedData from '../actions/setSetlecteddata';
 
-const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, femaleEmployees  }) => {
+const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, femaleEmployees }) => {
     const svgRef = useRef();
     const [data, setData] = useState(null);
     const dispatch = useDispatch();
@@ -12,10 +12,25 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
 
     const graphbox = {
         borderRadius: '10px',
-        height: '330px',
-        padding: "1rem",
-        boxShadow: "1px 5px 5px",
-        backgroundColor: "#0A2342" // Updated background color
+        height: '400px', // Adjusted height to match EmployeeStatusGraph
+        width: '500px', // Adjusted width to match EmployeeStatusGraph
+        padding: '2rem', // Adjusted padding to match EmployeeStatusGraph
+        boxShadow: '1px 5px 5px',
+        backgroundColor: '#0A2342',
+        fontFamily: 'Inter, serif',
+        margin: '0 auto', // Center the box
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative'
+    };
+
+    const headingStyle = {
+        fontSize: '1.5rem',
+        color: '#ffffff',
+        textAlign: 'center',
+        marginBottom: '1rem' // Adjusted to stay within the box
     };
 
     const fetchBand = () => {
@@ -124,7 +139,7 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
 
     return (
         <div style={graphbox}>
-            <h1 style={{ fontSize: "1rem", textAlign: "center", fontWeight: "bold", color: "#00E5FF" }}>Band Graph</h1>
+            <h1 style={{ fontSize: "1.5rem", textAlign: "center", fontWeight: "bold", color: "#ffffff" }}>Band Graph</h1>
             <svg ref={svgRef}></svg>
         </div>
     );

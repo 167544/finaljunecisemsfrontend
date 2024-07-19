@@ -13,8 +13,8 @@ const EmployeeStatusGraph = (props) => {
 
   const graphbox = {
     borderRadius: '10px',
-    height: '340px', // Increased height to accommodate heading
-    width: '80%', // Increased width
+    height: '400px', // Increased height to accommodate heading and padding
+    width: '500px', // Increased width
     padding: '2rem', // Increased padding
     boxShadow: '1px 5px 5px',
     backgroundColor: '#0A2342',
@@ -31,8 +31,8 @@ const EmployeeStatusGraph = (props) => {
     fontSize: '1.5rem',
     color: '#ffffff',
     textAlign: 'center',
-    position: 'absolute',
-    top: '1rem' // Adjusted to stay within the box
+    marginBottom: '2rem', // Adjusted to move heading label down
+    marginTop: '0.5rem' // Adjusted to add some space above the heading
   };
 
   const getCountsByStatus = () => {
@@ -65,7 +65,7 @@ const EmployeeStatusGraph = (props) => {
     svg.selectAll('*').remove();
   
     const margin = { top: 60, right: 40, bottom: 90, left: 60 }; // Adjusted margins
-    const width = 600 - margin.left - margin.right; // Increased width
+    const width = 450 - margin.left - margin.right; // Increased width
     const height = 300 - margin.top - margin.bottom; // Adjusted height
   
     const x = d3.scaleBand()
@@ -88,13 +88,15 @@ const EmployeeStatusGraph = (props) => {
       .selectAll('text')
       .style('cursor', 'pointer')
       .style('fill', '#ffffff')
+      .style('font-size', '8px') // Reduced font size for x-axis labels
       .on('click', (event, d) => handleBarClick(d));
   
     g.append('g')
       .attr('class', 'axis axis-y')
       .call(d3.axisLeft(y).ticks(5).tickSizeInner(-width))
       .selectAll('text')
-      .style('fill', '#ffffff');
+      .style('fill', '#ffffff')
+      .style('font-size', '10px'); // Reduced font size for y-axis labels
   
     g.selectAll('.bar')
       .data(statusCounts)
@@ -116,6 +118,7 @@ const EmployeeStatusGraph = (props) => {
       .attr('y', d => y(d.count) - 15) // Adjusted spacing for more separation
       .attr('text-anchor', 'middle')
       .style('fill', '#ffffff')
+      .style('font-size', '10px') // Reduced font size for bar labels
       .text(d => d.count);
   
     // Y Axis Label
@@ -126,6 +129,7 @@ const EmployeeStatusGraph = (props) => {
       .attr('dy', '1em')
       .style('text-anchor', 'middle')
       .style('fill', '#ffffff')
+      .style('font-size', '15px') // Reduced font size for y-axis label
       .text('Count');
   
     svg.selectAll('.axis-y .tick line').remove();
@@ -134,7 +138,7 @@ const EmployeeStatusGraph = (props) => {
   return (
     <div className='m-2' style={graphbox}>
       <h1 style={headingStyle}>{columnName}</h1>
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <svg ref={svgRef} width="600" height="350"></svg> {/* Adjusted SVG size */}
       </div>
     </div>

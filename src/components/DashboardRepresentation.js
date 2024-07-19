@@ -22,6 +22,11 @@ function DashboardRepresentation(props) {
     { field: 'Resource Type', headerName: 'Resource Type', flex: 1 },
     { field: 'Category', headerName: 'Category', flex: 2 },
     { field: 'Primary Skill', headerName: 'Primary Skill', flex: 2 },
+    { field: '1st Manager', headerName: '1st Manager', flex: 1 },
+    { field: '2nd Manager', headerName: '2nd Manager', flex: 1 },
+    { field: '3rd Manager', headerName: '3rd Manager', flex: 1 },
+    { field: '4th Manager', headerName: '4th Manager', flex: 1 },
+    { field: '5th Manager', headerName: '5th Manager', flex: 1 },
     { field: 'Skill Category for Primary Skill', headerName: 'Skill Category for Primary Skill', flex: 2 },
     { field: 'Skill Level for Primary Skill', headerName: 'Skill Level for Primary Skill', flex: 2 },
     { field: 'Tools Known', headerName: 'Tools Known', flex: 1 },
@@ -29,7 +34,7 @@ function DashboardRepresentation(props) {
     { field: 'Certifications', headerName: 'Certifications', flex: 1 },
     { field: 'Resume', headerName: 'Resume', flex: 1 },
     { field: 'Last Updated Date', headerName: 'Last Updated Date', flex: 1 },
-    { field: '1st Manager', headerName: '1st Manager', flex: 1 },
+    
   ]);
 
   const addedToShortlist = async (id) => {

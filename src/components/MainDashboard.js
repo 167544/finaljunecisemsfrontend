@@ -48,6 +48,7 @@ function MainDashboard(props) {
                 <Route path="/dashboard/faq" element={<FAQ />} />
                 <Route path="/dashboard/calendar" element={<Calendar />} />
                 <Route path="/dashboard/geography" element={<Geography />} />
+                <Route path="/dashboard/talentpool" element={<Talentpool />} /> {/* Add Talentpool route */}
               </Routes>
               
             <FooterBar /> 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import setSelectedData from '../actions/setSetlecteddata';
-import { Padding } from '@mui/icons-material';
 
 function USTExp({ isDataUploaded }) {
     let Empdata = useSelector((state) => state.selectedData);
@@ -17,10 +16,18 @@ function USTExp({ isDataUploaded }) {
 
     const graphbox = {
         borderRadius: '10px',
-        height: '330px',
-        padding: '1rem',
+        height: '400px', // Same height as EmployeeStatusGraph
+        width: '500px', // Same width as EmployeeStatusGraph
+        padding: '2rem', // Same padding as EmployeeStatusGraph
         boxShadow: '1px 5px 5px',
-        backgroundColor: '#0A2342'
+        backgroundColor: '#0A2342',
+        fontFamily: 'Inter, serif',
+        margin: '0 auto', // Center the box
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative'
     };
 
     useEffect(() => {
@@ -104,7 +111,7 @@ function USTExp({ isDataUploaded }) {
 
     return (
         <div style={graphbox}>
-            <h1 style={{ fontSize: "1rem", textAlign: "center", fontWeight: "bold", color: "#00E5FF" }}>UST Experience</h1>
+            <h1 style={{ fontSize: "1.5rem", textAlign: "center", fontWeight: "bold", color: "#ffffff" }}>UST Experience</h1>
             <div className='d-flex justify-content-center' style={{ alignItems: 'center' }}>
                 <div>
                     <Box

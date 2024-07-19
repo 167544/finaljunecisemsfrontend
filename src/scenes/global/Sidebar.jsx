@@ -8,7 +8,7 @@ import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import AccountBalanceOutlinedIcon from "@mui/icons-material/AccountBalanceOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
   const theme = useTheme();
@@ -50,8 +50,18 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const [selected, setSelected] = useState("Dashboard");
 
-  // Define the isNotUser variable here based on your logic
-  const isNotUser = false; // Set this based on your actual logic
+  const [userRole, setUserRole] = useState("");
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const role = localStorage.getItem("UserRole");
+    setUserRole(role);
+    setIsSuperAdmin(role === "SuperAdmin");
+    setIsAdmin(role === "Admin");
+  }, []);
 
   useEffect(() => {
     setIsCollapsed(isMobile);
@@ -65,10 +75,19 @@ const Sidebar = () => {
   };
 
   const handleFinanceClick = () => {
-    window.open(
-      "https://app.powerbi.com/groups/ad189f19-f0f0-4658-b243-e17584a83f39/reports/95ab2eba-6696-465f-95c3-55e7981469cc/ReportSection2d89fa6d7ab7b8a6c586?experience=power-bi",
-      "_blank"
-    );
+    if (isSuperAdmin) {
+      openPowerBI();
+    } else if (isAdmin) {
+      alert("You are not allowed to enter this page.");
+    }
+  };
+
+  const handleDiversityMetricsClick = () => {
+    if (isSuperAdmin) {
+      navigate("/dashboard/dynamic");
+    } else if (isAdmin) {
+      alert("You are not allowed to enter this page.");
+    }
   };
 
   return (
@@ -125,15 +144,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            {isNotUser ? null : (
-              <Item
-                title="Manage Team"
-                to="/dashboard/contacts"
-                icon={<PeopleOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            )}
+            <Item
+              title="Manage Team"
+              to="/dashboard/contacts"
+              icon={<PeopleOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
             <Item
               title="Talent Pool"
               to="/dashboard/talentpool"
@@ -141,7 +158,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            
             <Item
               title="Accounts"
               to="#"
@@ -151,10 +167,11 @@ const Sidebar = () => {
             />
             <Item
               title="Diversity Metrics"
-              to="/dashboard/dynamic"
+              to="#"
               icon={<GroupsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
+              onClick={handleDiversityMetricsClick}
             />
             <Item
               title="CIS Sourcing"

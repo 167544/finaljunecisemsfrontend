@@ -14,7 +14,7 @@ const ResourceType = (props) => {
 
   const graphbox = {
     borderRadius: '10px',
-    height: '330px',
+    height: '400px',
     padding: '1rem',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)', // Border shadow effect
     backgroundColor: '#0A2342',
@@ -147,7 +147,7 @@ const ResourceType = (props) => {
         .style("margin-right", "5px");
 
       legendItem.append("div")
-        .style("color", "#00E5FF")
+        .style("color", "#FFFFFF") // Set to white color
         .text(`${resource._id}: ${resource.count}`);
     });
   };
@@ -155,7 +155,7 @@ const ResourceType = (props) => {
   return (
     <div className='' style={graphbox}>
       <div>
-        <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#00E5FF' }}>{columnName}</h1>
+        <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#FFFFFF' }}>{columnName}</h1> {/* Set to white color */}
         <div style={{ textAlign: 'center' }}>
           <svg ref={svgRef}></svg>
         </div>

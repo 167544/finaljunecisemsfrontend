@@ -11,12 +11,12 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
 
   const graphbox = {
     borderRadius: '10px',
-    height: '340px',
-    width: '80%',
+    height: '400px',
+    width: '500px',
     padding: '1rem',
     backgroundColor: '#0A2342',
     fontFamily: 'Inter, serif',
-    boxShadow: "1px 5px 5px rgba(0, 0, 0, 0.2)", // Soft shadow to avoid neon effect
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)', // Soft shadow to avoid neon effect
     color: 'white',
     margin: '0 auto', // Center the box
   };
