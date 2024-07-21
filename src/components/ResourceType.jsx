@@ -15,12 +15,22 @@ const ResourceType = (props) => {
   const graphbox = {
     borderRadius: '10px',
     height: '400px',
+    width: '410px',
     padding: '1rem',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)', // Border shadow effect
+    boxShadow: '1px 5px 5px', // Border shadow effect
     backgroundColor: '#0A2342',
     display: 'flex',
-    justifyContent: 'space-around',
-    alignItems: 'center'
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  };
+
+  const headingStyle = {
+    fontSize: '2rem',
+    color: '#ffffff',
+    textAlign: 'center',
+    marginBottom: '1rem', // Adjusted to stay within the box
+    paddingTop: '0rem' // Reduced padding to bring the heading closer to the top
   };
 
   useEffect(() => {
@@ -154,13 +164,11 @@ const ResourceType = (props) => {
 
   return (
     <div className='' style={graphbox}>
-      <div>
-        <h1 style={{ fontSize: '1rem', fontWeight: 'bold', textAlign: 'center', color: '#FFFFFF' }}>{columnName}</h1> {/* Set to white color */}
-        <div style={{ textAlign: 'center' }}>
-          <svg ref={svgRef}></svg>
-        </div>
+      <h1 style={headingStyle}>{columnName}</h1> {/* Applied heading style */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <svg ref={svgRef}></svg>
+        <div ref={legendRef} style={{ marginLeft: '1rem', textAlign: 'left' }}></div>
       </div>
-      <div ref={legendRef}></div>
     </div>
   );
 };

@@ -160,7 +160,7 @@ const Sidebar = () => {
             />
             <Item
               title="Accounts"
-              to="#"
+              to="/dashboard/accounts"  // This should match the route in your router
               icon={<GroupsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

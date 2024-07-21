@@ -8,8 +8,8 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
 
   const graphbox = {
     borderRadius: '10px',
-    height: '400px', // Same height as EmployeeStatusGraph
-    width: '500px', // Same width as EmployeeStatusGraph
+    height: '390px', // Same height as EmployeeStatusGraph
+    width: '350px', // Same width as EmployeeStatusGraph
     padding: '2rem', // Same padding as EmployeeStatusGraph
     boxShadow: '1px 5px 5px',
     backgroundColor: '#0A2342',
@@ -23,10 +23,11 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
   };
 
   const headingStyle = {
-    fontSize: '1.5rem',
+    fontSize: '2rem',
     color: '#ffffff',
     textAlign: 'center',
-    marginBottom: '1rem' // Adjusted to stay within the box
+    marginBottom: '2rem', // Adjusted to stay within the box
+    
   };
 
   const getCountsByCountry = () => {
@@ -60,7 +61,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
       <style>{`
         .table-container {
           overflow-y: auto;
-          max-height: 250px;
+          max-height: 450px;
         }
         
         .table-container::-webkit-scrollbar {

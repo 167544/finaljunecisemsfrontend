@@ -139,12 +139,13 @@ const Contacts = () => {
         flex: 2,
         renderCell: (params) => (
           <MUIButton
-            onClick={() => handleOpenModal(params.row)}
-            disabled={false}
-            sx={{ backgroundColor: 'black', color: 'white', '&:hover': { backgroundColor: 'darkgray' } }}
-          >
-            T and C
-          </MUIButton>
+          onClick={() => handleOpenModal(params.row)}
+          disabled={false}
+          sx={{ backgroundColor: '#0A2342', color: 'white', '&:hover': { backgroundColor: '#062A5C' } }}
+        >
+          T and C
+        </MUIButton>
+        
         ),
       },
     ];

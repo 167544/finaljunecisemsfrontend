@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Form, Input, Label } from 'reactstrap';
 import axios from 'axios';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import setdata from '../../actions';
 
 function AddNewEmployee({ handleInsert }) {
@@ -59,13 +59,13 @@ function AddNewEmployee({ handleInsert }) {
     // 'Last Updated Date',
   ];
 
-  const dropdownColumns =[
+  const dropdownColumns = [
     'Category',
     'Skill Category for Primary Skill',
     'Skill Level for Primary Skill',
     'Skill Category for Secondary Skill',
     'Skill Level for Secondary Skill'
-  ]; 
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -80,14 +80,14 @@ function AddNewEmployee({ handleInsert }) {
 
     try {
       const response = await axios.post('http://localhost:3004/insertemp', formData);
-      
+
       if (response.status === 201) {
         // Fetch updated data
         const fetchDataResponse = await axios.get('http://localhost:3004/fetchdata');
 
         // Dispatch the fetched data
         dispatch(setdata(fetchDataResponse.data));
-      
+
         alert("Inserted successfully");
         toggle(); // Close modal after submission
       } else {
@@ -99,53 +99,47 @@ function AddNewEmployee({ handleInsert }) {
   };
 
   return (
-    <div>
-      <Button backgroundColor="#0A6E7D" onClick={toggle}>
+    <div style={{ marginBottom: '1rem' }}> {/* Added margin for spacing */}
+      <Button style={{ backgroundColor: "#0A2342", borderColor: "#0A2342" }} onClick={toggle}>
         Add New Employee
       </Button>
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Insert Details</ModalHeader>
         <ModalBody>
           <Form onSubmit={handleSubmit}>
-             {columnNames.map((columnName) => (
-               <FormGroup key={columnName}>
-      <Label for={columnName}>{columnName}</Label>
-      {dropdownColumns.includes(columnName) ? (
-        <Input
-          type="select"
-          name={columnName}
-          value={formData[columnName] || ''}
-          onChange={handleChange}
-        >
-          <option value="">Select {columnName}</option>
-              {[...new Set(empData.map(obj => obj[columnName]))]
-              // .filter(optionValue => optionValue !== null)  // Remove null values
-              // .sort((a, b) => a.localeCompare(b))  // Sort values in ascending order
-              .map((optionValue) => {
-                // console.log("av-col:",columnName,optionValue);  // Log columnName
-                return (
-          <option key={optionValue} value={optionValue}>
-            {optionValue}
-          </option>
-          );
-})}
-
-        </Input>
-      ) : (
-        <Input
-          id={columnName}
-          name={columnName}
-          placeholder={columnName}
-          type="text"
-          value={formData[columnName] || ''}
-          onChange={handleChange}
-        />
-      )}
-               </FormGroup>
-             ))}
-  <Button type="submit" color="primary">
-    Add new Record
-  </Button>
+            {columnNames.map((columnName) => (
+              <FormGroup key={columnName}>
+                <Label for={columnName}>{columnName}</Label>
+                {dropdownColumns.includes(columnName) ? (
+                  <Input
+                    type="select"
+                    name={columnName}
+                    value={formData[columnName] || ''}
+                    onChange={handleChange}
+                  >
+                    <option value="">Select {columnName}</option>
+                    {[...new Set(empData.map(obj => obj[columnName]))]
+                      .map((optionValue) => (
+                        <option key={optionValue} value={optionValue}>
+                          {optionValue}
+                        </option>
+                      ))}
+                  </Input>
+                ) : (
+                  <Input
+                    id={columnName}
+                    name={columnName}
+                    placeholder={columnName}
+                    type="text"
+                    value={formData[columnName] || ''}
+                    onChange={handleChange}
+                  />
+                )}
+              </FormGroup>
+            ))}
+            <Button type="submit" color="primary">
+              Add new Record
+            </Button>
           </Form>
         </ModalBody>
         <ModalFooter>

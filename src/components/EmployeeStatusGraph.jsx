@@ -13,7 +13,7 @@ const EmployeeStatusGraph = (props) => {
 
   const graphbox = {
     borderRadius: '10px',
-    height: '400px', // Increased height to accommodate heading and padding
+    height: '460px', // Increased height to accommodate heading and padding
     width: '500px', // Increased width
     padding: '2rem', // Increased padding
     boxShadow: '1px 5px 5px',

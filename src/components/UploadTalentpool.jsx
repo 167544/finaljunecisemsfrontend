@@ -6,27 +6,33 @@ const UploadTalentpool = ({ uploadedData }) => {
   if (!uploadedData || uploadedData.length === 0) return null;
 
   const initialColumns = [
+    // { field: '_id', headerName: 'ID', width: 150 },
+    // { field: 'Sno', headerName: 'Sno', width: 100 },
     { field: 'UID', headerName: 'UID', width: 100 },
     { field: 'Employee Name', headerName: 'Employee Name', width: 150 },
-    { field: 'TP_TICL Start Date', headerName: 'TP_TICL Start Date', width: 150 },
-    { field: 'Strt Month', headerName: 'Strt Month', width: 100 },
     { field: 'Band', headerName: 'Band', width: 100 },
+    { field: 'UST Joining Date', headerName: 'UST Joining Date', width: 150 },
     { field: 'City', headerName: 'City', width: 100 },
-    { field: 'CIS Remarks', headerName: 'CIS Remarks', width: 150 },
-    { field: 'Status Summary', headerName: 'Status Summary', width: 150 },
+    { field: 'TP Start Date', headerName: 'TP Start Date', width: 150 },
+    { field: 'TP Status', headerName: 'TP Status', width: 150 },
+    { field: 'Cost $/Day', headerName: 'Cost $/Day', width: 100 },
+    { field: 'CTC (LPA)', headerName: 'CTC (LPA)', width: 100 },
+    { field: 'Total Years Of experience', headerName: 'Total Years Of experience', width: 200 },
     { field: 'Skill Group', headerName: 'Skill Group', width: 150 },
+    { field: 'TP Comments', headerName: 'TP Comments', width: 200 },
     { field: 'Aging', headerName: 'Aging', width: 100 },
-    { field: 'Resource CTC (LPA)', headerName: 'Resource CTC (LPA)', width: 150 },
-    { field: 'Opp 1', headerName: 'Opp 1', width: 150 },
-    { field: 'Result', headerName: 'Result', width: 100 },
-    { field: 'Opp 2', headerName: 'Opp 2', width: 150 },
-    { field: 'Result_1', headerName: 'Result 1', width: 100 },
     { field: 'Contact Number', headerName: 'Contact Number', width: 150 },
-    { field: 'Previous Account', headerName: 'Previous Account', width: 150 },
-    { field: 'Previous Manager', headerName: 'Previous Manager', width: 150 },
-    { field: 'Ready for relocation', headerName: 'Ready for relocation', width: 150 },
-    { field: 'Ready for Nyt Shift', headerName: 'Ready for Nyt Shift', width: 150 },
-    { field: 'Primary Skill', headerName: 'Primary Skill', width: 150 },
+    { field: 'Previous Account', headerName: 'Previous Account', width: 200 },
+    { field: 'Previous Manager', headerName: 'Previous Manager', width: 200 },
+    { field: 'POC', headerName: 'POC', width: 100 },
+    { field: 'Opp 1- Account', headerName: 'Opp 1- Account', width: 150 },
+    { field: 'Feedabck', headerName: 'Feedabck', width: 150 },
+    { field: 'Opp 2- Account', headerName: 'Opp 2- Account', width: 150 },
+    { field: 'Feedabck_1', headerName: 'Feedabck 1', width: 150 },
+    { field: 'Opp 3- Account', headerName: 'Opp 3- Account', width: 150 },
+    { field: 'Feedabck_2', headerName: 'Feedabck 2', width: 150 },
+    { field: 'Opp 4- Account', headerName: 'Opp 4- Account', width: 150 },
+    { field: 'Feedabck_3', headerName: 'Feedabck 3', width: 150 },
   ];
 
   const [columns, setColumns] = useState(initialColumns);
@@ -50,7 +56,7 @@ const UploadTalentpool = ({ uploadedData }) => {
   return (
     <Box
       m="20px 0"
-      height="400px"
+      height="600px"
       sx={{
         "& .MuiDataGrid-root": {
           border: "1px solid #0A2342",

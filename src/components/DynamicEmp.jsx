@@ -3,6 +3,10 @@ import BandGraph from "./BandGraph";
 import CategoryGraph from "./CategoryGraph";
 import axios from "axios";
 import TableRepresentation from "./TableRepresentation";
+import MapRepresentation from "./MapRepresentation";
+import SkillGroupTalentpool from "./SkillGroupTalentpool";
+import LocationChartTalentpool from "./LocationChartTalentpool";
+import BandGraphDiversity from "../components/BandGraphDiversity";
 
 const DynamicEmp = () => {
   const [employeeData, setEmployeeData] = useState([]);
@@ -38,30 +42,40 @@ const DynamicEmp = () => {
   };
 
   return (
-    <div className="d-flex w-100">
-        <div className="col-6 mt-3">
-            <BandGraph 
-            employeeData={employeeData}
-            isLoadedFromDynamicEmp={true}
-            maleEmployees={maleEmployees}
-            femaleEmployees={femaleEmployees} 
+    <div className="d-flex w-100 flex-column">
+      <div className="d-flex w-100 mb-3 justify-content-center">
+        <div style={{ width: "100%", maxWidth: "1070px", backgroundColor: "#0A2342", borderRadius: "10px", padding: "10px", boxSizing: "border-box" }}>
+          <MapRepresentation />
+        </div>
+      </div>
+      <div className="d-flex w-100 mb-2" style={{ gap: "0rem" }}>
+        <div style={{ flex: "1 1 70%", paddingLeft: "8rem" }}>
+          <div style={{ width: "100%" }}>
+            <BandGraphDiversity 
+              employeeData={employeeData}
+              isLoadedFromDynamicEmp={true}
+              maleEmployees={maleEmployees}
+              femaleEmployees={femaleEmployees}
+              style={{ width: "100%", minWidth: "600px" }} // Adjust the width here
             />
+          </div>
         </div>
-
-        <div className="col-6">
+        <div style={{ flex: "1 1 30%", paddingRight: "11rem" }}>
+          <div style={{ width: "100%" }}>
+            
             <TableRepresentation
-            employeeData={employeeData}
-            maleEmployees={maleEmployees}
-            femaleEmployees={femaleEmployees}
-            isLoadedFromDynamicEmp={true}            
-            columnname="CountryGraph"
-            style={{ width: "100%", height: "340px" }}
-        />
+              employeeData={employeeData}
+              maleEmployees={maleEmployees}
+              femaleEmployees={femaleEmployees}
+              isLoadedFromDynamicEmp={true}            
+              columnname="CountryGraph"
+              style={{ width: "100%", height: "340px" }}
+            />
+          </div>
         </div>
-      
+      </div>
     </div>
   );
 };
 
-
-export default DynamicEmp
+export default DynamicEmp;

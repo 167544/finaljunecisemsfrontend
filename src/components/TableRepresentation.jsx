@@ -12,7 +12,7 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
   const graphbox = {
     borderRadius: '10px',
     height: '400px',
-    width: '500px',
+    width: '580px',
     padding: '1rem',
     backgroundColor: '#0A2342',
     fontFamily: 'Inter, serif',
@@ -41,6 +41,7 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
     backgroundColor: '#0A2342',
     color: 'white',
     cursor: 'pointer',
+    fontSize: '1rem', // Adjust font size for th
   };
 
   const tdStyle = {
@@ -161,9 +162,9 @@ const TableRepresentation = ({ columnname, maleEmployees, femaleEmployees, isLoa
 
   return (
     <div className="m-2" style={graphbox}>
-      <h1 style={{ fontSize: '1.2rem', textAlign: 'center', color: '#ffffff' }}>
+      <h4 style={{ fontSize: '1.2rem', textAlign: 'center', color: '#ffffff' }}>
         {columnname}
-      </h1>
+      </h4>
 
       <div style={tableContainer}>
         <table style={customTable}>

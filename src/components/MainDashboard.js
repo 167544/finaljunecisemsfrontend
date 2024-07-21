@@ -20,6 +20,7 @@ import Calendar from "./scenes/calendar/calendar";
 import store from "./store";
 import { Provider, useSelector } from "react-redux";
 import Talentpool from "../scenes/talentpool";
+import CustomerDetails from "../components/CustomerDetails";
 
 
 function MainDashboard(props) {
@@ -49,6 +50,7 @@ function MainDashboard(props) {
                 <Route path="/dashboard/calendar" element={<Calendar />} />
                 <Route path="/dashboard/geography" element={<Geography />} />
                 <Route path="/dashboard/talentpool" element={<Talentpool />} /> {/* Add Talentpool route */}
+                <Route path="/dashboard/accounts" element={<CustomerDetails />} />
               </Routes>
               
             <FooterBar /> 

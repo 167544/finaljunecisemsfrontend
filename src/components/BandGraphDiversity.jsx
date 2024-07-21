@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { useSelector, useDispatch } from 'react-redux';
 import setSelectedData from '../actions/setSetlecteddata';
 
-const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, femaleEmployees }) => {
+const BandGraphDiversity  = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, femaleEmployees }) => {
     const svgRef = useRef();
     const [data, setData] = useState(null);
     const dispatch = useDispatch();
@@ -13,8 +13,8 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
     const graphbox = {
         borderRadius: '10px',
         height: '400px', // Adjusted height to match EmployeeStatusGraph
-        width: '380px', // Adjusted width to match EmployeeStatusGraph
-        padding: '2rem', // Adjusted padding to match EmployeeStatusGraph
+        width: '580px', // Adjusted width to match EmployeeStatusGraph
+        padding: '1rem', // Adjusted padding to reduce gap
         boxShadow: '1px 5px 5px',
         backgroundColor: '#0A2342',
         fontFamily: 'Inter, serif',
@@ -30,7 +30,7 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
         fontSize: '2rem',
         color: '#ffffff',
         textAlign: 'center',
-        marginBottom: '2rem' // Adjusted to stay within the box
+        marginBottom: '1rem' // Adjusted to stay within the box
     };
 
     const fetchBand = () => {
@@ -145,4 +145,4 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
     );
 };
 
-export default BandGraph;
+export default BandGraphDiversity;

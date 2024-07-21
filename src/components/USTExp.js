@@ -16,8 +16,8 @@ function USTExp({ isDataUploaded }) {
 
     const graphbox = {
         borderRadius: '10px',
-        height: '400px', // Same height as EmployeeStatusGraph
-        width: '500px', // Same width as EmployeeStatusGraph
+        height: '400px', // Increased height
+        width: '350px', // Same width as EmployeeStatusGraph
         padding: '2rem', // Same padding as EmployeeStatusGraph
         boxShadow: '1px 5px 5px',
         backgroundColor: '#0A2342',
@@ -26,8 +26,16 @@ function USTExp({ isDataUploaded }) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start', // Adjust to start to add more space at the top
         position: 'relative'
+    };
+
+    const headingStyle = {
+        fontSize: '2rem',
+        color: '#ffffff',
+        textAlign: 'center',
+        marginBottom: '1rem', // Adjusted to stay within the box
+        paddingTop: '0rem' // Reduced padding to bring the heading closer to the top
     };
 
     useEffect(() => {
@@ -111,7 +119,7 @@ function USTExp({ isDataUploaded }) {
 
     return (
         <div style={graphbox}>
-            <h1 style={{ fontSize: "1.5rem", textAlign: "center", fontWeight: "bold", color: "#ffffff" }}>UST Experience</h1>
+            <h1 style={headingStyle}>UST Experience</h1>
             <div className='d-flex justify-content-center' style={{ alignItems: 'center' }}>
                 <div>
                     <Box

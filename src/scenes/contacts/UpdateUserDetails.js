@@ -225,11 +225,26 @@ function UpdateUserDetails({ id, lastUpdatedDate, handleUpdate }) {
   const fetchButtonColor = () => {
     const now = new Date();
 
+    // const diffMilliSecs = now - new Date(lastUpdatedDate);
+    // const diffDays = Math.round(diffMilliSecs / (1000 * 60 * 60 * 24));
+    // if (diffDays < 30) return "green";
+    // if (diffDays < 60) return "yellow";
+    // else return "red";
+
     const diffMilliSecs = now - new Date(lastUpdatedDate);
-    const diffDays = Math.round(diffMilliSecs / (1000 * 60 * 60 * 24));
-    if (diffDays < 30) return "green";
-    if (diffDays < 60) return "yellow";
-    else return "red";
+const diffDays = Math.round(diffMilliSecs / (1000 * 60 * 60 * 24));
+
+// Using standard, not too bright colors
+const standardColors = {
+  green: "#2E7D32", // Very dark green
+  yellow: "#FF8F00", // Very dark yellow
+  red: "#C62828" // Very dark red
+};
+
+if (diffDays < 30) return standardColors.green;
+if (diffDays < 60) return standardColors.yellow;
+else return standardColors.red;
+
   }
 
   return (

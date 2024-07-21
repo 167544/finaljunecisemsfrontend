@@ -21,6 +21,8 @@ import Talentpool from "./scenes/talentpool";
 import DynamicEmp from "./components/DynamicEmp";
 import CisSourcing from "./components/CisSourcing";
 import FinanceExternal from "../src/components/FinanceExternal";
+import CustomerDetails  from "./components/CustomerDetails";
+import Account1Details from "../src/accountspages/Account1Details";
 
 function MainDashboard(props) {
   const [theme, colorMode] = useMode();
@@ -66,6 +68,8 @@ function MainDashboard(props) {
                 <Route path="/dashboard/calendar" element={<Calendar />} />
                 <Route path="/dashboard/geography" element={<Geography />} />
                 <Route path="/dashboard/finance" element={<FinanceExternal />} />
+                <Route path="/dashboard/accounts" element={<CustomerDetails />} />
+                <Route path="/account/1" element={<Account1Details />} /> {/* Route for Account 1 details */}
               </Routes>
             </Box>
             <Footer />
