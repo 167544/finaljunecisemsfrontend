@@ -1,8 +1,8 @@
-// src/pages/Account1Details.js
+// src/pages/Account4Details.js
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import logo1 from '../../src/Assets/accountlogos/aptiagrouplogo.png'; // Import the logo image
+import logo4 from '../../src/Assets/accountlogos/cloverHealthlogo.png'; // Import the logo image
 
 const theme = createTheme();
 
@@ -13,7 +13,7 @@ const items = [
   { label: 'Monthly Review Pack', angle: 315 },
 ];
 
-const Account1Details = () => {
+const Account4Details = () => {
   const radius = 100; // Radius for the circle
 
   return (
@@ -44,12 +44,12 @@ const Account1Details = () => {
           }}
         >
           <img 
-            src={logo1} 
-            alt="Aptia Logo" 
+            src={logo4} 
+            alt="Clover Health Logo" 
             style={{ width: '100px', height: 'auto', marginBottom: '10px' }} 
           />
           <Typography variant="h5" sx={{ color: 'white', marginBottom: '10px' }}>
-            Aptia
+            Clover Health
           </Typography>
           
           {items.map((item, index) => (
@@ -99,4 +99,4 @@ const Account1Details = () => {
   );
 };
 
-export default Account1Details;
+export default Account4Details;

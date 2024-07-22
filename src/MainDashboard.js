@@ -21,8 +21,12 @@ import Talentpool from "./scenes/talentpool";
 import DynamicEmp from "./components/DynamicEmp";
 import CisSourcing from "./components/CisSourcing";
 import FinanceExternal from "../src/components/FinanceExternal";
-import CustomerDetails  from "./components/CustomerDetails";
+import CustomerDetails from "./components/CustomerDetails";
 import Account1Details from "../src/accountspages/Account1Details";
+import Account2Details from "../src/accountspages/Account2Details";
+import Account3Details from "../src/accountspages/Account3Details";
+import Account4Details from "../src/accountspages/Account4Details";
+import Account5Details from "../src/accountspages/Account5Details"; // Import Account5Details
 
 function MainDashboard(props) {
   const [theme, colorMode] = useMode();
@@ -70,6 +74,10 @@ function MainDashboard(props) {
                 <Route path="/dashboard/finance" element={<FinanceExternal />} />
                 <Route path="/dashboard/accounts" element={<CustomerDetails />} />
                 <Route path="/account/1" element={<Account1Details />} /> {/* Route for Account 1 details */}
+                <Route path="/account/2" element={<Account2Details />} /> {/* Route for Account 2 details */}
+                <Route path="/account/3" element={<Account3Details />} /> {/* Route for Account 3 details */}
+                <Route path="/account/4" element={<Account4Details />} /> {/* Route for Account 4 details */}
+                <Route path="/account/5" element={<Account5Details />} /> {/* Route for Account 5 details */}
               </Routes>
             </Box>
             <Footer />

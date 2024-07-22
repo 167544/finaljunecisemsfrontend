@@ -40,7 +40,6 @@ function MainDashboard(props) {
                 <Route path="/" element={<Dashboard />} />
                 
                 <Route path="/dashboard/contacts" element={<Contacts />} />
-                
                 <Route path="/dashboard/invoices" element={<Invoices />} />
                 <Route path="/dashboard/form" element={<Form />} />
                 <Route path="/dashboard/bar" element={<Bar />} />
