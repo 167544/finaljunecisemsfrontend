@@ -90,7 +90,7 @@ function ForgotPassword(props) {
                     <Input 
                         disabled={otpVerified}
                         type="text" 
-                        class="form-control" 
+                        className="form-control" 
                         placeholder="Enter Email" 
                         onChange={(e) => setEmailId(e.target.value)}
                     />
@@ -101,7 +101,7 @@ function ForgotPassword(props) {
                     <Input
                         disabled={!pwdResetOtpSent || otpVerified}
                         type="text"
-                        class="form-control"
+                        className="form-control"
                         placeholder="Enter OTP"
                         onChange={(e) => setOtp(e.target.value)}
                     />
