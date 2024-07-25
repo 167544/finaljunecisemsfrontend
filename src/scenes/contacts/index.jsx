@@ -109,10 +109,13 @@ const Contacts = () => {
         flex: 1,
         renderCell: (params) => <ScrollableCell value={params.value} />,
       },
-      { field: "Skill Category for Primary Skill", headerName: "Primary Skill Category", flex: 1 },
+      //{ field: "Skill Category for Primary Skill", headerName: "Primary Skill Category", flex: 1 },
       { field: "Skill Level for Primary Skill", headerName: "Primary Skill Level", flex: 1 },
       { field: "Secondary Skill", headerName: "Secondary Skill", flex: 1 },
       { field: "Skill Category for Secondary Skill", headerName: "Secondary Skill Category", flex: 1 },
+      { field: "Detailed Skill", headerName: "Detailed Skill", flex: 1 },
+      { field: "Tertiary Skill", headerName: "Tertiary Skill", flex: 1 },
+
       { field: "Tools Known", headerName: "Tools Known", flex: 1 },
       {
         field: "Last Updated Date",
