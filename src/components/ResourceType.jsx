@@ -14,7 +14,7 @@ const ResourceType = (props) => {
 
   const graphbox = {
     borderRadius: '10px',
-    height: '400px',
+    height: '500px', // Increased height to accommodate the legend
     width: '410px',
     padding: '1rem',
     boxShadow: '1px 5px 5px', // Border shadow effect
@@ -73,15 +73,16 @@ const ResourceType = (props) => {
 
     const color = d3.scaleOrdinal()
       .range([
-        "#39FF14",
-        "#00FFFF",
-        "#FF00FF",
-        "#FFD700",
-        "#FF4500",
-        "#7CFC00",
-        "#00BFFF",
-        "#8A2BE2",
-        "#FF1493"
+        "#1f77b4", // Blue
+        "#ff7f0e", // Orange
+        "#2ca02c", // Green
+        "#d62728", // Red
+        "#9467bd", // Purple
+        "#8c564b", // Brown
+        "#e377c2", // Pink
+        "#7f7f7f", // Gray
+        "#bcbd22", // Olive
+        "#17becf"  // Cyan
       ]);
 
     const arc = d3.arc()
@@ -126,15 +127,16 @@ const ResourceType = (props) => {
   const createLegend = () => {
     const color = d3.scaleOrdinal()
       .range([
-        "#39FF14",
-        "#00FFFF",
-        "#FF00FF",
-        "#FFD700",
-        "#FF4500",
-        "#7CFC00",
-        "#00BFFF",
-        "#8A2BE2",
-        "#FF1493"
+        "#1f77b4", // Blue
+        "#ff7f0e", // Orange
+        "#2ca02c", // Green
+        "#d62728", // Red
+        "#9467bd", // Purple
+        "#8c564b", // Brown
+        "#e377c2", // Pink
+        "#7f7f7f", // Gray
+        "#bcbd22", // Olive
+        "#17becf"  // Cyan
       ]);
 
     const legend = d3.select(legendRef.current)
@@ -165,9 +167,9 @@ const ResourceType = (props) => {
   return (
     <div className='' style={graphbox}>
       <h1 style={headingStyle}>{columnName}</h1> {/* Applied heading style */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <svg ref={svgRef}></svg>
-        <div ref={legendRef} style={{ marginLeft: '1rem', textAlign: 'left' }}></div>
+        <div ref={legendRef} style={{ marginTop: '1rem', textAlign: 'center' }}></div>
       </div>
     </div>
   );

@@ -89,7 +89,7 @@ function DashboardData(props) {
     const activeEmployees = data.filter(item => item["Employee Status"] === "Active");
     const customerIDs = [...new Set(data.map(item => item["Customer ID"]))];
     const resourcesWithValidVisa = data.filter(item => item["Resource with Valid VISA"]);
-    const resourceExitEmployees = data.filter(item => item["Resource Type"] === "Exit");
+    const resourceExitEmployees = data.filter(item => item["Employee Status"] === "Exit");
 
     setActiveEmployeeCount(activeEmployees.length);
     setCustomerCount(customerIDs.length);
@@ -176,6 +176,7 @@ function DashboardData(props) {
   const handleFetchByDates = () => {
     if (fromDateCode && toDateCode) {
       fetchDataByDates();
+      console.log('Testing fetch data by dates : ', fetchDataByDates)
     } else {
       alert("Please select both 'From' and 'To' dates.");
     }
@@ -344,16 +345,16 @@ function DashboardData(props) {
             <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem", marginLeft: "2.5rem" }}>
               <ResourceType columnname="Resource Type" isDataUploaded={props.isDataUploaded} />
             </div>
-            <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem", marginLeft: "5.4rem" }}>
+            <div style={{ flex: "1 1 20%", maxWidth: "10%", textAlign: "center", padding: "1rem", marginLeft: "5.4rem" }}>
               <CategoryGraph columnname="Country" isDataUploaded={props.isDataUploaded} />
             </div>
           </div>
-          <div className="d-flex" style={{ marginTop: "3rem", gap: "1rem", flexWrap: "wrap", justifyContent: "flex-start" }}>
+          <div className="d-flex" style={{ marginTop: "3rem", gap: "2rem", flexWrap: "wrap", justifyContent: "flex-start" }}>
           <div className="row w-100">
-  <div className="col-md-6" style={{ paddingRight: '2rem' }}>
+  <div className="col-md-6" style={{ paddingRight: '2rem', height: '500px', gap: "1rem", }}>
     <MapRepresentation columnname="Country" isDataUploaded={props.isDataUploaded} />
   </div>
-  <div className="col-md-6" style={{ paddingLeft: '17rem' }}>
+  <div className="col-md-6" style={{ paddingLeft: '17rem', gap: "2rem", }}>
     <EmployeeStatusGraph columnname="Employee Status" isDataUploaded={props.isDataUploaded} />
   </div>
 </div>

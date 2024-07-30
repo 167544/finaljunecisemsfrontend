@@ -12,8 +12,8 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
 
     const graphbox = {
         borderRadius: '10px',
-        height: '400px', // Adjusted height to match EmployeeStatusGraph
-        width: '380px', // Adjusted width to match EmployeeStatusGraph
+        height: '500px', // Adjusted height to match EmployeeStatusGraph
+        width: '380px', // Adjusted width for better spacing
         padding: '2rem', // Adjusted padding to match EmployeeStatusGraph
         boxShadow: '1px 5px 5px',
         backgroundColor: '#0A2342',
@@ -74,8 +74,8 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
         d3.select(svgRef.current).selectAll("*").remove();
 
         const margin = { top: 10, right: 30, bottom: 50, left: 24 };
-        const width = 300 - margin.left - margin.right;
-        const height = 300 - margin.top - margin.bottom;
+        const width = 380 - margin.left - margin.right;
+        const height = 500 - margin.top - margin.bottom;
 
         const sortedData = data.slice().sort((a, b) => a.band.localeCompare(b.band));
 
@@ -102,7 +102,8 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
             .attr('class', 'bar')
             .attr('x', 0)
             .attr('y', d => y(d.band))
-            .attr('width', d => x(d.total))
+            // .attr('width', d => x(d.total))
+            .attr('width', d => Math.max(0, x(d.total) - 60)) 
             .attr('height', y.bandwidth())
             .attr('fill', '#0A2342')
             .attr('stroke', '#00E5FF') // Border color
@@ -116,7 +117,8 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
             .data(sortedData)
             .enter().append('text')
             .attr('class', 'label')
-            .attr('x', d => x(d.total) + 5)
+            //.attr('x', d => x(d.total) + 5)
+            .attr('x', d => Math.max(0, x(d.total) - 60) + 5)
             .attr('y', d => y(d.band) + y.bandwidth() / 2 + 5) // Adjust y position for vertical centering
             .text(d => isLoadedFromDynamicEmp 
                 ? `${d.total} (Male: ${d.male}, Female: ${d.female})` 
@@ -133,13 +135,14 @@ const BandGraph = ({ isDataUploaded, isLoadedFromDynamicEmp, maleEmployees, fema
             .call(d3.axisLeft(y).tickSizeOuter(0))
             .selectAll('text')
             .attr('fill', '#FFFFFF') // Axis labels color
+            .style('font-size', '0.8rem') // Decreased font size
             .style('font-weight', 'bold'); // Bold axis labels
 
     }, [data, isDataUploaded]);
 
     return (
         <div style={graphbox}>
-            <h1 style={{ fontSize: "1.5rem", textAlign: "center", fontWeight: "bold", color: "#ffffff" }}>Band Graph</h1>
+            <h1 style={headingStyle}>Band Graph</h1>
             <svg ref={svgRef}></svg>
         </div>
     );

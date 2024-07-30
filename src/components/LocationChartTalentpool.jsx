@@ -17,7 +17,7 @@ const LocationChartTalentpool = ({ data }) => {
       <Typography variant="h2" style={{ color: 'white', marginBottom: '10px', textAlign: 'center' }}>
         BY LOCATION
       </Typography>
-      <ResponsiveContainer width="100%" height={400}>
+      <ResponsiveContainer width="100%" height={370}>
         <BarChart data={data} layout="horizontal" margin={{ left: 100 }}>
           <XAxis type="category" dataKey="band" stroke="#ffffff" />
           <YAxis type="number" stroke="#ffffff" />

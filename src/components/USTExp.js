@@ -16,8 +16,8 @@ function USTExp({ isDataUploaded }) {
 
     const graphbox = {
         borderRadius: '10px',
-        height: '400px', // Increased height
-        width: '350px', // Same width as EmployeeStatusGraph
+        height: '500px', // Increased height
+        width: '360px', // Adjusted width for better spacing
         padding: '2rem', // Same padding as EmployeeStatusGraph
         boxShadow: '1px 5px 5px',
         backgroundColor: '#0A2342',
@@ -117,61 +117,68 @@ function USTExp({ isDataUploaded }) {
         dispatch(setSelectedData(filteredData));
     };
 
+    const boxStyle = {
+        gridColumn: "span 2",
+        width: 220, // Adjusted width
+        height: 100, // Adjusted height
+        margin: "10px",
+        cursor: "pointer",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
+    };
+
+    const numberStyle = {
+        color: "#FFFFFF",
+        fontWeight: "bold",
+        fontSize: "1.5rem" // Adjusted font size
+    };
+
+    const labelStyle = {
+        color: "#00E5FF",
+        fontWeight: "bold",
+        fontSize: "1rem" // Adjusted font size
+    };
+
     return (
         <div style={graphbox}>
             <h1 style={headingStyle}>UST Experience</h1>
             <div className='d-flex justify-content-center' style={{ alignItems: 'center' }}>
                 <div>
                     <Box
-                        gridColumn="span 2"
-                        width={180}
-                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="center"
+                        style={boxStyle}
                         onClick={() => handleSectionClick('< 1 Year')}
                     >
-                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                        <Typography variant="h4" style={numberStyle}>
                             {lessThan1Year}
                         </Typography>
-                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                        <Typography variant="subtitle1" style={labelStyle}>
                             &lt; 1 Year
                         </Typography>
                     </Box>
 
                     <Box
-                        gridColumn="span 2"
-                        width={180}
-                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="center"
+                        style={boxStyle}
                         onClick={() => handleSectionClick('< 2 Years')}
                     >
-                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                        <Typography variant="h4" style={numberStyle}>
                             {lessThan2Years}
                         </Typography>
-                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                        <Typography variant="subtitle1" style={labelStyle}>
                             &lt; 2 Years
                         </Typography>
                     </Box>
 
                     <Box
-                        gridColumn="span 2"
-                        width={180}
-                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="center"
+                        style={boxStyle}
                         onClick={() => handleSectionClick('2 - 6 Years')}
                     >
-                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                        <Typography variant="h4" style={numberStyle}>
                             {between2And6Years}
                         </Typography>
-                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                        <Typography variant="subtitle1" style={labelStyle}>
                             2 - 6 Years
                         </Typography>
                     </Box>
@@ -179,55 +186,37 @@ function USTExp({ isDataUploaded }) {
 
                 <div>
                     <Box
-                        gridColumn="span 2"
-                        width={180}
-                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="center"
+                        style={boxStyle}
                         onClick={() => handleSectionClick('6 - 10 Years')}
                     >
-                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                        <Typography variant="h4" style={numberStyle}>
                             {between6And10Years}
                         </Typography>
-                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                        <Typography variant="subtitle1" style={labelStyle}>
                             6 - 10 Years
                         </Typography>
                     </Box>
 
                     <Box
-                        gridColumn="span 2"
-                        width={180}
-                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="center"
+                        style={boxStyle}
                         onClick={() => handleSectionClick('10 - 15 Years')}
                     >
-                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                        <Typography variant="h4" style={numberStyle}>
                             {moreThan10Years}
                         </Typography>
-                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                        <Typography variant="subtitle1" style={labelStyle}>
                             10 - 15 Years
                         </Typography>
                     </Box>
 
                     <Box
-                        gridColumn="span 2"
-                        width={180}
-                        style={{ margin: "10px", cursor: "pointer", textAlign: "center" }}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        justifyContent="center"
+                        style={boxStyle}
                         onClick={() => handleSectionClick('15+ Years')}
                     >
-                        <Typography variant="h4" style={{ color: "#FFFFFF", fontWeight: "bold" }}>
+                        <Typography variant="h4" style={numberStyle}>
                             {unknown}
                         </Typography>
-                        <Typography variant="subtitle1" style={{ color: "#00E5FF", fontWeight: "bold" }}>
+                        <Typography variant="subtitle1" style={labelStyle}>
                             15+ Years
                         </Typography>
                     </Box>

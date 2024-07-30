@@ -56,7 +56,7 @@ const SkillGroupTalentpool = ({ data }) => {
         BY SKILL WISE
       </Typography>
       <ResponsiveContainer width="100%" height={400}>
-        <BarChart layout="vertical" data={aggregatedData} margin={{ top: 20, right: 30, left: 100, bottom: 5 }}>
+        <BarChart layout="vertical" data={aggregatedData} margin={{ top: 20, right: 20, left: 20, bottom: 5 }}>
           <XAxis type="number" stroke="#ffffff" />
           <YAxis type="category" dataKey="band" stroke="#ffffff" width={150} tick={{ fontSize: 14, fill: '#ffffff' }} />
           <Tooltip />

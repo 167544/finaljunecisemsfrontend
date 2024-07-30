@@ -8,13 +8,13 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
 
   const graphbox = {
     borderRadius: '10px',
-    height: '390px', // Same height as EmployeeStatusGraph
+    height: '490px', // Same height as EmployeeStatusGraph
     width: '350px', // Same width as EmployeeStatusGraph
     padding: '2rem', // Same padding as EmployeeStatusGraph
     boxShadow: '1px 5px 5px',
     backgroundColor: '#0A2342',
     fontFamily: 'Inter, serif',
-    margin: '0 auto', // Center the box
+    // margin: '0 auto', // Center the box
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

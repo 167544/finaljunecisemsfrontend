@@ -255,16 +255,6 @@ const Talentpool = () => {
         <Paper elevation={3} sx={chartBoxStyle}>
           {skillData.length > 0 && <SkillGroupTalentpool data={uploadedData} />} {/* Passing the whole uploadedData */}
         </Paper>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          gap: "20px",
-          marginBottom: "20px", // Added margin-bottom for spacing
-        }}
-      >
         <Paper elevation={3} sx={chartBoxStyle}>
           {locationData.length > 0 && <LocationChartTalentpool data={locationData} />}
         </Paper>
