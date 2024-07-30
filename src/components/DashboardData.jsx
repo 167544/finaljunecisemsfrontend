@@ -354,7 +354,7 @@ function DashboardData(props) {
   <div className="col-md-6" style={{ paddingRight: '2rem', height: '500px', gap: "1rem", }}>
     <MapRepresentation columnname="Country" isDataUploaded={props.isDataUploaded} />
   </div>
-  <div className="col-md-6" style={{ paddingLeft: '17rem', gap: "2rem", }}>
+  <div className="col-md-6" style={{ paddingLeft: '20rem', gap: "2rem", }}>
     <EmployeeStatusGraph columnname="Employee Status" isDataUploaded={props.isDataUploaded} />
   </div>
 </div>
