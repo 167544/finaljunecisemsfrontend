@@ -85,43 +85,42 @@ const Contacts = () => {
     setManageTeam(dataWithIds);
 
     const initialColumns = [
-      { field: "Employee ID", headerName: "Emp ID", flex: 0.5 },
-      { field: "Employee Name", headerName: "Emp Name" },
-      { field: "Band", headerName: "Band" },
+      { field: "Employee ID", headerName: "Emp ID", flex: 0.5, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Employee Name", headerName: "Emp Name", renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Band", headerName: "Band", renderCell: (params) => <ScrollableCell value={params.value} /> },
       {
         field: "Resource with Valid VISA",
         headerName: "Resource with Valid VISA",
         flex: 1,
-        renderCell: (params) => (
-          <div style={{ color: "white" }}>{params.value}</div> // Set font color to white
-        ),
+        renderCell: (params) => <ScrollableCell value={params.value} />
       },
-      { field: "Customer Name", headerName: "Customer Name", headerAlign: "left", align: "left" },
-      { field: "Contract Category", headerName: "Contract Category", flex: 1 },
-      { field: "Country", headerName: "Country", flex: 1 },
-      { field: "Location Descr", headerName: "Location Descr", flex: 1 },
-      { field: "Resource Type", headerName: "Resource Type", flex: 1 },
-      { field: "Manager Name", headerName: "Manager Name", flex: 1 },
-      { field: "Category", headerName: "Category", flex: 1 },
+      { field: "Customer Name", headerName: "Customer Name", headerAlign: "left", align: "left", renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Contract Category", headerName: "Contract Category", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Country", headerName: "Country", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Location Descr", headerName: "Location Descr", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Resource Type", headerName: "Resource Type", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Manager Name", headerName: "Manager Name", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Category", headerName: "Category", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
       {
         field: "Primary Skill",
         headerName: "Primary Skill",
         flex: 1,
         renderCell: (params) => <ScrollableCell value={params.value} />,
       },
-      //{ field: "Skill Category for Primary Skill", headerName: "Primary Skill Category", flex: 1 },
-      { field: "Skill Level for Primary Skill", headerName: "Primary Skill Level", flex: 1 },
-      { field: "Secondary Skill", headerName: "Secondary Skill", flex: 1 },
-      { field: "Skill Category for Secondary Skill", headerName: "Secondary Skill Category", flex: 1 },
-      { field: "Detailed Skill", headerName: "Detailed Skill", flex: 1 },
-      { field: "Tertiary Skill", headerName: "Tertiary Skill", flex: 1 },
-
-      { field: "Tools Known", headerName: "Tools Known", flex: 1 },
+      // { field: "Skill Category for Primary Skill", headerName: "Primary Skill Category", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Skill Level for Primary Skill", headerName: "Primary Skill Level", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Secondary Skill", headerName: "Secondary Skill", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Skill Category for Secondary Skill", headerName: "Secondary Skill Category", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Detailed Skill", headerName: "Detailed Skill", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Tertiary Skill", headerName: "Tertiary Skill", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Tools Known", headerName: "Tools Known", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
       {
         field: "Last Updated Date",
         headerName: "Last Updated Date",
         flex: 1,
-        renderCell: (params) => <div style={{ color: "white" }}>{format(new Date(params.value), "dd/MM/yyyy")}</div>, // Set font color to white
+        renderCell: (params) => (
+          <ScrollableCell value={format(new Date(params.value), "dd/MM/yyyy")} />
+        ),
       },
       {
         field: "Update",
@@ -142,13 +141,12 @@ const Contacts = () => {
         flex: 2,
         renderCell: (params) => (
           <MUIButton
-          onClick={() => handleOpenModal(params.row)}
-          disabled={false}
-          sx={{ backgroundColor: '#0A2342', color: 'white', '&:hover': { backgroundColor: '#062A5C' } }}
-        >
-          T and C
-        </MUIButton>
-        
+            onClick={() => handleOpenModal(params.row)}
+            disabled={false}
+            sx={{ backgroundColor: "#0A2342", color: "white", "&:hover": { backgroundColor: "#062A5C" } }}
+          >
+            T and C
+          </MUIButton>
         ),
       },
     ];

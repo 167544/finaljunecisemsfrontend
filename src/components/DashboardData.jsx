@@ -199,7 +199,7 @@ function DashboardData(props) {
   };
 
   const boxes = [
-    { title: "Total Employees", value: employeeData.length, color: "#0A2342" },
+    { title: "Total Employees", value: employeeData.length-resourseExitEmployeesCount, color: "#0A2342" },
     { title: "Total Customers", value: customerCount, color: "#0A2342" },
     { title: "Active Employee Count", value: activeEmployeeCount, color: "#0A2342" },
     { title: "Resources with Valid Visa", value: resourceWithValidVisaCount, color: "#0A2342" },
@@ -240,7 +240,7 @@ function DashboardData(props) {
             <div className="d-flex" style={{ display: "flex", marginLeft: "auto " }}>
               <div className="me-1" style={{ minHeight: "50px", fontFamily: "Inter, serif", color: "#ffffff" }}>
                 <h1 style={{ fontSize: "1.5rem", textAlign: "center", padding: "0.5rem", fontWeight: "bold" }}>
-                  Total Employee Count: {TotalemployeeData}
+                  Total Employee Count: {TotalemployeeData-resourseExitEmployeesCount}
                 </h1>
               </div>
             </div>
