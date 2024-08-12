@@ -29,6 +29,7 @@ const ScrollableCell = ({ value }) => {
             backgroundColor: "#f1f1f1", // Color of the scrollbar track
           },
           color: "white", // Set the font color to white
+          fontSize: "16px",
         }}
       >
         {value}
@@ -46,79 +47,84 @@ function DashboardRepresentation(props) {
   const selectedData = useSelector((state) => state.selectedData);
 
   const [columns, setColumns] = useState([
-    { field: "Employee ID", headerName: "Employee ID", flex: 1 },
-    { field: "Employee Name", headerName: "Employee Name", flex: 2 },
-    { field: "Band", headerName: "Band", flex: 0.5 },
-    { field: "Customer Name", headerName: "Customer Name", flex: 2 },
-    { field: "Location Descr", headerName: "Location Descr", flex: 2 },
-    { field: "Resource Type", headerName: "Resource Type", flex: 1 },
-    { field: "1st Manager", headerName: "1st Manager", flex: 1 },
-    { field: "Category", headerName: "Category", flex: 2 },
+    { field: "Employee ID", headerName: "Employee ID", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false },
+    { field: "Employee Name", headerName: "Employee Name", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false },
+    { field: "Band", headerName: "Band", width: 100, renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false },
+    { field: "Account Name", headerName: "Account Name", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false },
+    { field: "Location Descr", headerName: "Location Descr", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true },
+    { field: "Resource Type", headerName: "Resource Type", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true },
+    { field: "1st Manager", headerName: "1st Manager", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true },
+    { field: "Client", headerName: "Client", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true },
+    { field: "Location", headerName: "Location", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false },
+    { field: "Manager Name", headerName: "Manager Name", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false },
+    { field: "UST Experience", headerName: "UST Experience", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false },
+    { field: "Employee Status", headerName: "Employee Status", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false },
+    { field: "Category", headerName: "Category", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false  },
     {
       field: "Primary Skill",
       headerName: "Primary Skill",
-      flex: 2,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false 
     },
     {
       field: "Skill Level for Primary Skill",
       headerName: "Skill Level for Primary Skill",
-      flex: 2,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hide: true
     },
     {
       field: "Secondary Skill",
       headerName: "Secondary Skill",
-      flex: 1,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false
     },
     {
       field: "Skill Category for Secondary Skill",
       headerName: "Skill Category for Secondary Skill",
-      flex: 1,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hide: true
     },
     {
       field: "Tertiary Skill",
       headerName: "Tertiary Skill",
-      flex: 1,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hide: true
     },
     {
       field: "Detailed Skill",
       headerName: "Detailed Skill",
-      flex: 1,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false
     },
     {
       field: "Tools Known",
       headerName: "Tools Known",
-      flex: 1,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false
     },
     {
       field: 'VISA "YES" Country',
       headerName: 'VISA "YES" Country',
-      flex: 1,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hide: true
     },
     {
       field: "Certifications",
       headerName: "Certifications",
-      flex: 1,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hideable:false
     },
     {
       field: "Resume",
       headerName: "Resume",
-      flex: 1,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hide: true
     },
     {
       field: "Last Updated Date",
       headerName: "Last Updated Date",
-      flex: 1,
-      renderCell: (params) => <ScrollableCell value={params.value} />,
+      width: 200,
+      renderCell: (params) => <ScrollableCell value={params.value} />, hide: true
     },
   ]);
 
@@ -152,7 +158,7 @@ function DashboardRepresentation(props) {
     const fetchData = async () => {
       setRows(EmployeeDatar);
     };
-
+  
     const fetchEmpOnManager = async () => {
       try {
         const response = await axios.get(`http://localhost:3004/getMangersOFEmployee/${props.data.slice(0, -7)}`);
@@ -162,7 +168,7 @@ function DashboardRepresentation(props) {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     const fetchEmpOnPrimaryskills = () => {
       let skill = props.data.slice(0, -6);
       const filteredEmployees = EmployeeDatar.filter((employee) => {
@@ -172,7 +178,7 @@ function DashboardRepresentation(props) {
       dispatch(setSelectedData(filteredEmployees));
       setRows(filteredEmployees);
     };
-
+  
     const fetchEmpOnCategory = () => {
       let category = props.data.slice(0, -8);
       const filteredEmployees = EmployeeDatar.filter((employee) => {
@@ -182,17 +188,31 @@ function DashboardRepresentation(props) {
       dispatch(setSelectedData(filteredEmployees));
       setRows(filteredEmployees);
     };
-
+  
+    // New function to filter by Client
+    const fetchEmpOnClient = () => {
+      let client = props.data.slice(0, -6); // Assuming the prop data for client ends with 'client'
+      const filteredEmployees = EmployeeDatar.filter((employee) => {
+        if (!employee["Client"]) return false;
+        return employee["Client"].toLowerCase().includes(client.toLowerCase());
+      });
+      dispatch(setSelectedData(filteredEmployees));
+      setRows(filteredEmployees);
+    };
+  
     if (props.data.slice(-7) === "manager") {
       fetchEmpOnManager();
     } else if (props.data.slice(-6) === "skills") {
       fetchEmpOnPrimaryskills();
     } else if (props.data.slice(-8) === "category") {
       fetchEmpOnCategory();
+    } else if (props.data.slice(-6) === "client") {  // Adjust this based on your client filter identifier
+      fetchEmpOnClient();  // Call the new client filter function
     } else {
       fetchData();
     }
   }, [props.data, data1, EmployeeDatar]);
+  
 
   useEffect(() => {
     setRows(selectedData);
@@ -202,10 +222,9 @@ function DashboardRepresentation(props) {
     const clickedField = params.field;
     const updatedColumns = columns.map((column) => {
       if (column.field === clickedField) {
-        return { ...column, flex: 2 };
-      } else {
-        return { ...column, flex: 1 };
+        return { ...column, width: column.width + 50 }; // Increase width on click
       }
+      return column;
     });
     setColumns(updatedColumns);
   };
@@ -213,71 +232,75 @@ function DashboardRepresentation(props) {
   const getRowId = (row) => row._id;
 
   return (
-    <div>
-      <div style={{ height: 500, width: "100%", padding: "10px", overflow: "auto" }}>
-        <DataGrid
-          className="text-light"
-          rows={rows}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-          componentsProps={{
-            toolbar: {
-              style: { backgroundColor: "#0A2342", color: "white" },
-              button: {
-                color: "white",
-              },
-              menuItem: {
-                color: "white",
-              },
-            },
-          }}
-          getRowId={getRowId}
-          apiRef={dataGridRef}
-          onCellClick={handleCellClick}
-          sx={{
-            "& .MuiDataGrid-root": {
-              backgroundColor: "#0A2342",
-              borderColor: "#0A2342",
-            },
-            "& .MuiDataGrid-cell": {
-              color: "white",
-              borderColor: "#0A2342",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              maxWidth: "150px",
-            },
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: "#0A2342",
-            },
-            "& .MuiDataGrid-columnHeaderTitle": {
+    <div style={{ height: 500, width: "100%", padding: "10px", overflow: "auto" }}>
+      <DataGrid
+        className="text-light"
+        rows={rows}
+        columns={columns}
+        components={{ Toolbar: GridToolbar }}
+        componentsProps={{
+          toolbar: {
+            style: { backgroundColor: "#0A2342", color: "white" },
+            button: {
               color: "white",
             },
-            "& .MuiDataGrid-toolbar": {
+            menuItem: {
               color: "white",
             },
-            "& .MuiTablePagination-root": {
-              color: "white",
-              backgroundColor: "#0A2342",
-            },
-            "& .MuiTablePagination-toolbar": {
-              color: "white",
-            },
-            "& .MuiInputBase-root": {
-              color: "white",
-            },
-            "& .MuiTablePagination-actions": {
-              color: "white",
-            },
-            "& .MuiDataGrid-footerContainer": {
-              backgroundColor: "#0A2342",
-              color: "white",
-            },
-          }}
-          disableColumnMenu
-          disableSelectionOnClick
-        />
-      </div>
+          },
+        }}
+        getRowId={getRowId}
+        apiRef={dataGridRef}
+        onCellClick={handleCellClick}
+        sx={{
+          "& .MuiDataGrid-root": {
+            backgroundColor: "#0A2342",
+            borderColor: "#0A2342",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            overflowX: "auto !important", // Ensure horizontal scrolling is enabled
+          },
+          "& .MuiDataGrid-cell": {
+            color: "white",
+            borderColor: "#0A2342",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            maxWidth: "150px",
+            fontSize: "16px", // Increase the font size
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "#0A2342",
+          },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            color: "white",
+            fontSize: "16px", // Increase the font size for column headers
+          },
+          "& .MuiDataGrid-toolbar": {
+            color: "white",
+          },
+          "& .MuiTablePagination-root": {
+            color: "white",
+            backgroundColor: "#0A2342",
+          },
+          "& .MuiTablePagination-toolbar": {
+            color: "white",
+          },
+          "& .MuiInputBase-root": {
+            color: "white",
+          },
+          "& .MuiTablePagination-actions": {
+            color: "white",
+          },
+          "& .MuiDataGrid-footerContainer": {
+            backgroundColor: "#0A2342",
+            color: "white",
+          },
+        }}
+        disableColumnMenu
+        disableSelectionOnClick
+        scrollbarSize={10} // Adjust scrollbar size
+      />
     </div>
   );
 }

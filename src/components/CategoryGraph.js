@@ -14,7 +14,6 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
     boxShadow: '1px 5px 5px',
     backgroundColor: '#0A2342',
     fontFamily: 'Inter, serif',
-    // margin: '0 auto', // Center the box
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -26,17 +25,15 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
     fontSize: '2rem',
     color: '#ffffff',
     textAlign: 'center',
-    marginBottom: '2rem', // Adjusted to stay within the box
-    
+    marginBottom: '2rem',
   };
 
   const getCountsByCountry = () => {
     const counts = {};
     data.forEach((item) => {
       const country = item.Category;
-      if (!country) {
-        // console.warn('Undefined category in item:', item);
-      } else {
+      const status = item['Employee Status'];
+      if (country && status !== 'Exit') { // Exclude "Exit" status
         counts[country] = counts[country] ? counts[country] + 1 : 1;
       }
     });
@@ -52,7 +49,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
   }, [data]);
 
   const handleRowClick = (category) => {
-    const filteredData = data.filter(item => item.Category === category);
+    const filteredData = data.filter(item => item.Category === category && item['Employee Status'] !== 'Exit');
     dispatch(setSelectedData(filteredData));
   };
 

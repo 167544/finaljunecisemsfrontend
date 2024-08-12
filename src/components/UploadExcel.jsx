@@ -1,25 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as XLSX from 'xlsx';
 import setdata from './../actions/index';
 import axios from 'axios';
-import './UploadExcel.css'
+import './UploadExcel.css';
 import setSelectedData from '../actions/setSetlecteddata';
-import { Spinner } from 'reactstrap'; // Import Spinner from reactstrap
+import { Spinner } from 'reactstrap';
 
 function UploadExcel({ onUploadSuccess }) {
-  const [jsonData, setJsonData] = useState(null);
   const [isUploading, setIsUploading] = useState(false); // State to track upload status
   const dispatch = useDispatch();
 
-  const storeDataINDb = async (data) => {
+  const storeDataINDb = async (newData) => {
     try {
       setIsUploading(true); // Set isUploading to true when starting upload
-      const response = await axios.post("http://localhost:3004/employeedata", data);
-      const response1 = await axios.get('http://localhost:3004/fetchdata');
-      dispatch(setdata(response1.data));
-      dispatch(setSelectedData(response1.data))
+
+      // Fetch existing data from the database
+      const existingDataResponse = await axios.get('http://localhost:3004/fetchdata');
+      const existingData = existingDataResponse.data;
+
+      // Filter out data that already exists in the application (by unique identifier)
+      const filteredData = newData.filter((newItem) => {
+        return !existingData.some(existingItem => {
+          return JSON.stringify(existingItem) === JSON.stringify(newItem);
+        });
+      });
+
+      if (filteredData.length > 0) {
+        // Save only the new data to the database
+        await axios.post("http://localhost:3004/employeedata", filteredData);
+      }
+
+      // Fetch updated data from the database after adding new records
+      const updatedDataResponse = await axios.get('http://localhost:3004/fetchdata');
+      dispatch(setdata(updatedDataResponse.data));
+      dispatch(setSelectedData(updatedDataResponse.data));
+
       setIsUploading(false); // Set isUploading to false after upload is complete
+      onUploadSuccess(); // Call success callback
     } catch (error) {
       setIsUploading(false); // Set isUploading to false if upload fails
       console.error("Error storing data:", error);
@@ -41,9 +59,7 @@ function UploadExcel({ onUploadSuccess }) {
       const formattedData = formatData(jsonData); // Format data into desired format
 
       try {
-        const formatedjsondata = JSON.stringify(formattedData);
         await storeDataINDb(formattedData); // Sending formatted data to the backend
-        onUploadSuccess();
       } catch (error) {
         console.error("Error processing upload:", error);
         // Handle error appropriately (e.g., show error message to user)
@@ -52,7 +68,6 @@ function UploadExcel({ onUploadSuccess }) {
 
     reader.readAsArrayBuffer(file);
   };
-
 
   // Function to format the data into individual JSON objects
   const formatData = (data) => {
@@ -68,15 +83,12 @@ function UploadExcel({ onUploadSuccess }) {
   };
 
   return (
-    <div style={{ maxWidth: '250px', display: "inline-block" }} className='text-light' >
-      {/* <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', padding: "5px", margin: "5px", color: "#0A6E7C", fontFamily: "san-serif" }}>Upload data</h1> */}
-
+    <div style={{ maxWidth: '250px', display: "inline-block" }} className='text-light'>
       <div className='d-flex'>
         <input
           type="file"
           id="fileInput"
           onChange={handleFileUpload}
-          placeholder='chod'
           style={{
             width: "200px",
             padding: "10px",
@@ -91,7 +103,6 @@ function UploadExcel({ onUploadSuccess }) {
             <Spinner color="primary" />
           </div>
         )}
-
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useSelector } from "react-redux";
@@ -48,7 +48,11 @@ const MapRepresentation = () => {
   const getCountsByCountry = () => {
     const counts = {};
     console.log("Data to process:", data);
-    data.forEach((item, index) => {
+    
+    // Filter out "Exit" employees
+    const activeEmployees = data.filter(item => item['Employee Status'] !== 'Exit');
+    
+    activeEmployees.forEach((item, index) => {
       const country = item.Country;
       const gender = item.Gender;
 
@@ -195,9 +199,9 @@ const MapRepresentation = () => {
                   <br />
                   Employees: {country.count}
                   <br />
-                  Male: {country.male}
+                  {/* Male: {country.male} */}
                   <br />
-                  Female: {country.female}
+                  {/* Female: {country.female} */}
                 </Popup>
               </Marker>
             );

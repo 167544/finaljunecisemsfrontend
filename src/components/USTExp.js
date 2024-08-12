@@ -16,17 +16,17 @@ function USTExp({ isDataUploaded }) {
 
     const graphbox = {
         borderRadius: '10px',
-        height: '500px', // Increased height
-        width: '360px', // Adjusted width for better spacing
-        padding: '2rem', // Same padding as EmployeeStatusGraph
+        height: '500px',
+        width: '360px',
+        padding: '2rem',
         boxShadow: '1px 5px 5px',
         backgroundColor: '#0A2342',
         fontFamily: 'Inter, serif',
-        margin: '0 auto', // Center the box
+        margin: '0 auto',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-start', // Adjust to start to add more space at the top
+        justifyContent: 'flex-start',
         position: 'relative'
     };
 
@@ -34,13 +34,16 @@ function USTExp({ isDataUploaded }) {
         fontSize: '2rem',
         color: '#ffffff',
         textAlign: 'center',
-        marginBottom: '1rem', // Adjusted to stay within the box
-        paddingTop: '0rem' // Reduced padding to bring the heading closer to the top
+        marginBottom: '1rem',
+        paddingTop: '0rem'
     };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Filter out exited employees
+                const activeEmployees = Empdata.filter(employee => employee['Employee Status'] !== 'Exit');
+
                 let lessThan1YearCount = 0;
                 let lessThan2YearsCount = 0;
                 let between2And6YearsCount = 0;
@@ -48,18 +51,18 @@ function USTExp({ isDataUploaded }) {
                 let moreThan10YearsCount = 0;
                 let unknownCount = 0;
 
-                Empdata.forEach(employee => {
-                    const ustExperience = employee['UST Experience'];
+                activeEmployees.forEach(employee => {
+                    const ustExperience = parseInt(employee['UST Experience']);
 
-                    if (parseInt(ustExperience) < 1) {
+                    if (ustExperience < 1) {
                         lessThan1YearCount++;
-                    } else if (parseInt(ustExperience) < 2) {
+                    } else if (ustExperience < 2) {
                         lessThan2YearsCount++;
-                    } else if (parseInt(ustExperience) >= 2 && parseInt(ustExperience) <= 6) {
+                    } else if (ustExperience >= 2 && ustExperience <= 6) {
                         between2And6YearsCount++;
-                    } else if (parseInt(ustExperience) > 6 && parseInt(ustExperience) <= 10) {
+                    } else if (ustExperience > 6 && ustExperience <= 10) {
                         between6And10YearsCount++;
-                    } else if (parseInt(ustExperience) > 10 && parseInt(ustExperience) <= 15) {
+                    } else if (ustExperience > 10 && ustExperience <= 15) {
                         moreThan10YearsCount++;
                     } else {
                         unknownCount++;
@@ -85,32 +88,32 @@ function USTExp({ isDataUploaded }) {
         if (section === '< 1 Year') {
             filteredData = Empdata.filter((employee) => {
                 const empExperience = employee['UST Experience'];
-                return empExperience >= 0 && empExperience < 1;
+                return empExperience >= 0 && empExperience < 1 && employee['Employee Status'] !== 'Exit';
             });
         } else if (section === '< 2 Years') {
             filteredData = Empdata.filter((employee) => {
                 const empExperience = employee['UST Experience'];
-                return empExperience >= 1 && empExperience < 2;
+                return empExperience >= 1 && empExperience < 2 && employee['Employee Status'] !== 'Exit';
             });
-        } else if (section === '2 - 6 Years') {
+        } else if (section === '2 - 5 Years') {
             filteredData = Empdata.filter((employee) => {
                 const empExperience = employee['UST Experience'];
-                return empExperience >= 2 && empExperience <= 6;
+                return empExperience >= 2 && empExperience <= 6 && employee['Employee Status'] !== 'Exit';
             });
         } else if (section === '6 - 10 Years') {
             filteredData = Empdata.filter((employee) => {
                 const empExperience = employee['UST Experience'];
-                return empExperience > 6 && empExperience <= 10;
+                return empExperience > 6 && empExperience <= 10 && employee['Employee Status'] !== 'Exit';
             });
         } else if (section === '10 - 15 Years') {
             filteredData = Empdata.filter((employee) => {
                 const empExperience = employee['UST Experience'];
-                return empExperience > 10 && empExperience <= 15;
+                return empExperience > 10 && empExperience <= 15 && employee['Employee Status'] !== 'Exit';
             });
         } else {
             filteredData = Empdata.filter((employee) => {
                 const empExperience = employee['UST Experience'];
-                return empExperience > 15;
+                return empExperience > 15 && employee['Employee Status'] !== 'Exit';
             });
         }
 
@@ -119,8 +122,8 @@ function USTExp({ isDataUploaded }) {
 
     const boxStyle = {
         gridColumn: "span 2",
-        width: 220, // Adjusted width
-        height: 100, // Adjusted height
+        width: 220,
+        height: 100,
         margin: "10px",
         cursor: "pointer",
         textAlign: "center",
@@ -133,13 +136,13 @@ function USTExp({ isDataUploaded }) {
     const numberStyle = {
         color: "#FFFFFF",
         fontWeight: "bold",
-        fontSize: "1.5rem" // Adjusted font size
+        fontSize: "1.5rem"
     };
 
     const labelStyle = {
         color: "#00E5FF",
         fontWeight: "bold",
-        fontSize: "1rem" // Adjusted font size
+        fontSize: "1rem"
     };
 
     return (
@@ -173,13 +176,13 @@ function USTExp({ isDataUploaded }) {
 
                     <Box
                         style={boxStyle}
-                        onClick={() => handleSectionClick('2 - 6 Years')}
+                        onClick={() => handleSectionClick('2 - 5 Years')}
                     >
                         <Typography variant="h4" style={numberStyle}>
                             {between2And6Years}
                         </Typography>
                         <Typography variant="subtitle1" style={labelStyle}>
-                            2 - 6 Years
+                            2 - 5 Years
                         </Typography>
                     </Box>
                 </div>
@@ -199,13 +202,13 @@ function USTExp({ isDataUploaded }) {
 
                     <Box
                         style={boxStyle}
-                        onClick={() => handleSectionClick('10 - 15 Years')}
+                        onClick={() => handleSectionClick('11 - 15 Years')}
                     >
                         <Typography variant="h4" style={numberStyle}>
                             {moreThan10Years}
                         </Typography>
                         <Typography variant="subtitle1" style={labelStyle}>
-                            10 - 15 Years
+                            11 - 15 Years
                         </Typography>
                     </Box>
 

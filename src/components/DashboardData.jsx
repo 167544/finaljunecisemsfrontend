@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Button } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import "../Assets/css/dashboardHover.css";
@@ -19,6 +19,7 @@ import Category from "../scenes/global/Category";
 import CategoryGraph from "./CategoryGraph";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import MapRepresentation from "./MapRepresentation";
+import ClientSelect from "../scenes/global/ClientSelect";
 
 // Utility function
 const convertToNumericDate = (dateString) => {
@@ -32,6 +33,9 @@ function DashboardData(props) {
   const [isUser, setIsUser] = useState(false);
   const [isManagerSelectDisabled, setIsManagerSelectDisabled] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+  const [clients, setClients] = useState([]);
+  const [selectedClient, setSelectedClient] = useState("");
+  const [selectedTimeRange, setSelectedTimeRange] = useState("");
 
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -44,6 +48,7 @@ function DashboardData(props) {
   const [resetManagerSelect, setResetManagerSelect] = useState(false);
   const [resetPrimarySelect, setPrimarySelect] = useState(false);
   const [employeeData, setEmployeeData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [customerCount, setCustomerCount] = useState(0);
   const [activeEmployeeCount, setActiveEmployeeCount] = useState(0);
   const [resourceWithValidVisaCount, setResourceWithValidVisaCount] = useState(0);
@@ -54,9 +59,34 @@ function DashboardData(props) {
   const [TotalemployeeData, setTotalEmployeeData] = useState(0);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [newlyJoinedStartDate, setNewlyJoinedStartDate] = useState(null);
+  const [newlyJoinedEndDate, setNewlyJoinedEndDate] = useState(null);
 
   const [fromDateCode, setFromDateCode] = useState('');
   const [toDateCode, setToDateCode] = useState('');
+  const [newlyJoinedFromDateCode, setNewlyJoinedFromDateCode] = useState('');
+  const [newlyJoinedToDateCode, setNewlyJoinedToDateCode] = useState('');
+
+  const handleClientSelect = (selectedClient) => {
+    console.log("Selected client:", selectedClient.label); // Debug log
+    
+    // Ensure that `selectedClient` is set correctly
+    setSelectedClient(selectedClient);
+  
+    // Perform the filtering
+    const filtered = employeeData.filter(emp => {
+      console.log(`Checking employee: ${emp.Client} === ${selectedClient.value}`);
+      return emp.Client === selectedClient.value;
+    });
+    
+    console.log("Filtered data:", filtered); // Debug log
+  
+    // Update the Redux store and component state
+    dispatch(setSelectedData(filtered));
+    setFilteredData(filtered);
+  };
+  
+  
 
   useEffect(() => {
     let userRole = localStorage.getItem("UserRole");
@@ -72,6 +102,8 @@ function DashboardData(props) {
     if (userRole && userRole === "SuperAdmin") {
       setIsSuperAdmin(true);
     }
+
+    fetchClients(); // Fetch clients when the component mounts
   }, []);
 
   useEffect(() => {
@@ -81,31 +113,18 @@ function DashboardData(props) {
   useEffect(() => {
     if (employeeSelected.length) {
       setEmployeeData(employeeSelected);
+      setFilteredData(employeeSelected);
       updateEmployeeStats(employeeSelected);
     }
   }, [employeeSelected]);
 
-  const updateEmployeeStats = (data) => {
-    const activeEmployees = data.filter(item => item["Employee Status"] === "Active");
-    const customerIDs = [...new Set(data.map(item => item["Customer ID"]))];
-    const resourcesWithValidVisa = data.filter(item => item["Resource with Valid VISA"]);
-    const resourceExitEmployees = data.filter(item => item["Employee Status"] === "Exit");
-
-    setActiveEmployeeCount(activeEmployees.length);
-    setCustomerCount(customerIDs.length);
-    setResourceWithValidVisaCount(resourcesWithValidVisa.length);
-    setResourceExitEmployeesCount(resourceExitEmployees.length);
-
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-    const sixMonthsAgoDigit = convertToNumericDate(sixMonthsAgo);
-
-    const newlyAddedEmployees = data.filter(item => {
-      const hireDate = item["Hire Date"];
-      return parseInt(hireDate, 10) > parseInt(sixMonthsAgoDigit, 10);
-    });
-
-    setNewlyAddedEmployeesCount(newlyAddedEmployees.length);
+  const fetchClients = async () => {
+    try {
+      const response = await axios.get("http://localhost:3004/clients");
+      setClients(response.data);
+    } catch (error) {
+      console.error("Error fetching clients:", error);
+    }
   };
 
   const fetchData = async () => {
@@ -130,10 +149,78 @@ function DashboardData(props) {
     }
   };
 
-  const handleBoxClick = (boxName) => {
-    setSelectedBoxName(boxName);
-    setSelectedData(boxName);
+  const updateEmployeeStats = (data) => {
+    const activeEmployees = data.filter(item => item["Employee Status"] === "Active");
+    const customerIDs = [...new Set(data.map(item => item["Customer ID"]))];
+    const resourcesWithValidVisa = data.filter(item => item["Resource with Valid VISA"]);
+    const resourceExitEmployees = data.filter(item => item["Employee Status"] === "Exit");
+
+    setActiveEmployeeCount(activeEmployees.length);
+    setCustomerCount(customerIDs.length);
+    setResourceWithValidVisaCount(resourcesWithValidVisa.length);
+    setResourceExitEmployeesCount(resourceExitEmployees.length);
+
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+    const sixMonthsAgoDigit = convertToNumericDate(sixMonthsAgo);
+
+    const newlyAddedEmployees = data.filter(item => {
+      const hireDate = item["Hire Date"];
+      return parseInt(hireDate, 10) > parseInt(sixMonthsAgoDigit, 10);
+    });
+
+    setNewlyAddedEmployeesCount(newlyAddedEmployees.length);
   };
+
+  const filterByTimeRange = useCallback((range) => {
+    const now = new Date();
+    let fromDate, toDate;
+
+    toDate = now; // Current date as the "to" date
+
+    if (range === "1 month") {
+      fromDate = new Date(now.setMonth(now.getMonth() - 1));
+      console.log("1 month exit ############################");
+    } else if (range === "3 months") {
+      fromDate = new Date(now.setMonth(now.getMonth() - 3));
+      console.log("3 months exit ############################");
+    } else if (range === "6 months") {
+      fromDate = new Date(now.setMonth(now.getMonth() - 6));
+      console.log("6 months exit ############################");
+    }
+
+    const fromDateCode = convertToNumericDate(fromDate);
+    const toDateCode = convertToNumericDate(toDate);
+
+    setFromDateCode(fromDateCode);
+    setToDateCode(toDateCode);
+
+    fetchDataByDates(fromDateCode, toDateCode);
+  }, [employeeData]);
+
+  const handleBoxClick = useCallback((boxName) => {
+    let data = [];
+    switch(boxName) {
+      case "Resources with Valid Visa":
+        data = employeeData.filter(item => item["Resource with Valid VISA"]);
+        break;
+      case "Active Employee Count":
+        data = employeeData.filter(item => item["Employee Status"] === "Active");
+        break;
+      case "Exit":
+        if (selectedTimeRange) {
+          filterByTimeRange(selectedTimeRange);
+          return;
+        } else {
+          data = employeeData.filter(item => item["Employee Status"] === "Exit");
+        }
+        break;
+      default:
+        data = employeeData;
+    }
+    setFilteredData(data);
+    setSelectedBoxName(boxName);
+  }, [employeeData, selectedTimeRange, filterByTimeRange]);
 
   const handlePrimarySelect = (boxName) => {
     setSelectedBoxName(boxName + "skills");
@@ -150,13 +237,40 @@ function DashboardData(props) {
     setShowRepresentation(true);
   };
 
+  const handleTimeRangeChange = (e) => {
+    const selectedRange = e.target.value;
+    setSelectedTimeRange(selectedRange);
+    if (selectedBoxName === "Exit") {
+      filterByTimeRange(selectedRange);
+    }
+  };
+
+  const handleUSTExpFilter = (filteredData) => {
+    setFilteredData(filteredData);
+  };
+
+  const handleNewlyJoinedEmployeesClick = () => {
+    if (newlyJoinedFromDateCode && newlyJoinedToDateCode) {
+      const filteredData = employeeData.filter((item) => {
+        const hireDate = parseInt(item["Hire Date"], 10);
+        return hireDate >= parseInt(newlyJoinedFromDateCode, 10) && hireDate <= parseInt(newlyJoinedToDateCode, 10);
+      });
+      setFilteredData(filteredData);
+      setSelectedBoxName("Newly Joined Employees");
+    } else {
+      alert("Please select both 'From' and 'To' dates for newly joined employees.");
+    }
+  };
+
   const resetSelectComponent = () => {
     setResetManagerSelect(prevState => !prevState);
     setPrimarySelect(prevState => !prevState);
     setManagerKey(prevKey => prevKey + 1);
     setPrimarySkillsKey(prevKey => prevKey + 1);
     setCategoryKey(prevKey => prevKey + 1);
+    setSelectedTimeRange(""); // Reset the selected time range
     setSelectedBoxName("");
+    setFilteredData(employeeData); // Reset to show all data
   };
 
   const handleFromDateChange = (e) => {
@@ -173,12 +287,55 @@ function DashboardData(props) {
     setToDateCode(numericDate);
   };
 
-  const handleFetchByDates = () => {
-    if (fromDateCode && toDateCode) {
-      fetchDataByDates();
-      console.log('Testing fetch data by dates : ', fetchDataByDates)
+  const handleNewlyJoinedFromDateChange = (e) => {
+    const newFromDate = e.target.value;
+    setNewlyJoinedStartDate(newFromDate);
+    const numericDate = convertToNumericDate(newFromDate);
+    setNewlyJoinedFromDateCode(numericDate);
+  };
+
+  const handleNewlyJoinedToDateChange = (e) => {
+    const newToDate = e.target.value;
+    setNewlyJoinedEndDate(newToDate);
+    const numericDate = convertToNumericDate(newToDate);
+    setNewlyJoinedToDateCode(numericDate);
+  };
+
+  const handleFetchNewlyJoinedByDates = () => {
+    if (fromNewJoinDateCode && toNewJoinDateCode) {
+      fetchNewlyJoinedByDates();
     } else {
       alert("Please select both 'From' and 'To' dates.");
+    }
+  };
+
+  const fetchNewlyJoinedByDates = async () => {
+    if (!fromNewJoinDateCode || !toNewJoinDateCode) return;
+
+    try {
+      const response = await axios.get(
+        "http://localhost:3004/fetchNewJoinsByDate",
+        {
+          params: { fromDate: fromNewJoinDateCode, toDate: toNewJoinDateCode },
+        }
+      );
+      dispatch(setdata(response.data));
+      dispatch(setSelectedData(response.data));
+      setEmployeeData(response.data);
+      updateEmployeeStats(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleFetchByDates = () => {
+    if (selectedTimeRange) {
+      const filteredData = filterByTimeRange(selectedTimeRange);
+      setFilteredData(filteredData);
+    } else if (fromDateCode && toDateCode) {
+      fetchDataByDates();
+    } else {
+      alert("Please select either a Time Range or both 'From' and 'To' dates.");
     }
   };
 
@@ -192,6 +349,7 @@ function DashboardData(props) {
       dispatch(setdata(response.data));
       dispatch(setSelectedData(response.data));
       setEmployeeData(response.data);
+      setFilteredData(response.data);
       updateEmployeeStats(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -199,7 +357,7 @@ function DashboardData(props) {
   };
 
   const boxes = [
-    { title: "Total Employees", value: employeeData.length-resourseExitEmployeesCount, color: "#0A2342" },
+    { title: "Total Employees", value: employeeData.length - resourseExitEmployeesCount, color: "#0A2342" },
     { title: "Total Customers", value: customerCount, color: "#0A2342" },
     { title: "Active Employee Count", value: activeEmployeeCount, color: "#0A2342" },
     { title: "Resources with Valid Visa", value: resourceWithValidVisaCount, color: "#0A2342" },
@@ -217,6 +375,7 @@ function DashboardData(props) {
                 {!(isManagerSelectDisabled || isSuperAdmin) ? null : (
                   <ManagerSelect key={managerKey} handleBoxClick={handleManagerSelect} />
                 )}
+                <ClientSelect handleClientSelect={handleClientSelect} />
                 <Category handleBoxClick={handleCategory} />
                 <PrimarySkills handleBoxClick={handlePrimarySelect} />
                 <button
@@ -240,7 +399,7 @@ function DashboardData(props) {
             <div className="d-flex" style={{ display: "flex", marginLeft: "auto " }}>
               <div className="me-1" style={{ minHeight: "50px", fontFamily: "Inter, serif", color: "#ffffff" }}>
                 <h1 style={{ fontSize: "1.5rem", textAlign: "center", padding: "0.5rem", fontWeight: "bold" }}>
-                  Total Employee Count: {TotalemployeeData-resourseExitEmployeesCount}
+                  Total Employee Count: {TotalemployeeData - resourseExitEmployeesCount}
                 </h1>
               </div>
             </div>
@@ -298,6 +457,7 @@ function DashboardData(props) {
                             fontSize: "0.8rem",
                             padding: "0.2rem",
                           }}
+                          disabled={selectedTimeRange !== ""}
                         />
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -313,11 +473,85 @@ function DashboardData(props) {
                             fontSize: "0.8rem",
                             padding: "0.2rem",
                           }}
+                          disabled={selectedTimeRange !== ""}
+                        />
+                      </div>
+                      <select
+                        value={selectedTimeRange}
+                        onChange={handleTimeRangeChange}
+                        style={{
+                          height: "35px",
+                          width: "150px",
+                          margin: "5px",
+                          border: "2px solid #ffffff",
+                          backgroundColor: "transparent",
+                          color: "#ffffff",
+                        }}
+                      >
+                        <option value="">Select Time Range</option>
+                        <option value="1 month">1 Month</option>
+                        <option value="3 months">3 Months</option>
+                        <option value="6 months">6 Months</option>
+                      </select>
+                      <div>
+                        <button
+                          onClick={handleFetchByDates}
+                          style={{
+                            backgroundColor: "#0A6E7C",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "4px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Go
+                        </button>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {box.title === "Newly Joined Employees" ? (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
+                      <style>
+                        {`
+          input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+          }
+        `}
+                      </style>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <span style={{ color: "white", fontSize: "0.8rem" }}>From:</span>
+                        <input
+                          type="date"
+                          name="newlyJoinedFromDate"
+                          onChange={handleNewlyJoinedFromDateChange}
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            color: "white",
+                            fontSize: "0.8rem",
+                            padding: "0.2rem",
+                          }}
+                        />
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <span style={{ color: "white", fontSize: "0.8rem" }}>To:</span>
+                        <input
+                          type="date"
+                          name="newlyJoinedToDate"
+                          onChange={handleNewlyJoinedToDateChange}
+                          style={{
+                            border: "none",
+                            backgroundColor: "transparent",
+                            color: "white",
+                            fontSize: "0.8rem",
+                            padding: "0.2rem",
+                          }}
                         />
                       </div>
                       <div>
                         <button
-                          onClick={handleFetchByDates}
+                          onClick={handleFetchNewlyJoinedByDates}
                           style={{
                             backgroundColor: "#0A6E7C",
                             color: "white",
@@ -337,30 +571,28 @@ function DashboardData(props) {
           </div>
           <div className="d-flex" style={{ marginTop: "1rem", gap: "1rem", flexWrap: "wrap", justifyContent: "flex-start" }}>
             <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem" }}>
-              <BandGraph isDataUploaded={props.isDataUploaded} />
+              <EmployeeStatusGraph data={filteredData} columnname="Employee Status" /> {/* Swapped position */}
             </div>
             <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem", marginLeft: "4rem" }}>
-              <USTExp isDataUploaded={props.isDataUploaded} />
+              <USTExp Empdata={filteredData} onFilter={handleUSTExpFilter} />
             </div>
             <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem", marginLeft: "2.5rem" }}>
-              <ResourceType columnname="Resource Type" isDataUploaded={props.isDataUploaded} />
+              <ResourceType columnname="Resource Type" data={filteredData} />
             </div>
             <div style={{ flex: "1 1 20%", maxWidth: "10%", textAlign: "center", padding: "1rem", marginLeft: "5.4rem" }}>
-              <CategoryGraph columnname="Country" isDataUploaded={props.isDataUploaded} />
+              <CategoryGraph columnname="Country" data={filteredData} />
             </div>
           </div>
           <div className="d-flex" style={{ marginTop: "3rem", gap: "2rem", flexWrap: "wrap", justifyContent: "flex-start" }}>
-          <div className="row w-100">
-  <div className="col-md-6" style={{ paddingRight: '2rem', height: '500px', gap: "1rem", }}>
-    <MapRepresentation columnname="Country" isDataUploaded={props.isDataUploaded} />
-  </div>
-  <div className="col-md-6" style={{ paddingLeft: '20rem', gap: "2rem", }}>
-    <EmployeeStatusGraph columnname="Employee Status" isDataUploaded={props.isDataUploaded} />
-  </div>
-</div>
-
-
-</div>
+            <div className="row w-100">
+              <div className="col-md-6" style={{ paddingRight: '2rem', height: '550px', gap: "1rem", }}>
+                <MapRepresentation columnname="Country" data={filteredData} />
+              </div>
+              <div className="col-md-6" style={{ paddingLeft: '20rem', gap: "2rem", }}>
+                <BandGraph data={filteredData} /> {/* Swapped position */}
+              </div>
+            </div>
+          </div>
 
           {isUser ? null : (
             <>

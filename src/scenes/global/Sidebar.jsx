@@ -76,11 +76,12 @@ const Sidebar = () => {
 
   const handleFinanceClick = () => {
     if (isSuperAdmin) {
-      openPowerBI();
+        navigate("/dashboard/finance");
     } else if (isAdmin) {
-      alert("You are not allowed to enter this page.");
+        alert("You are not allowed to enter this page.");
     }
-  };
+};
+
 
   const handleDiversityMetricsClick = () => {
     if (isSuperAdmin) {
@@ -158,6 +159,15 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
+
+            <Item
+              title="Manage Talent Pool"
+              to="/dashboard/manage-talentpool"
+              icon={<BadgeOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
             <Item
               title="Accounts"
               to="/dashboard/accounts"  // This should match the route in your router

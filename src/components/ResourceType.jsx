@@ -1,175 +1,134 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import * as d3 from 'd3';
-import './TableRepresentation.css';
 import setSelectedData from '../actions/setSetlecteddata';
 
-const ResourceType = (props) => {
+const ResourceType = ({ isDataUploaded }) => {
   const data = useSelector((state) => state.selectedData);
   const dispatch = useDispatch();
-  const [resourceCounts, setResourceCounts] = useState([]);
-  const columnName = props.columnname;
-  const svgRef = useRef();
-  const legendRef = useRef();
 
   const graphbox = {
     borderRadius: '10px',
-    height: '500px', // Increased height to accommodate the legend
-    width: '410px',
-    padding: '1rem',
-    boxShadow: '1px 5px 5px', // Border shadow effect
+    height: '490px',
+    width: '350px',
+    padding: '2rem',
+    boxShadow: '1px 5px 5px',
     backgroundColor: '#0A2342',
+    fontFamily: 'Inter, serif',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'center',
+    position: 'relative'
   };
 
   const headingStyle = {
     fontSize: '2rem',
     color: '#ffffff',
     textAlign: 'center',
-    marginBottom: '1rem', // Adjusted to stay within the box
-    paddingTop: '0rem' // Reduced padding to bring the heading closer to the top
-  };
-
-  useEffect(() => {
-    clearGraph();
-    setResourceCounts(getCountsByResource());
-  }, [data]);
-
-  useEffect(() => {
-    if (resourceCounts.length > 0) {
-      clearGraph();
-      createPieChart();
-      createLegend();
-    }
-  }, [resourceCounts]);
-
-  const handleClick = (resourceType) => {
-    const filteredData = data.filter(item => item['Resource Type'] === resourceType);
-    dispatch(setSelectedData(filteredData));
+    marginBottom: '2rem',
   };
 
   const getCountsByResource = () => {
     const counts = {};
     data.forEach((item) => {
-      const resource = item['Resource Type'];
-      counts[resource] = counts[resource] ? counts[resource] + 1 : 1;
+      const resource = item.Client;
+      const status = item['Employee Status'];
+      if (resource && status !== 'Exit') { // Exclude "Exit" status
+        counts[resource] = counts[resource] ? counts[resource] + 1 : 1;
+      }
     });
-    return Object.entries(counts).map(([resource, count]) => ({ _id: resource, count }));
+    return Object.entries(counts)
+      .map(([resource, count]) => ({ _id: resource, count }))
+      .sort((a, b) => b.count - a.count); // Sort by count in descending order
   };
 
-  const clearGraph = () => {
-    const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove();
-    d3.select(legendRef.current).selectAll("*").remove();
-  };
+  const [resourceCounts, setResourceCounts] = useState([]);
 
-  const createPieChart = () => {
-    const width = 200;
-    const height = 250;
-    const radius = Math.min(width, height) / 2;
+  useEffect(() => {
+    setResourceCounts(getCountsByResource());
+  }, [data]);
 
-    const color = d3.scaleOrdinal()
-      .range([
-        "#1f77b4", // Blue
-        "#ff7f0e", // Orange
-        "#2ca02c", // Green
-        "#d62728", // Red
-        "#9467bd", // Purple
-        "#8c564b", // Brown
-        "#e377c2", // Pink
-        "#7f7f7f", // Gray
-        "#bcbd22", // Olive
-        "#17becf"  // Cyan
-      ]);
-
-    const arc = d3.arc()
-      .innerRadius(0)
-      .outerRadius(radius - 10);
-
-    const pie = d3.pie()
-      .sort(null)
-      .value((d) => d.count);
-
-    const svg = d3.select(svgRef.current)
-      .attr("width", width)
-      .attr("height", height)
-      .append("g")
-      .attr("transform", `translate(${width / 2},${height / 2})`);
-
-    const g = svg.selectAll(".arc")
-      .data(pie(resourceCounts))
-      .enter().append("g")
-      .attr("class", "arc")
-      .style("cursor", "pointer")
-      .on("click", (event, d) => handleClick(d.data._id));
-
-    g.append("path")
-      .attr("d", arc)
-      .style("fill", (d) => color(d.data._id))
-      .attr('stroke', '#00E5FF') // Border color
-      .attr('stroke-width', 1) // Border width
-      .style('filter', 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5))'); // Border shadow effect
-
-    g.append("text")
-      .attr("transform", (d) => `translate(${arc.centroid(d)})`)
-      .attr("dy", "0.35em")
-      .attr("fill", "#FFFFFF")
-      .style("font-size", "10px")
-      .style("text-anchor", "middle")
-      .text((d) => d.data.count);
-
-    d3.select(legendRef.current).selectAll("*").remove();
-  };
-
-  const createLegend = () => {
-    const color = d3.scaleOrdinal()
-      .range([
-        "#1f77b4", // Blue
-        "#ff7f0e", // Orange
-        "#2ca02c", // Green
-        "#d62728", // Red
-        "#9467bd", // Purple
-        "#8c564b", // Brown
-        "#e377c2", // Pink
-        "#7f7f7f", // Gray
-        "#bcbd22", // Olive
-        "#17becf"  // Cyan
-      ]);
-
-    const legend = d3.select(legendRef.current)
-      .style("padding", "10px")
-      .style("border-radius", "5px")
-      .style("background-color", "#0A2342");
-
-    resourceCounts.forEach((resource) => {
-      const legendItem = legend.append("div")
-        .style("display", "flex")
-        .style("align-items", "center")
-        .style("margin-bottom", "5px")
-        .style("cursor", "pointer")
-        .on("click", () => handleClick(resource._id));
-
-      legendItem.append("div")
-        .style("width", "10px")
-        .style("height", "10px")
-        .style("background-color", color(resource._id))
-        .style("margin-right", "5px");
-
-      legendItem.append("div")
-        .style("color", "#FFFFFF") // Set to white color
-        .text(`${resource._id}: ${resource.count}`);
-    });
+  const handleRowClick = (resource) => {
+    const filteredData = data.filter(item => item.Client === resource && item['Employee Status'] !== 'Exit');
+    dispatch(setSelectedData(filteredData));
   };
 
   return (
-    <div className='' style={graphbox}>
-      <h1 style={headingStyle}>{columnName}</h1> {/* Applied heading style */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <svg ref={svgRef}></svg>
-        <div ref={legendRef} style={{ marginTop: '1rem', textAlign: 'center' }}></div>
+    <div className="m-2" style={graphbox}>
+      <style>{`
+        .table-container {
+          overflow-y: auto;
+          max-height: 450px;
+        }
+        
+        .table-container::-webkit-scrollbar {
+          width: 12px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+          background: #0A2342;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+          background-color: #00E5FF;
+          border-radius: 20px;
+          border: 3px solid #0A2342;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb:hover {
+          background-color: #39FF14;
+        }
+        
+        .custom-table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        
+        .custom-table th,
+        .custom-table td {
+          padding: 8px 12px;
+          text-align: left;
+        }
+        
+        .custom-table th {
+          background-color: #102E4A;
+          color: #00E5FF;
+        }
+        
+        .custom-table td {
+          color: white;
+        }
+
+        .custom-table tr:nth-child(even) {
+          background-color: #0A2342;
+        }
+        
+        .custom-table tr:hover {
+          background-color: #102E4A;
+        }
+        
+        .custom-table tr:hover td {
+          color: #00E5FF;
+        }
+      `}</style>
+      <h1 style={headingStyle}>Clients</h1>
+      <div className="table-container">
+        <table className="custom-table">
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {resourceCounts.map((resource, index) => (
+              <tr key={index} onClick={() => handleRowClick(resource._id)} style={{ cursor: 'pointer' }}>
+                <td>{resource._id}</td>
+                <td>{resource.count}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

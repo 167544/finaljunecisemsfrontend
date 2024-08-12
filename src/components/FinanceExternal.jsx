@@ -19,7 +19,7 @@ const FinanceExternal = () => {
       </div>
       <div style={{ height: '20vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {/* Adjusted to ensure FooterBar background is not overridden */}
-        <FooterBar />
+       
       </div>
     </div>
   );

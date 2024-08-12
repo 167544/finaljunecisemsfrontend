@@ -1,45 +1,42 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Select from "react-select";
 import { useSelector } from "react-redux";
 
-const ManagerSelect = (props) => {
+const ClientSelect = (props) => {
   const empData = useSelector((state) => state.Empdata);
   const [selectedOption, setSelectedOption] = useState("");
-  const [managers, setManagers] = useState([]);
+  const [clients, setClients] = useState([]);
   const [disabled, setDisabled] = useState(false); // State to track if Select should be disabled
 
   // Memoize handleSelect to prevent unnecessary re-renders
-  const handleSelect = useCallback(
-    (selectedOption) => {
-      setSelectedOption(selectedOption);
-      if (selectedOption) {
-        props.handleBoxClick(selectedOption.label);
-      }
-    },
-    [props]
-  );
+  const handleSelect = useCallback((selectedOption) => {
+    console.log("Client selected:", selectedOption); // Debug log
+    setSelectedOption(selectedOption);
+    if (selectedOption) {
+      // Pass the selected client's value to the parent component
+      props.handleClientSelect(selectedOption);
+    }
+  }, [props]);
+  
+  
 
   useEffect(() => {
     if (empData.length > 0) {
-      const allManagers = empData.reduce((acc, emp) => {
-        const { "1st Manager": manager1, "2nd Manager": manager2, "3rd Manager": manager3, "Manager Name": managerName } = emp;
-        if (manager1) acc.add(manager1);
-        if (manager2) acc.add(manager2);
-        if (manager3) acc.add(manager3);
-        if (managerName) acc.add(managerName);
+      const allClients = empData.reduce((acc, emp) => {
+        const client = emp.Client;
+        if (client) acc.add(client);
         return acc;
       }, new Set());
-      const sortedManagers = Array.from(allManagers).sort((a, b) => a.localeCompare(b)); // Sorting in alphabetical ascending order
-      setManagers(sortedManagers);
+      setClients(Array.from(allClients));
     }
   }, [empData]);
 
   useEffect(() => {
     let role = localStorage.getItem("UserRole");
 
-    if (role === "Admin") {
-      const name = localStorage.getItem("name");
-      handleSelect({ value: name, label: name });
+    if (role === "ClientAdmin") {
+      const client = localStorage.getItem("client");
+      handleSelect({ value: client, label: client });
       setDisabled(true);
     }
   }, [handleSelect]);
@@ -47,11 +44,11 @@ const ManagerSelect = (props) => {
   return (
     <div className="text-white" style={{ margin: "5px" }}>
       <Select
-        options={managers.map((name) => ({
-          value: name,
-          label: name
+        options={clients.map((client) => ({
+          value: client,
+          label: client
         }))}
-        placeholder="Select manager"
+        placeholder="Select client"
         value={selectedOption}
         onChange={handleSelect}
         isSearchable={true}
@@ -84,4 +81,4 @@ const ManagerSelect = (props) => {
   );
 };
 
-export default ManagerSelect;
+export default ClientSelect;

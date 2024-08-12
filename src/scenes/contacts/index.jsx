@@ -35,6 +35,7 @@ const ScrollableCell = ({ value }) => {
             backgroundColor: "#f1f1f1", // Color of the scrollbar track
           },
           color: "white", // Set the font color to white
+          fontSize: "16px", // Increase font size for readability
         }}
       >
         {value}
@@ -76,7 +77,6 @@ const Contacts = () => {
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission logic here
     handleCloseModal();
   };
 
@@ -85,47 +85,48 @@ const Contacts = () => {
     setManageTeam(dataWithIds);
 
     const initialColumns = [
-      { field: "Employee ID", headerName: "Emp ID", flex: 0.5, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Employee Name", headerName: "Emp Name", renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Band", headerName: "Band", renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Employee ID", headerName: "Emp ID", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+      { field: "Employee Name", headerName: "Emp Name", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+      { field: "Band", headerName: "Band", width: 100, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
       {
         field: "Resource with Valid VISA",
         headerName: "Resource with Valid VISA",
-        flex: 1,
-        renderCell: (params) => <ScrollableCell value={params.value} />
+        width: 200,
+        renderCell: (params) => <ScrollableCell value={params.value} />,
+        hide: true,
       },
-      { field: "Customer Name", headerName: "Customer Name", headerAlign: "left", align: "left", renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Contract Category", headerName: "Contract Category", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Country", headerName: "Country", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Location Descr", headerName: "Location Descr", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Resource Type", headerName: "Resource Type", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Manager Name", headerName: "Manager Name", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Category", headerName: "Category", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Account Name", headerName: "Account Name", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+      { field: "Contract Category", headerName: "Contract Category", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true },
+      { field: "Country", headerName: "Country", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+      { field: "Location Descr", headerName: "Location Descr", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true },
+      { field: "Resource Type", headerName: "Resource Type", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+      { field: "Manager Name", headerName: "Manager Name", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+      { field: "Category", headerName: "Category", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
       {
         field: "Primary Skill",
         headerName: "Primary Skill",
-        flex: 1,
+        width: 200,
         renderCell: (params) => <ScrollableCell value={params.value} />,
+        hideable: false,
       },
-      // { field: "Skill Category for Primary Skill", headerName: "Primary Skill Category", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Skill Level for Primary Skill", headerName: "Primary Skill Level", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Secondary Skill", headerName: "Secondary Skill", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Skill Category for Secondary Skill", headerName: "Secondary Skill Category", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Detailed Skill", headerName: "Detailed Skill", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Tertiary Skill", headerName: "Tertiary Skill", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
-      { field: "Tools Known", headerName: "Tools Known", flex: 1, renderCell: (params) => <ScrollableCell value={params.value} /> },
+      { field: "Skill Level for Primary Skill", headerName: "Primary Skill Level", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true },
+      { field: "Secondary Skill", headerName: "Secondary Skill", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+      { field: "Skill Category for Secondary Skill", headerName: "Secondary Skill Category", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true},
+      { field: "Detailed Skill", headerName: "Detailed Skill", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+      { field: "Tertiary Skill", headerName: "Tertiary Skill", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+      { field: "Tools Known", headerName: "Tools Known", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
       {
         field: "Last Updated Date",
         headerName: "Last Updated Date",
-        flex: 1,
+        width: 200,
         renderCell: (params) => (
           <ScrollableCell value={format(new Date(params.value), "dd/MM/yyyy")} />
-        ),
+        ), hide: true
       },
       {
         field: "Update",
         headerName: "Update",
-        flex: 2,
+        width: 150,
         renderCell: (params) => (
           <UpdateUserDetails
             id={params.row ? params.row["Employee ID"] : ""}
@@ -138,7 +139,7 @@ const Contacts = () => {
       {
         field: "delete",
         headerName: "Training and Certifications",
-        flex: 2,
+        width: 200,
         renderCell: (params) => (
           <MUIButton
             onClick={() => handleOpenModal(params.row)}
@@ -148,6 +149,7 @@ const Contacts = () => {
             T and C
           </MUIButton>
         ),
+        hide: true
       },
     ];
 
@@ -161,11 +163,9 @@ const Contacts = () => {
   const handleCellClick = (params) => {
     const updatedColumns = columns.map((column) => {
       if (column.field === params.field) {
-        return { ...column, flex: 5 };
-      } else if (column.field === "Update" || column.field === "delete") {
-        return { ...column, flex: 3 };
+        return { ...column, width: column.width + 50 }; // Increase width on click
       }
-      return { ...column, flex: 2 };
+      return column;
     });
     setColumns(updatedColumns);
   };
@@ -179,10 +179,15 @@ const Contacts = () => {
           paddingBottom: "20px", // Add padding to the bottom
           "& .MuiDataGrid-root": {
             border: "2px solid #0A2342", // Add border to the DataGrid
+            backgroundColor: "#0A2342",
           },
           "& .MuiDataGrid-cell": {
             borderBottom: "1px solid #0A2342", // Add border to the cells
             color: "white", // Set font color to white
+            fontSize: "16px", // Increase the font size for readability
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
           },
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: "#0A2342",
