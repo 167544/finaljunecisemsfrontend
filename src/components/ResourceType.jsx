@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import setSelectedData from '../actions/setSetlecteddata';
 
@@ -18,7 +18,7 @@ const ResourceType = ({ isDataUploaded }) => {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative'
+    position: 'relative',
   };
 
   const headingStyle = {
@@ -42,16 +42,16 @@ const ResourceType = ({ isDataUploaded }) => {
       .sort((a, b) => b.count - a.count); // Sort by count in descending order
   };
 
-  const [resourceCounts, setResourceCounts] = useState([]);
-
-  useEffect(() => {
-    setResourceCounts(getCountsByResource());
-  }, [data]);
+  const resourceCounts = useMemo(() => getCountsByResource(), [data]);
 
   const handleRowClick = (resource) => {
     const filteredData = data.filter(item => item.Client === resource && item['Employee Status'] !== 'Exit');
     dispatch(setSelectedData(filteredData));
   };
+
+  if (!data || data.length === 0) {
+    return <div style={headingStyle}>No data available</div>;
+  }
 
   return (
     <div className="m-2" style={graphbox}>

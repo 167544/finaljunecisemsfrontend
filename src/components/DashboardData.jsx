@@ -570,16 +570,18 @@ function DashboardData(props) {
             </div>
           </div>
           <div className="d-flex" style={{ marginTop: "1rem", gap: "1rem", flexWrap: "wrap", justifyContent: "flex-start" }}>
-            <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem" }}>
-              <EmployeeStatusGraph data={filteredData} columnname="Employee Status" /> {/* Swapped position */}
-            </div>
-            <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem", marginLeft: "4rem" }}>
-              <USTExp Empdata={filteredData} onFilter={handleUSTExpFilter} />
-            </div>
-            <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem", marginLeft: "2.5rem" }}>
+            
+             <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem", marginLeft: "2.5rem" }}>
               <ResourceType columnname="Resource Type" data={filteredData} />
             </div>
-            <div style={{ flex: "1 1 20%", maxWidth: "10%", textAlign: "center", padding: "1rem", marginLeft: "5.4rem" }}>
+            <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem", marginLeft: "3.5rem" }}>
+              <USTExp Empdata={filteredData} onFilter={handleUSTExpFilter} />
+            </div>
+           
+            <div style={{ flex: "1 1 20%", maxWidth: "20%", textAlign: "center", padding: "1rem", marginLeft: "2.5rem" }}>
+              <EmployeeStatusGraph data={filteredData} columnname="Employee Status" /> {/* Swapped position */}
+            </div>
+            <div style={{ flex: "1 1 20%", maxWidth: "10%", textAlign: "center", padding: "1rem", marginLeft: "2.5rem" }}>
               <CategoryGraph columnname="Country" data={filteredData} />
             </div>
           </div>

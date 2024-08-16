@@ -296,6 +296,12 @@ function DashboardRepresentation(props) {
             backgroundColor: "#0A2342",
             color: "white",
           },
+          '& .MuiDataGrid-toolbarContainer .MuiButton-text': {
+              color: 'white', // Change toolbar icons and text color to white
+            },
+            '& .MuiDataGrid-toolbarContainer .MuiSvgIcon-root': {
+              color: 'white', // Change toolbar icons to white
+            },
         }}
         disableColumnMenu
         disableSelectionOnClick
