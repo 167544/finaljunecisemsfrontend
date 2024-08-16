@@ -3,12 +3,11 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, Label } from
 import { Typography } from '@mui/material';
 
 const data = [
-  { name: 'Active TP', value: 13, color: '#0088FE' },
-  { name: 'Serving Notice', value: 9, color: '#00C49F' },
-  { name: 'Maternity Leave', value: 7, color: '#FFBB28' },
-  { name: 'To be Allocated', value: 4, color: '#FF8042' },
-  { name: 'Exit', value: 85, color: '#A28C88' },
-  { name: 'CIS Allocated', value: 126, color: '#1F78B4' },
+  { name: 'Active Resources', value: 35 + 10, color: '#0088FE' }, // Combined "Active TP" and "Serving Notice"
+  { name: 'Maternity Leave', value: 8, color: '#FFBB28' },
+  { name: 'Total Billable', value: 53, color: '#FF8042' },
+  { name: 'Serving Notice ', value: 10, color: '#A28C88' },
+  // { name: 'CIS Allocated', value: 126, color: '#1F78B4' },
 ];
 
 const PieChartTalentpoolComponent = () => {

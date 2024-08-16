@@ -121,11 +121,19 @@ function DashboardData(props) {
   const fetchClients = async () => {
     try {
       const response = await axios.get("http://localhost:3004/clients");
-      setClients(response.data);
+      const clientsData = response.data;
+  
+      // Set the clients for the dropdown
+      setClients(clientsData);
+  
+      // Set the customer count based on the clients dropdown count
+      setCustomerCount(clientsData.length); // This will reflect the count of unique clients in the dropdown
     } catch (error) {
       console.error("Error fetching clients:", error);
     }
   };
+  
+  
 
   const fetchData = async () => {
     try {
@@ -152,11 +160,13 @@ function DashboardData(props) {
   const updateEmployeeStats = (data) => {
     const activeEmployees = data.filter(item => item["Employee Status"] === "Active");
     const customerIDs = [...new Set(data.map(item => item["Customer ID"]))];
+    const UniqueClients = [...new Set(data.map(item => item["Client"]))];
     const resourcesWithValidVisa = data.filter(item => item["Resource with Valid VISA"]);
     const resourceExitEmployees = data.filter(item => item["Employee Status"] === "Exit");
 
     setActiveEmployeeCount(activeEmployees.length);
-    setCustomerCount(customerIDs.length);
+    // console.log("*********data for client",data)
+    setCustomerCount(UniqueClients.length);
     setResourceWithValidVisaCount(resourcesWithValidVisa.length);
     setResourceExitEmployeesCount(resourceExitEmployees.length);
 
@@ -208,9 +218,11 @@ function DashboardData(props) {
         data = employeeData.filter(item => item["Employee Status"] === "Active");
         break;
       case "Exit":
+        console.log("$$$$$$",selectedTimeRange);
         if (selectedTimeRange) {
-          filterByTimeRange(selectedTimeRange);
-          return;
+          // filterByTimeRange(selectedTimeRange);
+          data = employeeData.filter(item => item["Employee Status"] === "Exit");
+          // return;
         } else {
           data = employeeData.filter(item => item["Employee Status"] === "Exit");
         }
@@ -343,9 +355,12 @@ function DashboardData(props) {
     if (!fromDateCode || !toDateCode) return;
 
     try {
+      
       const response = await axios.get("http://localhost:3004/fetchbydate", {
+
         params: { fromDate: fromDateCode, toDate: toDateCode }
       });
+      console.log("$$$$$$$$$$$$$$$$$$",response.data);
       dispatch(setdata(response.data));
       dispatch(setSelectedData(response.data));
       setEmployeeData(response.data);
@@ -358,7 +373,7 @@ function DashboardData(props) {
 
   const boxes = [
     { title: "Total Employees", value: employeeData.length - resourseExitEmployeesCount, color: "#0A2342" },
-    { title: "Total Customers", value: customerCount, color: "#0A2342" },
+    { title: "Total Clients", value: customerCount, color: "#0A2342" },
     { title: "Active Employee Count", value: activeEmployeeCount, color: "#0A2342" },
     { title: "Resources with Valid Visa", value: resourceWithValidVisaCount, color: "#0A2342" },
     { title: "Exit", value: resourseExitEmployeesCount, color: "#0A2342" },

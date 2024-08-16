@@ -44,21 +44,43 @@ const Talentpool = () => {
     }
   };
 
+  // const prepareBandData = (data) => {
+  //   const bandCount = data.reduce((acc, item) => {
+  //     const band = item.Band;
+  //     acc[band] = (acc[band] || 0) + 1;
+  //     return acc;
+  //   }, {});
+
+  //   const formattedData = Object.entries(bandCount).map(([band, count]) => ({
+  //     band,
+  //     count
+  //   }));
+
+  //   setBandData(formattedData);
+  // };
+
   const prepareBandData = (data) => {
-    const bandCount = data.reduce((acc, item) => {
+    // Filter data to include only active resources (Serving Notice + Active TP Resource)
+    const activeData = data.filter(item => {
+      const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
+      return tpStatus === 'serving notice' || tpStatus === 'active tp resource';
+    });
+  
+    // Count the number of active resources per band
+    const bandCount = activeData.reduce((acc, item) => {
       const band = item.Band;
       acc[band] = (acc[band] || 0) + 1;
       return acc;
     }, {});
-
-    const formattedData = Object.entries(bandCount).map(([band, count]) => ({
-      band,
-      count
-    }));
-
+  
+    // Convert bandCount object to an array and sort by the count in descending order
+    const formattedData = Object.entries(bandCount)
+      .map(([band, count]) => ({ band, count }))
+      .sort((a, b) => b.count - a.count);
+  
     setBandData(formattedData);
   };
-
+  
   const prepareSkillData = (data) => {
     const bandSkillCount = {};
 
@@ -112,35 +134,47 @@ const Talentpool = () => {
   };
 
   const calculateCounts = (data) => {
+    data.forEach(item => {
+      console.log('TP Status:', item['TP Status']); // Log TP Status for debugging
+    });
+  
     const activeResources = data.filter(item => {
       const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
-      return tpStatus === 'active resource';
+      return tpStatus === 'active tp resource'; // Ensure the status is correctly compared
     }).length;
-
+  
     const servingNotice = data.filter(item => {
       const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
-      return tpStatus === 'serving notice';
+      return tpStatus === 'serving notice'; // Ensure the status is correctly compared
     }).length;
-
+  
     const maternityLeave = data.filter(item => {
       const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
       return tpStatus === 'maternity leave';
     }).length;
-
+  
     const futureAllocation = data.filter(item => {
       const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
       return tpStatus === 'future allocation';
     }).length;
-
-    const totalBillable = activeResources + servingNotice + maternityLeave + futureAllocation;
-
-    setActiveResourceCount(activeResources);
+  
+    // Combine active resources and serving notice counts
+    const totalActiveResources = activeResources + servingNotice;
+  
+    const totalBillable = totalActiveResources + maternityLeave + futureAllocation;
+  
+    console.log('Active Resources Count:', activeResources);
+    console.log('Serving Notice Count:', servingNotice);
+    console.log('Total Active Resources:', totalActiveResources);
+  
+    setActiveResourceCount(totalActiveResources); // Update this to combined count
     setServingNoticeCount(servingNotice);
     setMaternityLeaveCount(maternityLeave);
     setFutureAllocationCount(futureAllocation);
     setTotalBillableResourceCount(totalBillable);
   };
-
+  
+  
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -252,9 +286,9 @@ const Talentpool = () => {
           marginBottom: "20px", // Added margin-bottom for spacing
         }}
       >
-        <Paper elevation={3} sx={chartBoxStyle}>
-          {skillData.length > 0 && <SkillGroupTalentpool data={uploadedData} />} {/* Passing the whole uploadedData */}
-        </Paper>
+        {/* <Paper elevation={3} sx={chartBoxStyle}>
+          {skillData.length > 0 && <SkillGroupTalentpool data={uploadedData} />} Passing the whole uploadedData
+        </Paper> */}
         <Paper elevation={3} sx={chartBoxStyle}>
           {locationData.length > 0 && <LocationChartTalentpool data={locationData} />}
         </Paper>
