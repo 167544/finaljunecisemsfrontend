@@ -98,6 +98,9 @@ const PyramidGraph = ({ isDataUploaded, isLoadedFromDynamicEmp }) => {
 
         const middleX = width / 2;
 
+        // Step 1: Use the updated blue color
+        const fillColor = '#1A3E59'; // Deep blue color for the bars
+
         svg.selectAll('.bar')
             .data(sortedData)
             .enter().append('rect')
@@ -106,7 +109,7 @@ const PyramidGraph = ({ isDataUploaded, isLoadedFromDynamicEmp }) => {
             .attr('y', d => y(d.band))
             .attr('width', d => x(d.total))
             .attr('height', y.bandwidth())
-            .attr('fill', '#0A2342')
+            .attr('fill', fillColor) // Apply the blue color
             .attr('stroke', '#FFFFFF')
             .attr('stroke-width', 2)
             .style('cursor', 'pointer')

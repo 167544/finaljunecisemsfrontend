@@ -14,7 +14,11 @@ const ManageTalentPool = () => {
   const fetchTalentpoolData = async () => {
     try {
       const response = await axios.get('http://localhost:3004/talent');
-      setUploadedData(response.data);
+      // Filter the data to include only specific statuses
+      const filteredData = response.data.filter((item) =>
+        ["Serving Notice", "Active TP Resource", "Maternity Leave"].includes(item['TP Status'])
+      );
+      setUploadedData(filteredData);
     } catch (error) {
       console.error('Error fetching talent pool data:', error);
     }

@@ -47,7 +47,7 @@ const MapRepresentation = () => {
 
   const getCountsByCountry = () => {
     const counts = {};
-    console.log("Data to process:", data);
+    // console.log("Data to process:", data);
     
     // Filter out "Exit" employees
     const activeEmployees = data.filter(item => item['Employee Status'] !== 'Exit');
@@ -57,9 +57,9 @@ const MapRepresentation = () => {
       const gender = item.Gender;
 
       // Detailed logging for each item
-      console.log(`Processing item ${index}:`, item);
+      // console.log(`Processing item ${index}:`, item);
       if (country === undefined || gender === undefined) {
-        console.log("Undefined fields found in item:", item);
+        // console.log("Undefined fields found in item:", item);
       }
 
       if (!counts[country]) {
@@ -75,10 +75,10 @@ const MapRepresentation = () => {
       }
 
       // Log the count for the current country
-      console.log(`Counts for ${country}:`, counts[country]);
+      // console.log(`Counts for ${country}:`, counts[country]);
     });
 
-    console.log("Counts by country after processing:", counts);
+    // console.log("Counts by country after processing:", counts);
 
     return Object.entries(counts).map(([country, count]) => ({
       _id: country,
@@ -89,7 +89,7 @@ const MapRepresentation = () => {
   };
 
   useEffect(() => {
-    console.log("Data from Redux:", data);
+    // console.log("Data from Redux:", data);
     setCountryCount(getCountsByCountry());
     fetch("https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson")
       .then((response) => response.json())
@@ -136,7 +136,7 @@ const MapRepresentation = () => {
       const bounds = L.latLngBounds(
         countryCount.map((country) => {
           const coordinates = findCountryCoordinates(country._id);
-          console.log(`Coordinates for ${country._id}:`, coordinates);
+          // console.log(`Coordinates for ${country._id}:`, coordinates);
           if (coordinates) {
             return [coordinates.latitude, coordinates.longitude];
           }
@@ -155,7 +155,7 @@ const MapRepresentation = () => {
   }, [countryCount]);
 
   useEffect(() => {
-    console.log("Country counts:", countryCount);
+    // console.log("Country counts:", countryCount);
   }, [countryCount]);
 
   return (

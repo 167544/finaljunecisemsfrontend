@@ -5,9 +5,13 @@ import { Box } from "@mui/material";
 const UploadTalentpool = ({ uploadedData }) => {
   if (!uploadedData || uploadedData.length === 0) return null;
 
+  // Filter the uploadedData to only include "Serving Notice" or "Active TP Resource"
+  const filteredData = uploadedData.filter((row) => {
+    const tpStatus = row["TP Status"] ? row["TP Status"].trim().toLowerCase() : "";
+    return tpStatus === "serving notice" || tpStatus === "active tp resource";
+  });
+
   const initialColumns = [
-    // { field: '_id', headerName: 'ID', width: 150 },
-    // { field: 'Sno', headerName: 'Sno', width: 100 },
     { field: 'UID', headerName: 'UID', width: 100 },
     { field: 'Employee Name', headerName: 'Employee Name', width: 150 },
     { field: 'Band', headerName: 'Band', width: 100 },
@@ -37,7 +41,7 @@ const UploadTalentpool = ({ uploadedData }) => {
 
   const [columns, setColumns] = useState(initialColumns);
 
-  const rows = uploadedData.map((row, index) => ({
+  const rows = filteredData.map((row, index) => ({
     id: index,
     ...row,
   }));
@@ -55,26 +59,12 @@ const UploadTalentpool = ({ uploadedData }) => {
 
   return (
     <Box
-      m="20px 0"
-      height="600px"
       sx={{
+        height: "600px", // Ensure the height is set to avoid any extra background
+        borderRadius: "10px", // Only one layer with border-radius
+        backgroundColor: "#0A2342", // Set background color to your desired color
         "& .MuiDataGrid-root": {
           border: "1px solid #0A2342",
-          "&::-webkit-scrollbar": {
-            width: "8px",
-            height: "8px",
-          },
-          "&::-webkit-scrollbar-track": {
-            background: "#f1f1f1",
-            borderRadius: "10px",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            background: "#081C34",
-            borderRadius: "10px",
-          },
-          "&::-webkit-scrollbar-thumb:hover": {
-            background: "#061524",
-          },
         },
         "& .MuiDataGrid-cell": {
           borderBottom: "1px solid #0A2342",
@@ -82,7 +72,6 @@ const UploadTalentpool = ({ uploadedData }) => {
         },
         "& .MuiDataGrid-columnHeaders": {
           backgroundColor: "#0A2342",
-          borderBottom: "1px solid #0A2342",
           color: "white",
           height: "70px",
           padding: "20px",
@@ -96,48 +85,17 @@ const UploadTalentpool = ({ uploadedData }) => {
           borderTop: "1px solid #0A2342",
           backgroundColor: "#0A2342",
           color: "white",
-          borderRadius: "0 0 5px 5px",
           marginTop: "20px",
         },
         "& .MuiCheckbox-root": {
           color: `#0A2342  !important`,
         },
-        "& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar": {
-          color: "white !important",
-        },
-        "& .css-1hgjne-MuiButtonBase-root-MuiIconButton-root.Mui-disabled": {
-          color: "grey !important",
-        },
-        "& .MuiDataGrid-cell .MuiDataGrid-cell--textLeft": {
-          color: "white !important",
-        },
         "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-          color: `white !important`,
-        },
-        "& .css-zz4ezo .MuiDataGrid-footerContainer": {
-          borderRadius: "5px",
-        },
-        "& .MuiDataGrid-toolbarContainer button": {
           color: "white !important",
         },
         "& .MuiDataGrid-toolbarContainer": {
           backgroundColor: "#0A2342",
           color: "white !important",
-        },
-        "& .MuiDataGrid-virtualScroller::-webkit-scrollbar": {
-          width: "8px",
-          height: "8px",
-        },
-        "& .MuiDataGrid-virtualScroller::-webkit-scrollbar-track": {
-          background: "#f1f1f1",
-          borderRadius: "10px",
-        },
-        "& .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb": {
-          background: "#081C34",
-          borderRadius: "10px",
-        },
-        "& .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb:hover": {
-          background: "#061524",
         },
       }}
     >

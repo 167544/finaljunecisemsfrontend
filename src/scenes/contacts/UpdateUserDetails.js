@@ -189,10 +189,26 @@ function UpdateUserDetails({ id, lastUpdatedDate, handleUpdate }) {
 
       if (response.status === 200) {
         // Fetch updated data
-        const fetchDataResponse = await axios.get('http://localhost:3004/fetchdata');
+        // const fetchDataResponse = await axios.get('http://localhost:3004/fetchdata');
+        // let filteredEmployees = []
+        // // if (fetchDataResponse.data.length > 0 ){
+        // //   // filteredEmployees = fetchDataResponse.data.filter(emp)
+
+        // // }
+        const username = localStorage.getItem("name");
+      let responseData;
+
+      if (localStorage.getItem("UserRole") === "Admin") {
+        const axiosResponse = await axios.get(`http://localhost:3004/getMangersOFEmployee/${username}`);
+        responseData = axiosResponse.data;
+      } else {
+        const axiosResponse = await axios.get("http://localhost:3004/fetchdata");
+        responseData = axiosResponse.data;
+
+      }
 
         // Dispatch the fetched data
-        dispatch(setdata(fetchDataResponse.data));
+        dispatch(setdata(responseData));
 
         alert("Updated successfully");
         toggle(); // Close modal after submission

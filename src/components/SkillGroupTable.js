@@ -1,79 +1,69 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import setSelectedData from '../actions/setSetlecteddata';
 
-const ResourceType = ({ isDataUploaded }) => {
-  const data = useSelector((state) => state.selectedData);
+const SkillGroupTable = ({ skillData }) => {
   const dispatch = useDispatch();
 
-  // Step 1: Define the color scheme with the new blue color
   const colors = {
     backgroundColor: '#0A2342',
     headingColor: '#ffffff',
     scrollbarTrack: '#0A2342',
-    scrollbarThumb: '#1A3E59', // Updated deep blue color from the image
+    scrollbarThumb: '#1A3E59',
     scrollbarThumbHover: '#39FF14',
     tableHeaderBackground: '#102E4A',
-    tableHeaderColor: '#1A3E59', // Updated deep blue color
+    tableHeaderColor: '#ffffff', // White color for the header text
     tableRowEvenBackground: '#0A2342',
     tableRowHoverBackground: '#102E4A',
-    tableRowHoverColor: '#1A3E59', // Updated deep blue color
+    tableRowHoverColor: '#1A3E59',
     tableCellColor: 'white',
   };
 
-  const graphbox = {
+  const containerStyle = {
     borderRadius: '10px',
-    height: '490px',
-    width: '350px',
+    height: '470px',
+    width: '700px', // Width of the background layer box
     padding: '2rem',
-    boxShadow: '1px 5px 5px',
-    backgroundColor: colors.backgroundColor, // Applied color
+    backgroundColor: colors.backgroundColor, // Main background color
     fontFamily: 'Inter, serif',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center', // Center content vertically
+    alignItems: 'center', // Center content horizontally
     position: 'relative',
   };
 
   const headingStyle = {
     fontSize: '2rem',
-    color: colors.headingColor, // Applied color
+    color: colors.headingColor,
     textAlign: 'center',
     marginBottom: '2rem',
   };
 
-  const getCountsByResource = () => {
-    const counts = {};
-    data.forEach((item) => {
-      const resource = item.Client;
-      const status = item['Employee Status'];
-      if (resource && status !== 'Exit') { // Exclude "Exit" status
-        counts[resource] = counts[resource] ? counts[resource] + 1 : 1;
-      }
-    });
-    return Object.entries(counts)
-      .map(([resource, count]) => ({ _id: resource, count }))
-      .sort((a, b) => b.count - a.count); // Sort by count in descending order
-  };
+  // Sort the skillData in alphabetical order by skillGroup
+  const sortedSkillData = [...skillData].sort((a, b) => {
+    return a.skillGroup.localeCompare(b.skillGroup);
+  });
 
-  const resourceCounts = useMemo(() => getCountsByResource(), [data]);
-
-  const handleRowClick = (resource) => {
-    const filteredData = data.filter(item => item.Client === resource && item['Employee Status'] !== 'Exit');
+  const handleRowClick = (skillGroup) => {
+    const filteredData = skillData.filter(item => item.skillGroup === skillGroup);
     dispatch(setSelectedData(filteredData));
   };
 
-  if (!data || data.length === 0) {
+  if (!sortedSkillData || sortedSkillData.length === 0) {
     return <div style={headingStyle}>No data available</div>;
   }
 
   return (
-    <div className="m-2" style={graphbox}>
+    <div style={containerStyle}>
       <style>{`
         .table-container {
           overflow-y: auto;
-          max-height: 450px;
+          max-height: 100%; /* Ensure the table container takes full height */
+          width: 100%; /* Ensure it takes the full width of the container */
+          display: flex; /* Center table */
+          align-items: center; /* Center table vertically */
+          justify-content: center; /* Center table horizontally */
         }
         
         .table-container::-webkit-scrollbar {
@@ -95,8 +85,9 @@ const ResourceType = ({ isDataUploaded }) => {
         }
         
         .custom-table {
-          width: 100%;
+          width: 100%; /* Ensure the table takes the full width of the container */
           border-collapse: collapse;
+          margin: 0 auto; /* Center table horizontally */
         }
         
         .custom-table th,
@@ -107,7 +98,7 @@ const ResourceType = ({ isDataUploaded }) => {
         
         .custom-table th {
           background-color: ${colors.tableHeaderBackground};
-          color: ${colors.tableHeaderColor};
+          color: ${colors.tableHeaderColor}; /* White header text */
         }
         
         .custom-table td {
@@ -126,20 +117,20 @@ const ResourceType = ({ isDataUploaded }) => {
           color: ${colors.tableRowHoverColor};
         }
       `}</style>
-      <h1 style={headingStyle}>Clients</h1>
+      <h1 style={headingStyle}>Skill Groups</h1>
       <div className="table-container">
         <table className="custom-table">
           <thead>
             <tr>
-              <th>Client</th>
+              <th>Skill Group</th>
               <th>Count</th>
             </tr>
           </thead>
           <tbody>
-            {resourceCounts.map((resource, index) => (
-              <tr key={index} onClick={() => handleRowClick(resource._id)} style={{ cursor: 'pointer' }}>
-                <td>{resource._id}</td>
-                <td>{resource.count}</td>
+            {sortedSkillData.map((skill, index) => (
+              <tr key={index} onClick={() => handleRowClick(skill.skillGroup)} style={{ cursor: 'pointer' }}>
+                <td>{skill.skillGroup}</td>
+                <td>{skill.count}</td>
               </tr>
             ))}
           </tbody>
@@ -149,4 +140,4 @@ const ResourceType = ({ isDataUploaded }) => {
   );
 };
 
-export default ResourceType;
+export default SkillGroupTable;

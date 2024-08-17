@@ -4,7 +4,7 @@ import { Box, Typography, Paper } from "@mui/material";
 import UploadTalentpool from "../../components/UploadTalentpool";
 import BandGraphComponenttalentpool from "../../components/BarChartComponenttalentpool";
 import PieChartTalentpoolComponent from "../../components/PieChartTalentpoolComponent";
-import SkillGroupTalentpool from "../../components/SkillGroupTalentpool";
+import SkillGroupTable from "../../components/SkillGroupTable"; 
 import LocationChartTalentpool from "../../components/LocationChartTalentpool";
 import * as XLSX from 'xlsx';
 
@@ -21,6 +21,8 @@ const Talentpool = () => {
   const [maternityLeaveCount, setMaternityLeaveCount] = useState(0);
   const [futureAllocationCount, setFutureAllocationCount] = useState(0);
   const [totalBillableResourceCount, setTotalBillableResourceCount] = useState(0);
+  const [pieChartData, setPieChartData] = useState([]);
+
 
   useEffect(() => {
     let userRole = localStorage.getItem("UserRole");
@@ -39,84 +41,96 @@ const Talentpool = () => {
       calculateCounts(data);
       prepareSkillData(data);
       prepareLocationData(data);
+      preparePieChartData(data);  // Call this function to prepare pie chart data
     } catch (error) {
       console.error('Error fetching talent pool data:', error);
     }
   };
 
-  // const prepareBandData = (data) => {
-  //   const bandCount = data.reduce((acc, item) => {
-  //     const band = item.Band;
-  //     acc[band] = (acc[band] || 0) + 1;
-  //     return acc;
-  //   }, {});
-
-  //   const formattedData = Object.entries(bandCount).map(([band, count]) => ({
-  //     band,
-  //     count
-  //   }));
-
-  //   setBandData(formattedData);
-  // };
-
   const prepareBandData = (data) => {
-    // Filter data to include only active resources (Serving Notice + Active TP Resource)
     const activeData = data.filter(item => {
       const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
       return tpStatus === 'serving notice' || tpStatus === 'active tp resource';
     });
-  
-    // Count the number of active resources per band
+
     const bandCount = activeData.reduce((acc, item) => {
       const band = item.Band;
       acc[band] = (acc[band] || 0) + 1;
       return acc;
     }, {});
-  
-    // Convert bandCount object to an array and sort by the count in descending order
+
     const formattedData = Object.entries(bandCount)
       .map(([band, count]) => ({ band, count }))
       .sort((a, b) => b.count - a.count);
-  
+
     setBandData(formattedData);
   };
-  
+
+  // const prepareSkillData = (data) => {
+  //   const skillGroupCount = {};
+
+  //   data.forEach(row => {
+  //     const skillGroup = row['Skill Group'];
+
+  //     if (typeof skillGroup === 'string') {
+  //       skillGroup.split(',').forEach(skill => {
+  //         const trimmedSkill = skill.trim();
+  //         if (!skillGroupCount[trimmedSkill]) {
+  //           skillGroupCount[trimmedSkill] = 0;
+  //         }
+  //         skillGroupCount[trimmedSkill]++;
+  //       });
+  //     }
+  //   });
+
+  //   const formattedData = Object.entries(skillGroupCount).map(([skillGroup, count]) => ({
+  //     skillGroup,
+  //     count,
+  //   }));
+
+  //   setSkillData(formattedData);
+  // };
+
   const prepareSkillData = (data) => {
-    const bandSkillCount = {};
-
-    data.forEach(row => {
-      const band = row.Band;
+    // Filter data based on TP Status
+    const filteredData = data.filter(item => {
+      const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
+      return tpStatus === 'serving notice' || tpStatus === 'active tp resource';
+    });
+  
+    const skillGroupCount = {};
+  
+    filteredData.forEach(row => {
       const skillGroup = row['Skill Group'];
-
-      if (!bandSkillCount[band]) {
-        bandSkillCount[band] = {};
-      }
-
-      // Check if skillGroup exists and is a string
+  
       if (typeof skillGroup === 'string') {
         skillGroup.split(',').forEach(skill => {
           const trimmedSkill = skill.trim();
-          if (!bandSkillCount[band][trimmedSkill]) {
-            bandSkillCount[band][trimmedSkill] = 0;
+          if (!skillGroupCount[trimmedSkill]) {
+            skillGroupCount[trimmedSkill] = 0;
           }
-          bandSkillCount[band][trimmedSkill]++;
+          skillGroupCount[trimmedSkill]++;
         });
       }
     });
-
-    const formattedData = Object.keys(bandSkillCount).map(band => {
-      const bandData = { band };
-      Object.keys(bandSkillCount[band]).forEach(skill => {
-        bandData[skill] = bandSkillCount[band][skill];
-      });
-      return bandData;
-    });
-
+  
+    const formattedData = Object.entries(skillGroupCount).map(([skillGroup, count]) => ({
+      skillGroup,
+      count,
+    }));
+  
     setSkillData(formattedData);
   };
+  
 
   const prepareLocationData = (data) => {
-    const locationCount = data.reduce((acc, item) => {
+    console.log("LLLLlocation",data.length)
+    const activeData = data.filter(item => {
+      const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
+      return tpStatus === 'serving notice' || tpStatus === 'active tp resource';
+    });
+    console.log("LLLLlocation",activeData.length)
+    const locationCount = activeData.reduce((acc, item) => {
       const city = item.City;
       const band = item.Band;
       if (city && band) {
@@ -133,48 +147,50 @@ const Talentpool = () => {
     setLocationData(formattedLocationData);
   };
 
-  const calculateCounts = (data) => {
-    data.forEach(item => {
-      console.log('TP Status:', item['TP Status']); // Log TP Status for debugging
-    });
+  const preparePieChartData = (data) => {
+    const pieData = [
+      { name: 'Active TP', value: data.filter(item => item['TP Status'] === 'Active TP Resource').length, color: '#0088FE' },
+      { name: 'Serving Notice', value: data.filter(item => item['TP Status'] === 'Serving Notice').length, color: '#00C49F' },
+      { name: 'Maternity Leave', value: data.filter(item => item['TP Status'] === 'Maternity Leave').length, color: '#FFBB28' },
+      { name: 'To be Allocated', value: data.filter(item => item['TP Status'] === 'Future Allocation').length, color: '#FF8042' },
+      { name: 'Exit', value: data.filter(item => item['TP Status'] === 'Exit').length, color: '#A28C88' },
+      { name: 'CIS Allocated', value: data.filter(item => item['TP Status'] === 'CIS Allocated').length, color: '#1F78B4' },
+    ];
+    setPieChartData(pieData);
+  };
+
   
+  const calculateCounts = (data) => {
     const activeResources = data.filter(item => {
       const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
-      return tpStatus === 'active tp resource'; // Ensure the status is correctly compared
+      return tpStatus === 'active tp resource';
     }).length;
-  
+
     const servingNotice = data.filter(item => {
       const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
-      return tpStatus === 'serving notice'; // Ensure the status is correctly compared
+      return tpStatus === 'serving notice';
     }).length;
-  
+
     const maternityLeave = data.filter(item => {
       const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
       return tpStatus === 'maternity leave';
     }).length;
-  
+
     const futureAllocation = data.filter(item => {
       const tpStatus = item['TP Status'] ? item['TP Status'].trim().toLowerCase() : "";
       return tpStatus === 'future allocation';
     }).length;
-  
-    // Combine active resources and serving notice counts
+
     const totalActiveResources = activeResources + servingNotice;
-  
     const totalBillable = totalActiveResources + maternityLeave + futureAllocation;
-  
-    console.log('Active Resources Count:', activeResources);
-    console.log('Serving Notice Count:', servingNotice);
-    console.log('Total Active Resources:', totalActiveResources);
-  
-    setActiveResourceCount(totalActiveResources); // Update this to combined count
+
+    setActiveResourceCount(totalActiveResources);
     setServingNoticeCount(servingNotice);
     setMaternityLeaveCount(maternityLeave);
     setFutureAllocationCount(futureAllocation);
     setTotalBillableResourceCount(totalBillable);
   };
-  
-  
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -199,9 +215,9 @@ const Talentpool = () => {
 
         await uploadDataToDb(jsonData);
         setUploadedData(jsonData);
-        calculateCounts(jsonData); // Calculate counts with the new data
-        prepareSkillData(jsonData); // Prepare skill data with the new data
-        prepareLocationData(jsonData); // Prepare location data with the new data
+        calculateCounts(jsonData);
+        prepareSkillData(jsonData);
+        prepareLocationData(jsonData);
       };
       reader.readAsArrayBuffer(file);
     }
@@ -212,7 +228,7 @@ const Talentpool = () => {
       setIsUploading(true);
       await axios.post("http://localhost:3004/talent", { data });
       setIsUploading(false);
-      fetchTalentpoolData(); // Re-fetch data to update the state and calculations
+      fetchTalentpoolData();
     } catch (error) {
       setIsUploading(false);
       console.error("Error storing data:", error);
@@ -225,7 +241,7 @@ const Talentpool = () => {
         Talent Pool
       </Typography>
       {isSuperAdmin && (
-        <Box mb="20px"> {/* Added margin-bottom to create space between file input and tiles */}
+        <Box mb="20px">
           <input type="file" accept=".xlsx,.xls,.csv" onChange={handleFileChange} />
           {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </Box>
@@ -237,7 +253,7 @@ const Talentpool = () => {
           alignItems: "center",
           flexWrap: "nowrap",
           gap: "20px",
-          marginBottom: "20px", // Added margin-bottom to space between tiles and band graph
+          marginBottom: "20px",
         }}
       >
         <Paper elevation={3} sx={tileStyle}>
@@ -267,14 +283,17 @@ const Talentpool = () => {
           justifyContent: "space-between",
           alignItems: "flex-start",
           gap: "20px",
-          marginBottom: "20px", // Added margin-bottom for spacing
+          marginBottom: "20px",
         }}
       >
         <Paper elevation={3} sx={chartBoxStyle}>
           {bandData.length > 0 && <BandGraphComponenttalentpool bandData={bandData} />}
         </Paper>
+        {/* <Paper elevation={3} sx={chartBoxStyle}>
+          <PieChartTalentpoolComponent />
+        </Paper> */}
         <Paper elevation={3} sx={chartBoxStyle}>
-          <PieChartTalentpoolComponent /> {/* Added PieChartTalentpoolComponent */}
+          <PieChartTalentpoolComponent data={pieChartData} />  {/* Pass pieChartData as prop */}
         </Paper>
       </Box>
       <Box
@@ -283,15 +302,18 @@ const Talentpool = () => {
           justifyContent: "space-between",
           alignItems: "flex-start",
           gap: "20px",
-          marginBottom: "20px", // Added margin-bottom for spacing
+          marginBottom: "20px",
         }}
       >
-        {/* <Paper elevation={3} sx={chartBoxStyle}>
-          {skillData.length > 0 && <SkillGroupTalentpool data={uploadedData} />} Passing the whole uploadedData
-        </Paper> */}
         <Paper elevation={3} sx={chartBoxStyle}>
           {locationData.length > 0 && <LocationChartTalentpool data={locationData} />}
         </Paper>
+        <Paper elevation={3} sx={chartBoxStyle}>
+          {skillData.length > 0 && <SkillGroupTable skillData={skillData} />}
+        </Paper>
+
+        
+
       </Box>
       <UploadTalentpool uploadedData={uploadedData} />
     </Box>
@@ -306,7 +328,7 @@ const tileStyle = {
   textAlign: "center",
   minWidth: "150px",
   flex: "1",
-  boxShadow: "0 10px 20px rgba(0, 0, 0, 0.15)", // Increased shadow effect
+  boxShadow: "0 10px 20px rgba(0, 0, 0, 0.15)",
 };
 
 const tileHeaderStyle = {

@@ -111,7 +111,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
           color: #00E5FF;
         }
       `}</style>
-      <h1 style={headingStyle}>Category Graph</h1>
+      <h1 style={headingStyle}> Skill Category </h1>
       <div className="table-container">
         <table className="custom-table">
           <thead>

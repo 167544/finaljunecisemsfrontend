@@ -183,24 +183,49 @@ function DashboardData(props) {
   };
 
   const filterByTimeRange = useCallback((range) => {
-    const now = new Date();
-    let fromDate, toDate;
+    const now = new Date(); // Current date and time
+let fromDate, toDate;
 
-    toDate = now; // Current date as the "to" date
+toDate = new Date(now); // Copy of current date as the "to" date
 
-    if (range === "1 month") {
-      fromDate = new Date(now.setMonth(now.getMonth() - 1));
-      console.log("1 month exit ############################");
-    } else if (range === "3 months") {
-      fromDate = new Date(now.setMonth(now.getMonth() - 3));
-      console.log("3 months exit ############################");
-    } else if (range === "6 months") {
-      fromDate = new Date(now.setMonth(now.getMonth() - 6));
-      console.log("6 months exit ############################");
-    }
+if (range === "1 month") {
+  fromDate = new Date(now); // Create a copy of now
+  fromDate.setMonth(fromDate.getMonth() - 1);
+  console.log("1 month exit ############################");
+} else if (range === "3 months") {
+  fromDate = new Date(now); // Create a copy of now
+  fromDate.setMonth(fromDate.getMonth() - 3);
+  console.log("3 months exit ############################");
+} else if (range === "6 months") {
+  fromDate = new Date(now); // Create a copy of now
+  fromDate.setMonth(fromDate.getMonth() - 6);
+  console.log("6 months exit ############################");
+}
+
+
+    // const now = new Date();
+    // let fromDate, toDate;
+
+    // toDate = now; // Current date as the "to" date
+
+    // if (range === "1 month") {
+    //   fromDate = new Date(now.setMonth(now.getMonth() - 1));
+    //   console.log("1 month exit ############################");
+    // } else if (range === "3 months") {
+    //   fromDate = new Date(now.setMonth(now.getMonth() - 3));
+    //   console.log("3 months exit ############################");
+    // } else if (range === "6 months") {
+    //   fromDate = new Date(now.setMonth(now.getMonth() - 6));
+    //   console.log("6 months exit ############################");
+    // }
 
     const fromDateCode = convertToNumericDate(fromDate);
     const toDateCode = convertToNumericDate(toDate);
+console.log("from date ",fromDateCode)
+console.log("to date ",toDateCode)
+console.log("to  ",toDate)
+console.log("from  ",fromDate)
+
 
     setFromDateCode(fromDateCode);
     setToDateCode(toDateCode);
@@ -220,9 +245,9 @@ function DashboardData(props) {
       case "Exit":
         console.log("$$$$$$",selectedTimeRange);
         if (selectedTimeRange) {
-          // filterByTimeRange(selectedTimeRange);
-          data = employeeData.filter(item => item["Employee Status"] === "Exit");
-          // return;
+          filterByTimeRange(selectedTimeRange);
+         // data = employeeData.filter(item => item["Employee Status"] === "Exit");
+          return;
         } else {
           data = employeeData.filter(item => item["Employee Status"] === "Exit");
         }
@@ -355,7 +380,7 @@ function DashboardData(props) {
     if (!fromDateCode || !toDateCode) return;
 
     try {
-      
+      console.log('((((((((',fromDateCode,toDateCode);
       const response = await axios.get("http://localhost:3004/fetchbydate", {
 
         params: { fromDate: fromDateCode, toDate: toDateCode }

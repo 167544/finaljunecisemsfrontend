@@ -1,41 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup, Form, Input, Label } from 'reactstrap';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import setdata from '../actions';
 
-const initialColumns = [
-  { field: 'UID', headerName: 'UID', width: 100 },
-  { field: 'Employee Name', headerName: 'Employee Name', width: 150 },
-  { field: 'Band', headerName: 'Band', width: 100 },
-  { field: 'UST Joining Date', headerName: 'UST Joining Date', width: 150 },
-  { field: 'City', headerName: 'City', width: 100 },
-  { field: 'TP Start Date', headerName: 'TP Start Date', width: 150 },
-  { field: 'TP Status', headerName: 'TP Status', width: 150 },
-  { field: 'Cost $/Day', headerName: 'Cost $/Day', width: 100 },
-  { field: 'CTC (LPA)', headerName: 'CTC (LPA)', width: 100 },
-  { field: 'Total Years Of experience', headerName: 'Total Years Of experience', width: 200 },
-  { field: 'Skill Group', headerName: 'Skill Group', width: 150 },
-  { field: 'TP Comments', headerName: 'TP Comments', width: 200 },
-  { field: 'Aging', headerName: 'Aging', width: 100 },
-  { field: 'Contact Number', headerName: 'Contact Number', width: 150 },
-  { field: 'Previous Account', headerName: 'Previous Account', width: 200 },
-  { field: 'Previous Manager', headerName: 'Previous Manager', width: 200 },
-  { field: 'POC', headerName: 'POC', width: 100 },
-  { field: 'Opp 1- Account', headerName: 'Opp 1- Account', width: 150 },
-  { field: 'Feedabck', headerName: 'Feedabck', width: 150 },
-  { field: 'Opp 2- Account', headerName: 'Opp 2- Account', width: 150 },
-  { field: 'Feedabck_1', headerName: 'Feedabck 1', width: 150 },
-  { field: 'Opp 3- Account', headerName: 'Opp 3- Account', width: 150 },
-  { field: 'Feedabck_2', headerName: 'Feedabck 2', width: 150 },
-  { field: 'Opp 4- Account', headerName: 'Opp 4- Account', width: 150 },
-  { field: 'Feedabck_3', headerName: 'Feedabck 3', width: 150 },
-];
-
-function UpdateTalentpoolUserDetails({ id, handleUpdate }) {
+function UpdateTalentpoolUserDetails({ id, lastUpdatedDate, handleUpdate }) {
   const [modal, setModal] = useState(false);
   const [formData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [clickedCell, setClickedCell] = useState(null);
+  const empData = useSelector((state) => state.Empdata);
+  const dispatch = useDispatch();
+
+  const [disabledDateColumns, setDisabledDateColumns] = useState([]);
 
   const toggle = () => setModal(!modal);
+
+  const columnNames = [
+    'UID',
+    'Employee Name',
+    'Band',
+    'UST Joining Date',
+    'City',
+    'TP Start Date',
+    'TP Status',
+    'Cost $/Day',
+    'CTC (LPA)',
+    'Total Years Of experience',
+    'Skill Group',
+    'TP Comments',
+    'Aging',
+    'Contact Number',
+    'Previous Account',
+    'Previous Manager',
+    'POC',
+    'Opp 1- Account',
+    'Feedback',
+    'Opp 2- Account',
+    'Feedback_1',
+    'Opp 3- Account',
+    'Feedback_2',
+    'Opp 4- Account',
+    'Feedback_3',
+  ];
+
+  const dropdownColumns = ['TP Status'];
+
+  const dropDownOptions = {
+    'TP Status': [
+      'Exit',
+      'CIS Allocated',
+      'Maternity Leave',
+      'Active TP Resource',
+      'Serving Notice',
+    ],
+  };
+
+  const disabledColumns = [
+    'UID',
+    'Employee Name',
+    'Band',
+    'UST Joining Date',
+    'City',
+    'TP Start Date',
+    'Cost $/Day',
+    'CTC (LPA)',
+    'Total Years Of experience',
+    'Contact Number',
+  ];
 
   useEffect(() => {
     if (modal && id) {
@@ -45,57 +77,108 @@ function UpdateTalentpoolUserDetails({ id, handleUpdate }) {
 
   const fetchData = async (employeeId) => {
     try {
-      const response = await axios.get(`http://localhost:3004/talentpool/details/${employeeId}`);
-      if (response.status === 200 && response.data.length > 0) {
-        setFormData(response.data[0]); // Access the first element in the array
-        setIsLoading(false);
-      } else {
-        console.error('Error fetching data or no data found');
-      }
+        const response = await axios.get(`http://localhost:3004/talentpool/details/${employeeId}`);
+        if (response.status === 200 && response.data.length > 0) {
+            setFormData(response.data[0]);
+            setIsLoading(false);
+        } else {
+            console.error('No data found for this UID');
+        }
     } catch (error) {
-      console.error('Error:', error);
+        console.error('Error:', error);
     }
-  };
+};
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevFormData => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await handleUpdateTalentPool(id, formData); // Call the handleUpdateTalentPool function
-    toggle(); // Close the modal after submission
+    console.log('Form Data being submitted:', formData);  // Debugging log
+
+    try {
+        const response = await axios.put(`http://localhost:3004/talentpoolupdate/${formData['UID']}`, formData);
+        if (response.status === 200) {
+            console.log('Update successful:', response.data);
+            const fetchDataResponse = await axios.get('http://localhost:3004/talentpool/details');  // Fetch all records
+            dispatch(setdata(fetchDataResponse.data));  // Update the Redux store
+            alert('Updated successfully');
+            toggle();
+        } else {
+            console.error('Error updating the data:', response.status);
+        }
+    } catch (error) {
+        console.error('Error:', error);  // Log any errors
+    }
+};
+
+  
+  
+  const fetchButtonColor = () => {
+    const now = new Date();
+    const diffMilliSecs = now - new Date(lastUpdatedDate);
+    const diffDays = Math.round(diffMilliSecs / (1000 * 60 * 60 * 24));
+
+    const standardColors = {
+      green: '#2E7D32', // Very dark green
+      yellow: '#FF8F00', // Very dark yellow
+      red: '#C62828', // Very dark red
+    };
+
+    if (diffDays < 30) return standardColors.green;
+    if (diffDays < 60) return standardColors.yellow;
+    else return standardColors.red;
   };
 
   return (
     <div>
-      <Button onClick={toggle} style={{ backgroundColor: '#0A2342', color: 'white' }}>
+      <Button style={{ backgroundColor: fetchButtonColor(), color: 'black' }} onClick={toggle}>
         Update
       </Button>
 
       <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Update Employee Details</ModalHeader>
+        <ModalHeader toggle={toggle}>Update Talent Pool Details</ModalHeader>
         <ModalBody>
           {isLoading ? (
             <p>Loading...</p>
           ) : (
             <Form onSubmit={handleSubmit}>
-              {initialColumns.map((column, index) => (
-                <FormGroup key={column.field}>
-                  <Label for={column.field}>{column.headerName}</Label>
-                  <Input
-                    id={column.field}
-                    name={column.field}
-                    value={formData[column.field] || ''}
-                    onChange={handleChange}
-                    type={typeof formData[column.field] === 'number' ? 'number' : 'text'}
-                    disabled={index < 5} // Disable the first 5 fields
-                  />
-                </FormGroup>
+              {columnNames.map((columnName) => (
+               <FormGroup key={columnName}>
+               <Label for={columnName}>{columnName}</Label>
+               {dropdownColumns.includes(columnName) ? (
+                 <Input
+                   type="select"
+                   name={columnName}
+                   value={formData[columnName] || ''}
+                   onChange={handleChange}
+                 >
+                   <option value="">Select {columnName}</option>
+                   {dropDownOptions[columnName]?.map((optionValue) => (
+                     <option key={optionValue} value={optionValue}>
+                       {optionValue}
+                     </option>
+                   ))}
+                 </Input>
+               ) : (
+                 <Input
+                   id={columnName}
+                   name={columnName}
+                   placeholder={columnName}
+                   type="text"
+                   value={formData[columnName] || ''}
+                   onChange={handleChange}
+                   disabled={disabledColumns.includes(columnName)}
+                 />
+               )}
+             </FormGroup>
+             
               ))}
               <Button type="submit" color="primary">
                 Update
@@ -112,19 +195,5 @@ function UpdateTalentpoolUserDetails({ id, handleUpdate }) {
     </div>
   );
 }
-
-const handleUpdateTalentPool = async (employeeId, updatedData) => {
-  try {
-    const response = await axios.put(`http://localhost:3004/talentpoolupdate/${employeeId}`, updatedData);
-    if (response.status === 200) {
-      alert("Talent pool data updated successfully");
-      // Refresh data or perform any other actions needed
-    } else {
-      console.error('Error updating talent pool data');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
 
 export default UpdateTalentpoolUserDetails;

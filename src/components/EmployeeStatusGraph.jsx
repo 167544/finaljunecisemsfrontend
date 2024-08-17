@@ -8,7 +8,7 @@ const EmployeeStatusGraph = ({ columnName, isDataUploaded }) => {
 
   const graphbox = {
     borderRadius: '10px',
-    height: '490px',
+    height: '480px',
     width: '350px',
     padding: '2rem',
     boxShadow: '1px 5px 5px',

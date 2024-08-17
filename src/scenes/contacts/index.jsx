@@ -80,10 +80,95 @@ const Contacts = () => {
     handleCloseModal();
   };
 
-  useEffect(() => {
-    const dataWithIds = data.map((row) => ({ id: row._id, ...row }));
-    setManageTeam(dataWithIds);
+  // useEffect(() => {
+  //   const dataWithIds = data.map((row) => ({ id: row._id, ...row }));
+  //   console.log("&&&&&&&&&&&&&&&& is update",isUpdate);
+  //   setManageTeam(dataWithIds);
 
+  //   const initialColumns = [
+  //     { field: "Employee ID", headerName: "Emp ID", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     { field: "Employee Name", headerName: "Emp Name", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     { field: "Band", headerName: "Band", width: 100, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     {
+  //       field: "Resource with Valid VISA",
+  //       headerName: "Resource with Valid VISA",
+  //       width: 200,
+  //       renderCell: (params) => <ScrollableCell value={params.value} />,
+  //       hide: true,
+  //     },
+  //     { field: "Account Name", headerName: "Account Name", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     { field: "Contract Category", headerName: "Contract Category", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true },
+  //     { field: "Country", headerName: "Country", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     { field: "Location Descr", headerName: "Location Descr", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true },
+  //     { field: "Resource Type", headerName: "Resource Type", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     { field: "Manager Name", headerName: "Manager Name", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     { field: "Category", headerName: "Category", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     {
+  //       field: "Primary Skill",
+  //       headerName: "Primary Skill",
+  //       width: 200,
+  //       renderCell: (params) => <ScrollableCell value={params.value} />,
+  //       hideable: false,
+  //     },
+  //     { field: "Skill Level for Primary Skill", headerName: "Primary Skill Level", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true },
+  //     { field: "Secondary Skill", headerName: "Secondary Skill", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     { field: "Skill Category for Secondary Skill", headerName: "Secondary Skill Category", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hide: true},
+  //     { field: "Detailed Skill", headerName: "Detailed Skill", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     { field: "Tertiary Skill", headerName: "Tertiary Skill", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     { field: "Tools Known", headerName: "Tools Known", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
+  //     {
+  //       field: "Last Updated Date",
+  //       headerName: "Last Updated Date",
+  //       width: 200,
+  //       renderCell: (params) => (
+  //         <ScrollableCell value={format(new Date(params.value), "dd/MM/yyyy")} />
+  //       ), hide: true
+  //     },
+  //     {
+  //       field: "Update",
+  //       headerName: "Update",
+  //       width: 150,
+  //       renderCell: (params) => (
+  //         <UpdateUserDetails
+  //           id={params.row ? params.row["Employee ID"] : ""}
+  //           handleUpdate={handleUpdate}
+  //           lastUpdatedDate={params.row["Last Updated Date"]}
+  //           style={{ margin: "10px" }}
+  //         />
+  //       ),
+  //     },
+  //     {
+  //       field: "delete",
+  //       headerName: "Training and Certifications",
+  //       width: 200,
+  //       renderCell: (params) => (
+  //         <MUIButton
+  //           onClick={() => handleOpenModal(params.row)}
+  //           disabled={false}
+  //           sx={{ backgroundColor: "#0A2342", color: "white", "&:hover": { backgroundColor: "#062A5C" } }}
+  //         >
+  //           T and C
+  //         </MUIButton>
+  //       ),
+  //       hide: true
+  //     },
+  //   ];
+
+  //   setColumns(initialColumns);
+  //   console.log("?????????????????????????????????????", data);
+    
+   
+  // }, [data, isUpdate]);
+
+  useEffect(() => {
+    // Filter out employees with Employee Status "Exit"
+    const dataWithIds = data
+      .filter((row) => row["Employee Status"] !== "Exit") // Exclude rows with "Exit" status
+      .map((row) => ({ id: row._id, ...row }));
+  
+    console.log("&&&&&&&&&&&&&&&& is update", isUpdate);
+    setManageTeam(dataWithIds);
+  
     const initialColumns = [
       { field: "Employee ID", headerName: "Emp ID", width: 150, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
       { field: "Employee Name", headerName: "Emp Name", width: 200, renderCell: (params) => <ScrollableCell value={params.value} />, hideable: false },
@@ -152,11 +237,13 @@ const Contacts = () => {
         hide: true
       },
     ];
-
+  
     setColumns(initialColumns);
+    console.log("?????????????????????????????????????", data);
   }, [data, isUpdate]);
-
+  
   const handleUpdate = () => {
+    console.log("++++++++++++++++++++++++", data);
     setIsUpdated((prevState) => prevState + 1);
   };
 
