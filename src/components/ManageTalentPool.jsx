@@ -100,6 +100,7 @@ const ManageTalentPool = () => {
           "& .MuiDataGrid-cell": {
             borderBottom: "1px solid #0A2342",
             color: "white",
+            fontSize: "16px", // Set font size for cells
           },
           "& .MuiDataGrid-columnHeaders": {
             backgroundColor: "#0A2342",
@@ -107,6 +108,7 @@ const ManageTalentPool = () => {
             color: "white",
             height: "70px",
             padding: "20px",
+            fontSize: "16px", // Set font size for headers
             "& .MuiDataGrid-columnHeaderTitle": {
               whiteSpace: "normal",
               lineHeight: "normal",
@@ -119,12 +121,14 @@ const ManageTalentPool = () => {
             color: "white",
             borderRadius: "0 0 5px 5px",
             marginTop: "20px",
+            fontSize: "16px", // Set font size for footer
           },
           "& .MuiCheckbox-root": {
             color: `#0A2342  !important`,
           },
           "& .css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar": {
             color: "white !important",
+            fontSize: "16px", // Set font size for pagination toolbar
           },
           "& .css-1hgjne-MuiButtonBase-root-MuiIconButton-root.Mui-disabled": {
             color: "grey !important",
