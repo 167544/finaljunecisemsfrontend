@@ -46,7 +46,7 @@ const SkillGroupTable = ({ skillData }) => {
   });
 
   const handleRowClick = (skillGroup) => {
-    const filteredData = skillData.filter(item => item.skillGroup === skillGroup);
+    const filteredData = skillData.filter((item) => item.skillGroup === skillGroup);
     dispatch(setSelectedData(filteredData));
   };
 
@@ -116,21 +116,30 @@ const SkillGroupTable = ({ skillData }) => {
         .custom-table tr:hover td {
           color: ${colors.tableRowHoverColor};
         }
+
+        /* Set column widths */
+        .skill-group-column {
+          width: 70%; /* 70% of the table width */
+        }
+
+        .count-column {
+          width: 30%; /* 30% of the table width */
+        }
       `}</style>
       <h1 style={headingStyle}>Skill Groups</h1>
       <div className="table-container">
         <table className="custom-table">
           <thead>
             <tr>
-              <th>Skill Group</th>
-              <th>Count</th>
+              <th className="skill-group-column">Skill Group</th>
+              <th className="count-column">Count</th>
             </tr>
           </thead>
           <tbody>
             {sortedSkillData.map((skill, index) => (
               <tr key={index} onClick={() => handleRowClick(skill.skillGroup)} style={{ cursor: 'pointer' }}>
-                <td>{skill.skillGroup}</td>
-                <td>{skill.count}</td>
+                <td className="skill-group-column">{skill.skillGroup}</td>
+                <td className="count-column">{skill.count}</td>
               </tr>
             ))}
           </tbody>

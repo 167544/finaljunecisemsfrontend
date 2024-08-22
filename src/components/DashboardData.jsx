@@ -401,7 +401,7 @@ console.log("from  ",fromDate)
     { title: "Total Clients", value: customerCount, color: "#0A2342" },
     { title: "Active Employee Count", value: activeEmployeeCount, color: "#0A2342" },
     { title: "Resources with Valid Visa", value: resourceWithValidVisaCount, color: "#0A2342" },
-    { title: "Exit", value: resourseExitEmployeesCount, color: "#0A2342" },
+    { title: "Attrition", value: resourseExitEmployeesCount, color: "#0A2342" },
     { title: "Newly Joined Employees", value: newlyAddedEmployeesCount, color: "#0A2342" },
   ];
 
@@ -454,7 +454,7 @@ console.log("from  ",fromDate)
               {boxes.map((box, index) => (
                 <div
                   key={index}
-                  className={`box-hover ${box.title !== "Exit" ? "box-gap" : ""}`}
+                  className={`box-hover ${box.title !== "Attrition" ? "box-gap" : ""}`}
                   style={{
                     width: "200px",
                     padding: "0.5rem",
@@ -475,7 +475,7 @@ console.log("from  ",fromDate)
                   </h4>
                   <p style={{ color: "white", fontSize: "2rem" }}>{box.value}</p>
 
-                  {box.title === "Exit" ? (
+                  {box.title === "Attrition" ? (
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
                       <style>
                         {`

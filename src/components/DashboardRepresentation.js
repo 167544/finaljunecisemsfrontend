@@ -220,12 +220,28 @@ function DashboardRepresentation(props) {
 
   const handleCellClick = (params) => {
     const clickedField = params.field;
+    const content = params.value;
+
+    // Create a temporary element to measure the content width
+    const tempElement = document.createElement('span');
+    tempElement.style.fontSize = '16px'; // Use the same font size as in the DataGrid
+    tempElement.style.fontFamily = 'Inter, serif'; // Use the same font family as in the DataGrid
+    tempElement.style.visibility = 'hidden'; // Make it invisible
+    tempElement.style.whiteSpace = 'nowrap'; // Prevent wrapping
+    tempElement.innerText = content;
+
+    // Append the element to the body to calculate its width
+    document.body.appendChild(tempElement);
+    const contentWidth = tempElement.offsetWidth + 20; // Get the width and add some padding
+    document.body.removeChild(tempElement); // Remove the temporary element
+
     const updatedColumns = columns.map((column) => {
       if (column.field === clickedField) {
-        return { ...column, width: column.width + 50 }; // Increase width on click
+        return { ...column, width: Math.min(Math.max(column.width, contentWidth), 400) }; // Set width based on content width with a maximum limit of 400px
       }
       return column;
     });
+
     setColumns(updatedColumns);
   };
 

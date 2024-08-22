@@ -14,7 +14,7 @@ import { Typography } from '@mui/material';
 const PieChartTalentpoolComponent = ({ data }) => { // Accept data as prop
   return (
     <div style={{ padding: '1rem', borderRadius: '10px' }}>
-      <Typography variant="h2" style={{ color: 'white', marginBottom: '10px', textAlign: 'center' }}>
+      <Typography variant="h3" style={{ color: 'white', marginBottom: '10px', textAlign: 'center' }}>
         Overall TP Status till date
       </Typography>
       <ResponsiveContainer width="100%" height={400}>

@@ -125,6 +125,18 @@ const ResourceType = ({ isDataUploaded }) => {
         .custom-table tr:hover td {
           color: ${colors.tableRowHoverColor};
         }
+
+        /* Adjust the column widths */
+        .custom-table th:first-child, 
+        .custom-table td:first-child {
+          width: 70%; /* Increase the width of the Client column */
+        }
+
+        .custom-table th:last-child, 
+        .custom-table td:last-child {
+          width: 30%; /* Reduce the width of the Count column */
+          text-align: center; /* Center-align the Count column */
+        }
       `}</style>
       <h1 style={headingStyle}>Clients</h1>
       <div className="table-container">

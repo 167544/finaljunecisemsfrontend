@@ -119,7 +119,7 @@ const EmployeeStatusGraph = ({ columnName, isDataUploaded }) => {
           <thead>
             <tr>
               <th>Employee Status</th>
-              <th>Count</th>
+              <th>#</th>
             </tr>
           </thead>
           <tbody className='text-light'>
