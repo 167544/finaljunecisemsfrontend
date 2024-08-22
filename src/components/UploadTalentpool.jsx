@@ -60,21 +60,23 @@ const UploadTalentpool = ({ uploadedData }) => {
   return (
     <Box
       sx={{
-        height: "600px", // Ensure the height is set to avoid any extra background
-        borderRadius: "10px", // Only one layer with border-radius
-        backgroundColor: "#0A2342", // Set background color to your desired color
+        height: "600px",
+        borderRadius: "10px",
+        backgroundColor: "#0A2342",
         "& .MuiDataGrid-root": {
           border: "1px solid #0A2342",
         },
         "& .MuiDataGrid-cell": {
           borderBottom: "1px solid #0A2342",
           color: "white",
+          fontSize: "16px",  // Set font size to 16px
         },
         "& .MuiDataGrid-columnHeaders": {
           backgroundColor: "#0A2342",
           color: "white",
           height: "70px",
           padding: "20px",
+          fontSize: "16px",  // Set font size to 16px
           "& .MuiDataGrid-columnHeaderTitle": {
             whiteSpace: "normal",
             lineHeight: "normal",
@@ -86,6 +88,7 @@ const UploadTalentpool = ({ uploadedData }) => {
           backgroundColor: "#0A2342",
           color: "white",
           marginTop: "20px",
+          fontSize: "16px",  // Set font size to 16px
         },
         "& .MuiCheckbox-root": {
           color: `#0A2342  !important`,
@@ -96,6 +99,7 @@ const UploadTalentpool = ({ uploadedData }) => {
         "& .MuiDataGrid-toolbarContainer": {
           backgroundColor: "#0A2342",
           color: "white !important",
+          fontSize: "16px",  // Set font size to 16px
         },
       }}
     >

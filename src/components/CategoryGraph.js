@@ -117,7 +117,7 @@ const CategoryGraph = ({ columnnamem, isDataUploaded }) => {
           <thead>
             <tr>
               <th>Category</th>
-              <th>#</th>
+              <th>Count</th>
             </tr>
           </thead>
           <tbody className='text-light'>

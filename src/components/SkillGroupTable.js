@@ -119,11 +119,11 @@ const SkillGroupTable = ({ skillData }) => {
 
         /* Set column widths */
         .skill-group-column {
-          width: 70%; /* 70% of the table width */
+          width: 80%; /* 70% of the table width */
         }
 
         .count-column {
-          width: 30%; /* 30% of the table width */
+          width: 20%; /* 30% of the table width */
         }
       `}</style>
       <h1 style={headingStyle}>Skill Groups</h1>
