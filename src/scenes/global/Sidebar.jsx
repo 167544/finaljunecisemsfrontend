@@ -32,9 +32,13 @@ const Item = ({ title, to, icon, selected, setSelected, onClick }) => {
       onClick={handleClick}
       icon={<Box>{icon}</Box>}
     >
-      <Link to={to} style={{ textDecoration: "none", color: "inherit" }}>
+      {to ? (
+        <Link to={to} style={{ textDecoration: "none", color: "inherit" }}>
+          <Typography>{title}</Typography>
+        </Link>
+      ) : (
         <Typography>{title}</Typography>
-      </Link>
+      )}
     </MenuItem>
   );
 };
@@ -80,8 +84,7 @@ const Sidebar = () => {
     } else if (isAdmin) {
         alert("You are not allowed to enter this page.");
     }
-};
-
+  };
 
   const handleDiversityMetricsClick = () => {
     if (isSuperAdmin) {
@@ -159,7 +162,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-
             <Item
               title="Manage Talent Pool"
               to="/dashboard/manage-talentpool"
@@ -167,10 +169,9 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-
             <Item
               title="Accounts"
-              to="/dashboard/accounts"  // This should match the route in your router
+              to="/dashboard/accounts"
               icon={<GroupsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -203,6 +204,20 @@ const Sidebar = () => {
             >
               <Typography>Finance</Typography>
             </MenuItem>
+
+            {/* New MSR Item */}
+            <Item
+              title="MSR"
+              icon={<GroupsOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+              onClick={() => {
+                window.open(
+                  "https://ustglobal.sharepoint.com/teams/CISEurope/_layouts/15/AccessDenied.aspx?Source=https%3A%2F%2Fustglobal%2Esharepoint%2Ecom%2Fteams%2FCISEurope%2FShared%20Documents%2FForms%2FAllItems%2Easpx%3Fcsf%3D1%26web%3D1%26e%3D29LDqr%26CID%3D1f295990%2Da8f8%2D4ea5%2D81b2%2Ddf5cd9e8a326%26FolderCTID%3D0x012000076BF8184EA8F84BB58CC8DCA0D5AB05%26OR%3DTeams%2DHL%26CT%3D1725871508382%26id%3D%252fteams%252fCISEurope%252fShared%2BDocuments%252fMonthly%2BService%2BReview%26viewid%3Ddeec3ed6%2Dc290%2D4186%2Da3bb%2Db903e67cf312&correlation=3f425ea1%2Dd088%2D3000%2De694%2D5da500b26398&Type=item&name=74a5becb%2Db335%2D4048%2D88b0%2D8572b245fcb4&listItemId=9&listItemUniqueId=e47d3452%2Dca56%2D4580%2Dbb91%2Db3c6854560e2",
+                  "_blank"
+                );
+              }}
+            />
           </Box>
         </Menu>
       </ProSidebar>

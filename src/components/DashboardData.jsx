@@ -57,15 +57,26 @@ function DashboardData(props) {
   const [showRepresentation, setShowRepresentation] = useState(true);
   const [selectedBoxName, setSelectedBoxName] = useState("");
   const [TotalemployeeData, setTotalEmployeeData] = useState(0);
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [newlyJoinedStartDate, setNewlyJoinedStartDate] = useState(null);
-  const [newlyJoinedEndDate, setNewlyJoinedEndDate] = useState(null);
+
+  const [startDate, setStartDate] = useState({
+    exit: false,
+    newlyHire: false
+  });
+  const [endDate, setEndDate] = useState({
+    exit: false,
+    newlyHire: false
+  });
+  const [timeRange, setTimeRange] = useState({exit: "", newlyHire: ""})
+
+  // const [newlyJoinedStartDate, setNewlyJoinedStartDate] = useState(null);
+  // const [newlyJoinedEndDate, setNewlyJoinedEndDate] = useState(null);
 
   const [fromDateCode, setFromDateCode] = useState('');
   const [toDateCode, setToDateCode] = useState('');
   const [newlyJoinedFromDateCode, setNewlyJoinedFromDateCode] = useState('');
   const [newlyJoinedToDateCode, setNewlyJoinedToDateCode] = useState('');
+  const [exitEmployeesInTimeFrame, setExitEmployeesInTimeFrame] = useState(0);
+  const [newEmployeesInTimeFrame, setNewEmployeesInTimeFrame] = useState('');
 
   const handleClientSelect = (selectedClient) => {
     console.log("Selected client:", selectedClient.label); // Debug log
@@ -118,6 +129,114 @@ function DashboardData(props) {
     }
   }, [employeeSelected]);
 
+
+  useEffect(() => {
+    if (!startDate.exit && !startDate.newlyHire && !endDate.exit && !endDate.newlyHire ) {
+      console.log(`Setting default count for exit and new hire`)
+      setExitEmployeesInTimeFrame(resourseExitEmployeesCount);
+      setNewEmployeesInTimeFrame(newlyAddedEmployeesCount)
+      return;
+    }
+
+    console.log("Filtering based on start / end date", employeeData.length)
+
+    let 
+      startDateCodes = {
+        exit: convertToNumericDate(startDate.exit),
+        newlyHire: convertToNumericDate(startDate.newlyHire)
+      },
+      endDateCodes = {
+        exit: convertToNumericDate(endDate.exit),
+        newlyHire: convertToNumericDate(endDate.newlyHire)
+      },
+      timeFilteredExitEmployees,
+      timeFilteredNewEmployees; 
+
+    if (startDate.exit || endDate.exit) {
+      timeFilteredExitEmployees = employeeData.filter(emp => {
+        let startDateValidated = startDateCodes.exit ? (emp["Exit Date"] > startDateCodes.exit) : true;
+        let endDateValidated = endDateCodes.exit ? (emp["Exit Date"] < endDateCodes.exit) : true;
+        return startDateValidated && endDateValidated;
+      })
+    }
+
+    if (startDate.newlyHire || endDate.newlyHire) {
+      timeFilteredNewEmployees = employeeData.filter(emp => {
+        let startDateValidated = startDateCodes.newlyHire ? (emp["Hire Date"] > startDateCodes.newlyHire) : true;
+        let endDateValidated = endDateCodes.newlyHire ? (emp["Hire Date"] < endDateCodes.newlyHire) : true;
+        return startDateValidated && endDateValidated;
+      })
+    }
+
+    if (timeFilteredExitEmployees) setExitEmployeesInTimeFrame(timeFilteredExitEmployees.length);
+    if (timeFilteredNewEmployees) setNewEmployeesInTimeFrame(timeFilteredNewEmployees.length);
+  },[startDate, endDate, employeeData])
+
+
+
+  const handleFromDateChange = (e) => {
+    setStartDate(prevState => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }));
+    setTimeRange(prevState => ({
+      ...prevState,
+      [e.target.name]: ""
+    }));
+  };
+
+  const handleToDateChange = (e) => {
+    setEndDate(prevState => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }));
+    setTimeRange(prevState => ({
+      ...prevState,
+      [e.target.name]: ""
+    }));
+  }
+
+  const handleTimeRangeChange = (e) => {
+    let range = e.target.value
+
+    const now = new Date(); // Current date and time
+    let fromDate, toDate;
+
+    toDate = new Date(now); // Copy of current date as the "to" date
+
+    if (range === "1 month") {
+      fromDate = new Date(now); // Create a copy of now
+      fromDate.setMonth(fromDate.getMonth() - 1);
+      console.log("1 month exit ############################");
+    } else if (range === "3 months") {
+      fromDate = new Date(now); // Create a copy of now
+      fromDate.setMonth(fromDate.getMonth() - 3);
+      console.log("3 months exit ############################");
+    } else if (range === "6 months") {
+      fromDate = new Date(now); // Create a copy of now
+      fromDate.setMonth(fromDate.getMonth() - 6);
+      console.log("6 months exit ############################");
+    }
+
+    setTimeRange(prevState => ({
+      ...prevState,
+      [e.target.name]: range
+    }));
+    setEndDate(prevState => ({
+      ...prevState,
+      [e.target.name]: toDate
+    }));
+    setStartDate(prevState => ({
+      ...prevState,
+      [e.target.name]: fromDate
+    }));
+
+  };
+
+
+
+
+
   const fetchClients = async () => {
     try {
       const response = await axios.get("http://localhost:3004/clients");
@@ -157,7 +276,7 @@ function DashboardData(props) {
     }
   };
 
-  const updateEmployeeStats = (data) => {
+const updateEmployeeStats = (data) => {
     const activeEmployees = data.filter(item => item["Employee Status"] === "Active");
     const customerIDs = [...new Set(data.map(item => item["Customer ID"]))];
     const UniqueClients = [...new Set(data.map(item => item["Client"]))];
@@ -184,23 +303,23 @@ function DashboardData(props) {
 
   const filterByTimeRange = useCallback((range) => {
     const now = new Date(); // Current date and time
-let fromDate, toDate;
+    let fromDate, toDate;
 
-toDate = new Date(now); // Copy of current date as the "to" date
+    toDate = new Date(now); // Copy of current date as the "to" date
 
-if (range === "1 month") {
-  fromDate = new Date(now); // Create a copy of now
-  fromDate.setMonth(fromDate.getMonth() - 1);
-  console.log("1 month exit ############################");
-} else if (range === "3 months") {
-  fromDate = new Date(now); // Create a copy of now
-  fromDate.setMonth(fromDate.getMonth() - 3);
-  console.log("3 months exit ############################");
-} else if (range === "6 months") {
-  fromDate = new Date(now); // Create a copy of now
-  fromDate.setMonth(fromDate.getMonth() - 6);
-  console.log("6 months exit ############################");
-}
+    if (range === "1 month") {
+      fromDate = new Date(now); // Create a copy of now
+      fromDate.setMonth(fromDate.getMonth() - 1);
+      console.log("1 month exit ############################");
+    } else if (range === "3 months") {
+      fromDate = new Date(now); // Create a copy of now
+      fromDate.setMonth(fromDate.getMonth() - 3);
+      console.log("3 months exit ############################");
+    } else if (range === "6 months") {
+      fromDate = new Date(now); // Create a copy of now
+      fromDate.setMonth(fromDate.getMonth() - 6);
+      console.log("6 months exit ############################");
+    }
 
 
     // const now = new Date();
@@ -221,10 +340,10 @@ if (range === "1 month") {
 
     const fromDateCode = convertToNumericDate(fromDate);
     const toDateCode = convertToNumericDate(toDate);
-console.log("from date ",fromDateCode)
-console.log("to date ",toDateCode)
-console.log("to  ",toDate)
-console.log("from  ",fromDate)
+    console.log("from date ",fromDateCode)
+    console.log("to date ",toDateCode)
+    console.log("to  ",toDate)
+    console.log("from  ",fromDate)
 
 
     setFromDateCode(fromDateCode);
@@ -274,29 +393,9 @@ console.log("from  ",fromDate)
     setShowRepresentation(true);
   };
 
-  const handleTimeRangeChange = (e) => {
-    const selectedRange = e.target.value;
-    setSelectedTimeRange(selectedRange);
-    if (selectedBoxName === "Exit") {
-      filterByTimeRange(selectedRange);
-    }
-  };
 
   const handleUSTExpFilter = (filteredData) => {
     setFilteredData(filteredData);
-  };
-
-  const handleNewlyJoinedEmployeesClick = () => {
-    if (newlyJoinedFromDateCode && newlyJoinedToDateCode) {
-      const filteredData = employeeData.filter((item) => {
-        const hireDate = parseInt(item["Hire Date"], 10);
-        return hireDate >= parseInt(newlyJoinedFromDateCode, 10) && hireDate <= parseInt(newlyJoinedToDateCode, 10);
-      });
-      setFilteredData(filteredData);
-      setSelectedBoxName("Newly Joined Employees");
-    } else {
-      alert("Please select both 'From' and 'To' dates for newly joined employees.");
-    }
   };
 
   const resetSelectComponent = () => {
@@ -308,72 +407,15 @@ console.log("from  ",fromDate)
     setSelectedTimeRange(""); // Reset the selected time range
     setSelectedBoxName("");
     setFilteredData(employeeData); // Reset to show all data
-  };
-
-  const handleFromDateChange = (e) => {
-    const newFromDate = e.target.value;
-    setStartDate(newFromDate);
-    const numericDate = convertToNumericDate(newFromDate);
-    setFromDateCode(numericDate);
-  };
-
-  const handleToDateChange = (e) => {
-    const newToDate = e.target.value;
-    setEndDate(newToDate);
-    const numericDate = convertToNumericDate(newToDate);
-    setToDateCode(numericDate);
-  };
-
-  const handleNewlyJoinedFromDateChange = (e) => {
-    const newFromDate = e.target.value;
-    setNewlyJoinedStartDate(newFromDate);
-    const numericDate = convertToNumericDate(newFromDate);
-    setNewlyJoinedFromDateCode(numericDate);
-  };
-
-  const handleNewlyJoinedToDateChange = (e) => {
-    const newToDate = e.target.value;
-    setNewlyJoinedEndDate(newToDate);
-    const numericDate = convertToNumericDate(newToDate);
-    setNewlyJoinedToDateCode(numericDate);
-  };
-
-  const handleFetchNewlyJoinedByDates = () => {
-    if (fromNewJoinDateCode && toNewJoinDateCode) {
-      fetchNewlyJoinedByDates();
-    } else {
-      alert("Please select both 'From' and 'To' dates.");
-    }
-  };
-
-  const fetchNewlyJoinedByDates = async () => {
-    if (!fromNewJoinDateCode || !toNewJoinDateCode) return;
-
-    try {
-      const response = await axios.get(
-        "http://localhost:3004/fetchNewJoinsByDate",
-        {
-          params: { fromDate: fromNewJoinDateCode, toDate: toNewJoinDateCode },
-        }
-      );
-      dispatch(setdata(response.data));
-      dispatch(setSelectedData(response.data));
-      setEmployeeData(response.data);
-      updateEmployeeStats(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const handleFetchByDates = () => {
-    if (selectedTimeRange) {
-      const filteredData = filterByTimeRange(selectedTimeRange);
-      setFilteredData(filteredData);
-    } else if (fromDateCode && toDateCode) {
-      fetchDataByDates();
-    } else {
-      alert("Please select either a Time Range or both 'From' and 'To' dates.");
-    }
+    setStartDate({
+      exit: false,
+      newlyHire: false
+    })
+    setEndDate({
+      exit: false,
+      newlyHire: false
+    })
+    setTimeRange({exit: "", newlyHire: ""})
   };
 
   const fetchDataByDates = async () => {
@@ -401,9 +443,12 @@ console.log("from  ",fromDate)
     { title: "Total Clients", value: customerCount, color: "#0A2342" },
     { title: "Active Employee Count", value: activeEmployeeCount, color: "#0A2342" },
     { title: "Resources with Valid Visa", value: resourceWithValidVisaCount, color: "#0A2342" },
-    { title: "Attrition", value: resourseExitEmployeesCount, color: "#0A2342" },
-    { title: "Newly Joined Employees", value: newlyAddedEmployeesCount, color: "#0A2342" },
   ];
+
+  const boxesWithIndependentDateFilter = [
+    { key: "exit", title: "Attrition", value: exitEmployeesInTimeFrame, color: "#0A2342" },
+    { key: "newlyHire", title: "Newly Joined Employees", value: newEmployeesInTimeFrame, color: "#0A2342" },
+  ]
 
   return (
     <>
@@ -474,139 +519,101 @@ console.log("from  ",fromDate)
                     {box.title}
                   </h4>
                   <p style={{ color: "white", fontSize: "2rem" }}>{box.value}</p>
-
-                  {box.title === "Attrition" ? (
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
-                      <style>
-                        {`
-          input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-          }
-        `}
-                      </style>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                        <span style={{ color: "white", fontSize: "0.8rem" }}>From:</span>
-                        <input
-                          type="date"
-                          name="fromDate"
-                          onChange={handleFromDateChange}
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                            color: "white",
-                            fontSize: "0.8rem",
-                            padding: "0.2rem",
-                          }}
-                          disabled={selectedTimeRange !== ""}
-                        />
-                      </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                        <span style={{ color: "white", fontSize: "0.8rem" }}>To:</span>
-                        <input
-                          type="date"
-                          name="toDate"
-                          onChange={handleToDateChange}
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                            color: "white",
-                            fontSize: "0.8rem",
-                            padding: "0.2rem",
-                          }}
-                          disabled={selectedTimeRange !== ""}
-                        />
-                      </div>
-                      <select
-                        value={selectedTimeRange}
-                        onChange={handleTimeRangeChange}
-                        style={{
-                          height: "35px",
-                          width: "150px",
-                          margin: "5px",
-                          border: "2px solid #ffffff",
-                          backgroundColor: "transparent",
-                          color: "#ffffff",
-                        }}
-                      >
-                        <option value="">Select Time Range</option>
-                        <option value="1 month">1 Month</option>
-                        <option value="3 months">3 Months</option>
-                        <option value="6 months">6 Months</option>
-                      </select>
-                      <div>
-                        <button
-                          onClick={handleFetchByDates}
-                          style={{
-                            backgroundColor: "#0A6E7C",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          Go
-                        </button>
-                      </div>
-                    </div>
-                  ) : null}
-
-                  {box.title === "Newly Joined Employees" ? (
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
-                      <style>
-                        {`
-          input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(1);
-          }
-        `}
-                      </style>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                        <span style={{ color: "white", fontSize: "0.8rem" }}>From:</span>
-                        <input
-                          type="date"
-                          name="newlyJoinedFromDate"
-                          onChange={handleNewlyJoinedFromDateChange}
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                            color: "white",
-                            fontSize: "0.8rem",
-                            padding: "0.2rem",
-                          }}
-                        />
-                      </div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                        <span style={{ color: "white", fontSize: "0.8rem" }}>To:</span>
-                        <input
-                          type="date"
-                          name="newlyJoinedToDate"
-                          onChange={handleNewlyJoinedToDateChange}
-                          style={{
-                            border: "none",
-                            backgroundColor: "transparent",
-                            color: "white",
-                            fontSize: "0.8rem",
-                            padding: "0.2rem",
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <button
-                          onClick={handleFetchNewlyJoinedByDates}
-                          style={{
-                            backgroundColor: "#0A6E7C",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          Go
-                        </button>
-                      </div>
-                    </div>
-                  ) : null}
                 </div>
               ))}
+
+              {
+                boxesWithIndependentDateFilter.map((box, index) => (
+                  <div
+                  key={index}
+                  className={`box-hover ${box.title !== "Attrition" ? "box-gap" : ""}`}
+                  style={{
+                    width: "200px",
+                    padding: "0.5rem",
+                    borderRadius: "15px",
+                    backgroundColor: `${box.color}`,
+                    textAlign: "center",
+                    cursor: "pointer",
+                    margin: "0.5rem",
+                    boxShadow: "1px 5px 5px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
+                >
+                  <h4 style={{ fontSize: "1rem", fontWeight: "bold", fontFamily: "Inter, serif", color: "white" }}>
+                    {box.title}
+                  </h4>
+                  <p style={{ color: "white", fontSize: "2rem" }}>{box.value}</p>
+
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.5rem" }}>
+                    <style>
+                      {`
+                        input[type="date"]::-webkit-calendar-picker-indicator {
+                          filter: invert(1);
+                        }
+                      `}
+                    </style>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span style={{ color: "white", fontSize: "0.8rem" }}>From:</span>
+                      <input
+                        type="date"
+                        value={startDate[box.key]}
+                        name={box.key}
+                        onChange={handleFromDateChange}
+                        style={{
+                          border: "none",
+                          backgroundColor: "transparent",
+                          color: "white",
+                          fontSize: "0.8rem",
+                          padding: "0.2rem",
+                        }}
+                        disabled={selectedTimeRange !== ""}
+                      />
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span style={{ color: "white", fontSize: "0.8rem" }}>To:</span>
+                      <input
+                        type="date"
+                        name={box.key}
+                        value={endDate[box.key]}
+                        // name="toDate"
+                        onChange={handleToDateChange}
+                        style={{
+                          border: "none",
+                          backgroundColor: "transparent",
+                          color: "white",
+                          fontSize: "0.8rem",
+                          padding: "0.2rem",
+                        }}
+                        disabled={selectedTimeRange !== ""}
+                      />
+                    </div>
+                    <select
+                      value={timeRange[box.key]}
+                      name={box.key}
+                      onChange={handleTimeRangeChange}
+                      style={{
+                        height: "35px",
+                        width: "150px",
+                        margin: "5px",
+                        border: "2px solid #ffffff",
+                        backgroundColor: "transparent",
+                        color: "#ffffff",
+                      }}
+                    >
+                      <option value="">Select Time Range</option>
+                      <option value="1 month">1 Month</option>
+                      <option value="3 months">3 Months</option>
+                      <option value="6 months">6 Months</option>
+                    </select>
+                  </div>
+                </div>
+
+                ))
+              }
+
+
             </div>
           </div>
           <div className="d-flex" style={{ marginTop: "1rem", gap: "1rem", flexWrap: "wrap", justifyContent: "flex-start" }}>
